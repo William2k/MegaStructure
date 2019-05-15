@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
 
+const config = require("../config");
 let User = require("../models/user.model");
 
 routes.route("/").post((req, res) => {
@@ -15,7 +16,7 @@ routes.route("/").post((req, res) => {
       res.status(400).send("Registering user failed");
     } else {
       user.normalisedUsername = normalisedUsername;
-      user.password = bcrypt.hashSync(user.password, saltRounds);
+      user.password = bcrypt.hashSync(user.password, config.tokenSaltRounds);
 
       user
         .save()
@@ -39,7 +40,7 @@ routes.route("/auth").get((req, res) => {
         token = token.slice(7, token.length);
       }
   
-      decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+      decoded = jwt.verify(token, config.tokenSecret);
     } catch (err) {
       res.status(400).send("Token not valid");
       return;
@@ -71,9 +72,9 @@ routes.route("/auth").get((req, res) => {
         if (resultUser && bcrypt.compareSync(user.password, resultUser.password)) {
           const token = jwt.sign(
             { normalisedUsername },
-            process.env.TOKEN_SECRET,
+            config.tokenSecret,
             {
-              expiresIn: 86400 * process.env.TOKEN_EXPIRATION_DAYS
+              expiresIn: 86400 * config.tokenExpirationDays
             }
           );
   

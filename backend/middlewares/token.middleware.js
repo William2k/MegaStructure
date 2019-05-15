@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 
+const config = require("../config");
+
 const checkToken = (req, res, next) => {
   let token = req.headers["x-access-token"] || req.headers["authorization"];
 
@@ -8,7 +10,7 @@ const checkToken = (req, res, next) => {
   }
 
   if (token) {
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+    jwt.verify(token, config.tokenSecret, (err, decoded) => {
       if (err) {
         return res.json({
           success: false,
