@@ -1,0 +1,57 @@
+<div class="register-container">
+  <form
+    class="col-sm-11 col-lg-5 col-xl-4 simple-form"
+    [formGroup]="registerForm"
+    (ngSubmit)="postRegister()"
+  >
+    <h2>Register</h2>
+
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="Username" formControlName="username" />
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Password"
+          type="password"
+          formControlName="password"
+        />
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Confirm Password"
+          type="password"
+          formControlName="confirmPassword"
+        />
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="First Name" formControlName="firstName" />
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="Last Name" formControlName="lastName" />
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="Email Address" formControlName="email" />
+      </mat-form-field>
+    </div>
+
+    <button class="col-12" type="submit" mat-flat-button color="primary">Register</button>
+  </form>
+</div>
