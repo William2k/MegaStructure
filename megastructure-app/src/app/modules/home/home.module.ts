@@ -8,6 +8,7 @@ import { NavComponent } from 'src/app/layouts/nav/nav.component';
 import { FooterComponent } from 'src/app/layouts/footer/footer.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RegisterComponent } from './register/register.component';
+import { HomeServiceModule } from './home-service.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { RegisterComponent } from './register/register.component';
     NavComponent,
     FooterComponent
   ],
-  imports: [HomeRoutingModule, SharedModule],
+  imports: [HomeRoutingModule, SharedModule, HomeServiceModule],
   exports: [],
   providers: []
 })

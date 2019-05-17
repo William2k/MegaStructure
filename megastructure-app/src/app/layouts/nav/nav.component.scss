@@ -1,7 +1,23 @@
-nav{
-    background-color: rgba(0,0,0,0.4);
-    top: 0;
-    width: 100%;
-    color: white;
-    padding: 5px;
+nav {
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  color: white;
+  z-index: 99;
+
+  .nav-item{
+    width: 80px;
+    text-align: center;
+  }
+}
+
+.navbar-brand{
+    font-weight: bolder;
+}
+
+a {
+  color: white;
+
+  &.active{
+      font-weight: bolder;
+  }
 }

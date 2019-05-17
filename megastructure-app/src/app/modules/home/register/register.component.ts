@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { HomeService } from '../home.service';
 
 @Component({
   selector: 'app-register',
@@ -8,15 +9,21 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class RegisterComponent {
   registerForm = new FormGroup({
-    username: new FormControl(''),
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    confirmPassword: new FormControl(''),
+    username: new FormControl(null, [Validators.required]),
+    firstName: new FormControl(null, [Validators.required]),
+    lastName: new FormControl(null, [Validators.required]),
+    emailAddress: new FormControl(null, [Validators.required]),
+    password: new FormControl(null, [Validators.required]),
+    confirmPassword: new FormControl(null, [Validators.required])
   });
 
+  constructor(private homeService: HomeService) {}
+
   postRegister() {
-    console.log(this.registerForm.value);
+    if (!this.registerForm.valid) {
+      return;
+    }
+
+    this.homeService.register(this.registerForm.value).subscribe();
   }
 }

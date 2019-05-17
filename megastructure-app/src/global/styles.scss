@@ -1,8 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
 
-@import './form';
+@import "./form";
 
-.container-fluid{
-    padding: 0;
+body {
+  &.bg-blue {
+    background-color: #004e97;
+  }
+}
+
+.layout-container router-outlet ~ * {
+  position: absolute;
+  width: 100%;
 }

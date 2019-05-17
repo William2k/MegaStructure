@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { HomeService } from '../home.service';
 
 @Component({
   selector: 'app-login',
@@ -8,11 +9,17 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class LoginComponent {
   loginForm = new FormGroup({
-    username: new FormControl(''),
-    password: new FormControl('')
+    username: new FormControl(null, [Validators.required]),
+    password: new FormControl(null, [Validators.required])
   });
 
+  constructor(private homeService: HomeService) {}
+
   postLogin() {
-    console.log(this.loginForm.value);
+    if (!this.loginForm.valid) {
+      return;
+    }
+
+    this.homeService.login(this.loginForm.value).subscribe();
   }
 }

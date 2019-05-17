@@ -8,7 +8,12 @@
 
     <div>
       <mat-form-field>
-        <input matInput placeholder="Username" formControlName="username" />
+        <input
+          matInput
+          placeholder="Username"
+          formControlName="username"
+          required
+        />
       </mat-form-field>
     </div>
 
@@ -19,6 +24,7 @@
           placeholder="Password"
           type="password"
           formControlName="password"
+          required
         />
       </mat-form-field>
     </div>
@@ -30,28 +36,46 @@
           placeholder="Confirm Password"
           type="password"
           formControlName="confirmPassword"
+          required
         />
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field>
-        <input matInput placeholder="First Name" formControlName="firstName" />
+        <input
+          matInput
+          placeholder="First Name"
+          formControlName="firstName"
+          required
+        />
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field>
-        <input matInput placeholder="Last Name" formControlName="lastName" />
+        <input
+          matInput
+          placeholder="Last Name"
+          formControlName="lastName"
+          required
+        />
       </mat-form-field>
     </div>
 
     <div>
       <mat-form-field>
-        <input matInput placeholder="Email Address" formControlName="email" />
+        <input
+          matInput
+          placeholder="Email Address"
+          formControlName="emailAddress"
+          required
+        />
       </mat-form-field>
     </div>
 
-    <button class="col-12" type="submit" mat-flat-button color="primary">Register</button>
+    <button class="col-12" type="submit" mat-flat-button color="primary" [disabled]="!registerForm.valid">
+      Register
+    </button>
   </form>
 </div>
