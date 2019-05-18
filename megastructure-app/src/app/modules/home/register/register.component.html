@@ -14,6 +14,14 @@
           formControlName="username"
           required
         />
+        <mat-error
+          *ngIf="
+            registerForm.controls['username'].errors &&
+            registerForm.controls['username'].errors.required
+          "
+        >
+          Required
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -26,6 +34,14 @@
           formControlName="password"
           required
         />
+        <mat-error
+          *ngIf="
+            registerForm.controls['password'].errors &&
+            registerForm.controls['password'].errors.required
+          "
+        >
+          Required
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -38,6 +54,22 @@
           formControlName="confirmPassword"
           required
         />
+        <mat-error
+          *ngIf="
+            registerForm.controls['confirmPassword'].errors &&
+            registerForm.controls['confirmPassword'].errors.required
+          "
+        >
+          Required
+        </mat-error>
+        <mat-error
+          *ngIf="
+            registerForm.controls['confirmPassword'].errors &&
+            registerForm.controls['confirmPassword'].errors.MatchPassword
+          "
+        >
+          Passwords do not match
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -49,6 +81,14 @@
           formControlName="firstName"
           required
         />
+        <mat-error
+          *ngIf="
+            registerForm.controls['firstName'].errors &&
+            registerForm.controls['firstName'].errors.required
+          "
+        >
+          Required
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -60,6 +100,14 @@
           formControlName="lastName"
           required
         />
+        <mat-error
+          *ngIf="
+            registerForm.controls['lastName'].errors &&
+            registerForm.controls['lastName'].errors.required
+          "
+        >
+          Required
+        </mat-error>
       </mat-form-field>
     </div>
 
@@ -71,11 +119,37 @@
           formControlName="emailAddress"
           required
         />
+        <mat-error
+          *ngIf="
+            registerForm.controls['emailAddress'].errors &&
+            registerForm.controls['emailAddress'].errors.required
+          "
+        >
+          Required
+        </mat-error>
+        <mat-error
+          *ngIf="
+            registerForm.controls['emailAddress'].errors &&
+            registerForm.controls['emailAddress'].errors.email
+          "
+        >
+          Invalid email address
+        </mat-error>
       </mat-form-field>
     </div>
 
-    <button class="col-12" type="submit" mat-flat-button color="primary" [disabled]="!registerForm.valid">
+    <button
+      class="col-12"
+      type="submit"
+      mat-flat-button
+      color="primary"
+      [disabled]="!registerForm.valid"
+    >
       Register
     </button>
+
+    <div *ngIf="registerForm.errors">
+      <span *ngFor="let error of registerForm.errors">{{ error }}</span>
+    </div>
   </form>
 </div>

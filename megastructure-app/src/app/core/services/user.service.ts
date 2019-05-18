@@ -1,9 +1,6 @@
-import { Injectable, Inject } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
-  UserLoggedIn = new BehaviorSubject(false);
-}
+export class UserService {}

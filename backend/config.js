@@ -5,8 +5,8 @@ const config = {
   dbHost: process.env.DB_HOST,
   serverPort: process.env.PORT,
   tokenSecret: process.env.TOKEN_SECRET,
-  tokenExpirationDays: process.env.TOKEN_EXPIRATION_DAYS,
-  tokenSaltRounds: process.env.TOKEN_SALT_ROUNDS
+  tokenExpirationDays: Number(process.env.TOKEN_EXPIRATION_DAYS),
+  tokenSaltRounds: Number(process.env.TOKEN_SALT_ROUNDS)
 };
 
 module.exports = config;

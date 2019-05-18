@@ -29,8 +29,18 @@
       </mat-form-field>
     </div>
 
-    <button class="col-12" type="submit" mat-flat-button color="primary" [disabled]="!loginForm.valid">
+    <button
+      class="col-12"
+      type="submit"
+      mat-flat-button
+      color="primary"
+      [disabled]="!loginForm.valid"
+    >
       Login
     </button>
+
+    <div *ngIf="loginForm.errors">
+      <span *ngFor="let error of loginForm.errors">{{ error }}</span>
+    </div>
   </form>
 </div>

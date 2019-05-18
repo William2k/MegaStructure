@@ -1,25 +1,32 @@
 <nav class="navbar navbar-expand-sm position-fixed">
-<div>
+  <div>
     <a class="navbar-brand" routerLink="/">MegaStructure</a>
-</div>
+  </div>
 
-    <ul class="nav nav-tab">
-      <li class="nav-item" >
-        <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]='{ exact: true }'>
-          Home
-        </a>
-      </li>
+  <ul class="nav nav-tab">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Home
+      </a>
+    </li>
 
-      <li class="nav-item" >
+    <ng-template [ngIf]="!userLoggedIn">
+      <li class="nav-item">
         <a class="nav-link" routerLink="/login" routerLinkActive="active">
           Login
         </a>
       </li>
 
-      <li class="nav-item" >
+      <li class="nav-item">
         <a class="nav-link" routerLink="/register" routerLinkActive="active">
           Register
         </a>
       </li>
-    </ul>
+    </ng-template>
+  </ul>
 </nav>

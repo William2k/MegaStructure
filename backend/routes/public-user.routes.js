@@ -29,38 +29,6 @@ routes.route("/").post((req, res) => {
     }
   });
 });
-
-routes.route("/auth").get((req, res) => {
-    let token = req.headers["x-access-token"] || req.headers["authorization"];
-  
-    let decoded;
-  
-    try {
-      if (token && token.startsWith("Bearer ")) {
-        token = token.slice(7, token.length);
-      }
-  
-      decoded = jwt.verify(token, config.tokenSecret);
-    } catch (err) {
-      res.status(400).send("Token not valid");
-      return;
-    }
-  
-    User.findOne({ normalisedUsername: decoded.normalisedUsername })
-      .then((resultUser, err) => {
-        if (resultUser) {
-          res.json({
-            id: resultUser._id,
-            username: resultUser.username,
-            email: resultUser.email,
-            token
-          });
-        } else {
-          res.status(400).send("Login attepted failed");
-        }
-      })
-      .catch(err => console.log(err));
-  });
   
   routes.route("/login").post((req, res) => {
     let user = req.body;
@@ -79,9 +47,8 @@ routes.route("/auth").get((req, res) => {
           );
   
           res.json({
-            id: resultUser._id,
             username: resultUser.username,
-            email: resultUser.email,
+            emailAddress: resultUser.emailAddress,
             token
           });
         } else {
