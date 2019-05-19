@@ -7,7 +7,7 @@ import { HttpEvent } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { from } from 'rxjs';
 
-import { AccountService } from '../core/services/account.service';
+import { AccountService } from './services/account.service';
 
 @Injectable()
 export class CustomHttpInterceptor implements HttpInterceptor {

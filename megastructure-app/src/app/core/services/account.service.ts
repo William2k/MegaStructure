@@ -20,7 +20,7 @@ export class AccountService {
   getUser(): Observable<User> {
     this.token = localStorage.getItem('JwtToken');
 
-    return this.apiService.get<any>(`user`).pipe(
+    return this.apiService.get<User>(`user`).pipe(
       map(user => {
         this.userLoggedIn.next(true);
 
