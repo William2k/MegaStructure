@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate, OnInit {
 
   constructor(private accountService: AccountService, private router: Router) {
     this.subscriptions.add(
-      this.accountService.userLoggedInObservable.subscribe(
+      this.accountService.userLoggedInObservable$.subscribe(
         value => (this.userLoggedIn = value)
       )
     );

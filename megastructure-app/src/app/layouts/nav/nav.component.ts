@@ -12,7 +12,7 @@ export class NavComponent implements OnDestroy {
   userLoggedIn: boolean;
 
   constructor(private accountService: AccountService) {
-    this.subscriptions.add(this.accountService.userLoggedInObservable.subscribe(value => this.userLoggedIn = value));
+    this.subscriptions.add(this.accountService.userLoggedInObservable$.subscribe(value => this.userLoggedIn = value));
   }
 
   ngOnDestroy() {

@@ -1,15 +1,37 @@
 import { Action } from '@ngrx/store';
 
-import { LoginResult, Login } from 'src/app/core/models/account.models';
+import {
+  LoginResult,
+  Login,
+  Register
+} from 'src/app/core/models/account.models';
 import { User } from 'src/app/core/models/user.model';
 
 export enum ActionTypes {
+  REGISTER_REQUEST = '[Register Page] Register Request',
+  REGISTER_FAILURE = '[Register Page] Register Failure',
+  REGISTER_SUCCESS = '[Register Page] Register Success',
   LOGIN_REQUEST = '[Login Page] Login Request',
   LOGIN_FAILURE = '[Login Page] Login Failure',
   LOGIN_SUCCESS = '[Login Page] Login Success',
   GETUSER_REQUEST = '[Initialisation] GetUser Request',
   GETUSER_FAILURE = '[Initialisation] GetUser Failure',
   GETUSER_SUCCESS = '[Initialisation] GetUser Success'
+}
+
+// Register
+export class RegisterRequestAction implements Action {
+  readonly type = ActionTypes.REGISTER_REQUEST;
+  constructor(public payload: { form: Register }) {}
+}
+
+export class RegisterFailureAction implements Action {
+  readonly type = ActionTypes.REGISTER_FAILURE;
+  constructor(public payload: { error: string }) {}
+}
+
+export class RegisterSuccessAction implements Action {
+  readonly type = ActionTypes.REGISTER_SUCCESS;
 }
 
 // Login
@@ -45,6 +67,9 @@ export class GetUserSuccessAction implements Action {
 }
 
 export type Actions =
+  | RegisterRequestAction
+  | RegisterFailureAction
+  | RegisterSuccessAction
   | LoginRequestAction
   | LoginFailureAction
   | LoginSuccessAction;

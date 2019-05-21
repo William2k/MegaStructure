@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Register, Login, LoginResult } from '../../core/models/account.models';
@@ -11,7 +11,9 @@ import { User } from '../models/user.model';
 })
 export class AccountService {
   private userLoggedIn = new BehaviorSubject(false);
-  public userLoggedInObservable: Observable<boolean> = this.userLoggedIn.asObservable();
+  public userLoggedInObservable$: Observable<
+    boolean
+  > = this.userLoggedIn.asObservable();
 
   token: string;
 
@@ -19,6 +21,10 @@ export class AccountService {
 
   getUser(): Observable<User> {
     this.token = localStorage.getItem('JwtToken');
+
+    if (!this.token) {
+      return throwError('Token not found');
+    }
 
     return this.apiService.get<User>(`user`).pipe(
       map(user => {

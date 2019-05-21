@@ -1,7 +1,7 @@
 import * as AccountStoreActions from './actions';
 import * as AccountStoreState from './state';
-import * as AccountStoreEffects from './effects';
+import {AccountEffects} from './effects';
 
 export { AccountStoreModule } from './account-store.module';
 
-export { AccountStoreActions, AccountStoreState, AccountStoreEffects };
+export { AccountStoreActions, AccountStoreState, AccountEffects };
