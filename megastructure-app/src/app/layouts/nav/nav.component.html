@@ -15,7 +15,15 @@
       </a>
     </li>
 
-    <ng-template [ngIf]="!userLoggedIn">
+    <ng-template [ngIf]="userLoggedIn" [ngIfElse]="loggedOut">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/build" routerLinkActive="active">
+          Build
+        </a>
+      </li>
+    </ng-template>
+
+    <ng-template #loggedOut>
       <li class="nav-item">
         <a class="nav-link" routerLink="/login" routerLinkActive="active">
           Login
@@ -29,4 +37,8 @@
       </li>
     </ng-template>
   </ul>
+
+  <div class="user-info" *ngIf="userLoggedIn">
+    <span>{{ username }}</span>
+  </div>
 </nav>

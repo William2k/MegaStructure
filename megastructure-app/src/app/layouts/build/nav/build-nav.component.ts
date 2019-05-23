@@ -9,25 +9,19 @@ import { getCurrentUsername } from 'src/app/store/account-store/selectors';
 
 
 @Component({
-  selector: 'app-nav',
-  templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.scss']
+  selector: 'app-build-nav',
+  templateUrl: './build-nav.component.html',
+  styleUrls: ['./build-nav.component.scss']
 })
-export class NavComponent implements OnInit, OnDestroy {
+export class BuildNavComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   username: string;
-  userLoggedIn: boolean;
 
   constructor(
-    private accountService: AccountService,
     private store$: Store<AccountStoreState.State>
   ) {}
 
   ngOnInit() {
-    this.accountService.userLoggedInObservable$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(value => (this.userLoggedIn = value));
-
     this.store$
       .select(getCurrentUsername)
       .pipe(takeUntil(this.unsubscribe$))

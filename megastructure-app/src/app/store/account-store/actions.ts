@@ -8,15 +8,15 @@ import {
 import { User } from 'src/app/core/models/user.model';
 
 export enum ActionTypes {
-  REGISTER_REQUEST = '[Register Page] Register Request',
-  REGISTER_FAILURE = '[Register Page] Register Failure',
-  REGISTER_SUCCESS = '[Register Page] Register Success',
-  LOGIN_REQUEST = '[Login Page] Login Request',
-  LOGIN_FAILURE = '[Login Page] Login Failure',
-  LOGIN_SUCCESS = '[Login Page] Login Success',
-  GETUSER_REQUEST = '[Initialisation] GetUser Request',
-  GETUSER_FAILURE = '[Initialisation] GetUser Failure',
-  GETUSER_SUCCESS = '[Initialisation] GetUser Success'
+  REGISTER_REQUEST = '[Register] Register Request',
+  REGISTER_FAILURE = '[Register] Register Failure',
+  REGISTER_SUCCESS = '[Register] Register Success',
+  LOGIN_REQUEST = '[Login] Login Request',
+  LOGIN_FAILURE = '[Login] Login Failure',
+  LOGIN_SUCCESS = '[Login] Login Success',
+  GETUSER_REQUEST = '[GetUser] GetUser Request',
+  GETUSER_FAILURE = '[GetUser] GetUser Failure',
+  GETUSER_SUCCESS = '[GetUser] GetUser Success'
 }
 
 // Register
@@ -72,4 +72,7 @@ export type Actions =
   | RegisterSuccessAction
   | LoginRequestAction
   | LoginFailureAction
-  | LoginSuccessAction;
+  | LoginSuccessAction
+  | GetUserRequestAction
+  | GetUserFailureAction
+  | GetUserSuccessAction;

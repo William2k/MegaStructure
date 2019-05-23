@@ -6,13 +6,12 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { Subscription } from 'rxjs';
-
 import { AccountService } from './services/account.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate, OnInit {
   private userLoggedIn: boolean;
-  private subscriptions: Subscription;
+  private subscriptions = new Subscription();
 
   constructor(private accountService: AccountService, private router: Router) {
     this.subscriptions.add(

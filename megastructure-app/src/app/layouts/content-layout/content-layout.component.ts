@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
 import { fadeAnimation } from 'src/app/shared/route-animations';
 
 @Component({
@@ -7,10 +7,14 @@ import { fadeAnimation } from 'src/app/shared/route-animations';
   styleUrls: ['./content-layout.component.scss'],
   animations: [fadeAnimation]
 })
-export class ContentLayoutComponent implements OnInit {
+export class ContentLayoutComponent implements OnInit, OnDestroy {
   constructor(private renderer: Renderer2) {}
 
   ngOnInit() {
     this.renderer.addClass(document.body, 'bg-blue');
+  }
+
+  ngOnDestroy() {
+    this.renderer.removeClass(document.body, 'bg-blue');
   }
 }

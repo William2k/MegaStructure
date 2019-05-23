@@ -7,15 +7,18 @@ export const accountReducer = (
   action: Actions
 ): State => {
   switch (action.type) {
+    case ActionTypes.GETUSER_REQUEST:
     case ActionTypes.LOGIN_REQUEST: {
       return {
         ...state,
         isLoggingIn: true
       };
     }
+    case ActionTypes.GETUSER_SUCCESS:
     case ActionTypes.LOGIN_SUCCESS: {
       return {
         ...state,
+        isLoggedIn: true,
         isLoggingIn: false,
         user: {
           username: action.payload.result.username,
@@ -23,10 +26,11 @@ export const accountReducer = (
         } as User
       };
     }
+    case ActionTypes.GETUSER_FAILURE:
     case ActionTypes.LOGIN_FAILURE: {
       return {
         ...state,
-        isLoggedIn: false,
+        isLoggingIn: false,
         error: action.payload.error
       };
     }

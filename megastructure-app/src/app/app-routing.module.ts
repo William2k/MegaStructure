@@ -5,6 +5,7 @@ import { HomeComponent } from './modules/home/home.component';
 
 const routes: Routes = [
   { path: '', loadChildren: './modules/home/home.module#HomeModule' },
+  { path: 'build', loadChildren: './modules/build/build.module#BuildModule' },
   { path: '**', redirectTo: '' }
 ];
 

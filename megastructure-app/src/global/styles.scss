@@ -4,8 +4,14 @@
 @import "./form";
 
 body {
+  transition: background-color 0.8s;
+
   &.bg-blue {
     background-color: #004e97;
+  }
+
+  &.bg-purple {
+    background-color: #6154ce;
   }
 }
 
