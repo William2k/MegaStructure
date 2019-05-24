@@ -6,9 +6,18 @@ nav {
   transform: translateX(-90%);
   color: white;
 
+  > * {
+    transition: 1s;
+    opacity: 0;
+  }
+
   &:hover {
     background-color: rgba(0, 0, 0, 0.8);
     transform: translateX(0%);
+
+    > * {
+      opacity: 1;
+    }
   }
 
   a {

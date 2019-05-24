@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { BuildComponent } from './build,component';
 import { BuildLayoutComponent } from 'src/app/layouts/build/layout/build-layout.component';
+import { ManageSitesComponent } from './manage-sites/manage-sites.component';
 
 const routes: Routes = [
   {
@@ -10,6 +11,7 @@ const routes: Routes = [
     component: BuildLayoutComponent,
     children: [
       { path: '', component: BuildComponent },
+      { path: 'manage-sites', component: ManageSitesComponent }
     ]
   }
 ];
