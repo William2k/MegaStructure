@@ -9,4 +9,4 @@ const Site = new Schema({
   lastModified: [{ date: Date, user: String }]
 });
 
-module.exports = mongoose.model("User", User);
+module.exports = mongoose.model("Site", Site);

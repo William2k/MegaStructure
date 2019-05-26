@@ -18,10 +18,6 @@
     "lib": [
       "es2018",
       "dom"
-    ], 
-    "paths": {
-      "@app/*": ["app/*"],
-      "@shared/": ["app/shared/*"]
-    }
+    ]
   }
 }

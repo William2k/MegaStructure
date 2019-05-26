@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>Manage Site</h2>
+<mat-dialog-content class="mat-typography">
+  <form
+    id="site-form"
+    class="col-sm-11 col-lg-5 col-xl-4"
+    [formGroup]="siteForm"
+    (ngSubmit)="save()"
+  >
+    <div>
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Site Name"
+          formControlName="name"
+          required
+        />
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-form-field>
+        <input matInput placeholder="Type" formControlName="type" required />
+      </mat-form-field>
+    </div>
+
+    <button
+      class="col-12"
+      type="submit"
+      mat-flat-button
+      color="primary"
+      [disabled]="!siteForm.valid"
+    >
+      Save
+    </button>
+
+    <div *ngIf="siteForm.errors">
+      <span *ngFor="let error of siteForm.errors">{{ error }}</span>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-button form="site-form" cdkFocusInitial>Save</button>
+</mat-dialog-actions>
