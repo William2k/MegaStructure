@@ -26,8 +26,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private store$: Store<RootStoreState.State>,
     private accountEffects: AccountEffects,
     private router: Router,
-    fb: FormBuilder,
-    private homeService: HomeService
+    fb: FormBuilder
   ) {
     this.registerForm = fb.group(
       {
@@ -44,7 +43,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     const registerActionSubscription = this.accountEffects.RegisterRequestEffect$.subscribe(
       action => {
         if (action.type === AccountStoreActions.ActionTypes.REGISTER_SUCCESS) {
@@ -57,11 +56,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.subscriptions.add(registerActionSubscription);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  postRegister() {
+  postRegister(): void {
     if (!this.registerForm.valid) {
       return;
     }

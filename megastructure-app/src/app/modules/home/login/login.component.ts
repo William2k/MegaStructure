@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private accountEffects$: AccountEffects
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     const returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
 
     const loginActionSubscription = this.accountEffects$.loginRequestEffect$.subscribe(
@@ -46,11 +46,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscriptions.add(loginActionSubscription);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  postLogin() {
+  postLogin(): void {
     if (!this.loginForm.valid) {
       return;
     }

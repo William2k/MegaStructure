@@ -1,7 +1,15 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Site } from 'src/app/core/models/site.model';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import {
+  FormControl,
+  Validators,
+  FormGroup,
+  FormArray,
+  FormBuilder
+} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+
+import { Site } from 'src/app/core/models/site.model';
+import { User } from 'src/app/core/models/user.model';
 
 @Component({
   selector: 'app-site-info',
@@ -9,27 +17,52 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
   styleUrls: ['./site-info.component.scss']
 })
 export class SiteInfoComponent implements OnInit {
-  siteForm = new FormGroup({
-    name: new FormControl(null, [Validators.required]),
-    type: new FormControl(null, [Validators.required])
-  });
+  siteForm: FormGroup;
+  managers: FormArray;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<SiteInfoComponent>
-  ) {}
-
-  siteId: string;
-
-  ngOnInit() {
-    console.log(this.siteId, MAT_DIALOG_DATA);
+    @Inject(MAT_DIALOG_DATA) public site: Site,
+    public dialogRef: MatDialogRef<SiteInfoComponent>,
+    private fb: FormBuilder
+  ) {
+    this.siteForm = fb.group({
+      name: ['', [Validators.required]],
+      type: ['', [Validators.required]],
+      managers: fb.array([this.createManager()])
+    });
   }
 
-  save() {
+  ngOnInit(): void {
+    console.log(this.site.id);
+  }
+
+  createManager(): FormGroup {
+    return this.fb.group({
+      username: ['']
+    });
+  }
+
+  addManager(): void {
+    this.managers = this.siteForm.get('managers') as FormArray;
+
+    if (this.managers.controls.some(m => m.pristine)) {
+      return;
+    }
+
+    this.managers.push(this.createManager());
+  }
+
+  save(): void {
+    const form = {
+      ...this.siteForm.value,
+      managers: (this.siteForm.value.managers as User[]).map(m => m.username).filter(Boolean)
+    };
+    console.log(form);
+    // post to db
     this.closeDialog();
   }
 
-  closeDialog() {
+  closeDialog(): void {
     this.dialogRef.close('Saved');
   }
 }

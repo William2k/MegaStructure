@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Manage Site</h2>
+<h2 mat-dialog-title>Manage Site {{ site.name }}</h2>
 <mat-dialog-content class="mat-typography">
   <form
     id="site-form"
@@ -23,15 +23,55 @@
       </mat-form-field>
     </div>
 
-    <button
-      class="col-12"
-      type="submit"
-      mat-flat-button
-      color="primary"
-      [disabled]="!siteForm.valid"
+    <!-- <div>
+      <ul>
+        <li *ngFor="let manager of siteForm.value.managers">{{ manager }}</li>
+      </ul>
+      <mat-form-field>
+        <input matInput placeholder="Add Manager" #addManagerInput />
+      </mat-form-field>
+      <button
+        mat-flat-button
+        type="button"
+        (click)="addManager(addManagerInput.value)"
+      >
+        <fa name="plus"></fa>
+      </button>
+    </div> -->
+
+    <div
+      formArrayName="managers"
+      *ngFor="
+        let manager of siteForm.get('managers')['controls'];
+        let i = index
+      "
     >
-      Save
-    </button>
+      <ng-template
+        [ngIf]="i !== siteForm.get('managers')['controls'].length - 1"
+        [ngIfElse]="addManagerInput"
+      >
+        <div>{{ siteForm.controls['managers'].controls[i].controls.username.value }}</div>
+      </ng-template>
+
+      <ng-template #addManagerInput>
+        <div [formGroupName]="i">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Add Manager"
+              formControlName="username"
+            />
+          </mat-form-field>
+          <button
+            mat-flat-button
+            type="button"
+            (click)="addManager()"
+          >
+            <fa name="plus"></fa>
+          </button>
+        </div>
+      </ng-template>
+    </div>
 
     <div *ngIf="siteForm.errors">
       <span *ngFor="let error of siteForm.errors">{{ error }}</span>
@@ -40,5 +80,13 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="false">Cancel</button>
-  <button mat-button form="site-form" cdkFocusInitial>Save</button>
+  <button
+    mat-flat-button
+    type="submit"
+    [disabled]="!siteForm.valid"
+    form="site-form"
+    color="primary"
+  >
+    Save
+  </button>
 </mat-dialog-actions>

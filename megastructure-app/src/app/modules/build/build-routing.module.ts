@@ -11,7 +11,9 @@ const routes: Routes = [
     component: BuildLayoutComponent,
     children: [
       { path: '', component: BuildComponent },
-      { path: 'manage-sites', component: ManageSitesComponent }
+      { path: 'manage-sites', component: ManageSitesComponent },
+      { path: 'manage-sites/add', component: ManageSitesComponent },
+      { path: 'manage-sites/:id', component: ManageSitesComponent }
     ]
   }
 ];
