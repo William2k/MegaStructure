@@ -5,24 +5,24 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot
 } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AccountService } from './services/account.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Injectable()
 export class AuthGuard implements CanActivate, OnInit {
   private userLoggedIn: boolean;
-  private subscriptions = new Subscription();
+  private unsubscribe$ = new Subject<void>();
 
   constructor(private accountService: AccountService, private router: Router) {
-    this.subscriptions.add(
-      this.accountService.userLoggedInObservable$.subscribe(
-        value => (this.userLoggedIn = value)
-      )
-    );
+    this.accountService.userLoggedInObservable$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(value => (this.userLoggedIn = value));
   }
 
   ngOnInit() {
-    this.subscriptions.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

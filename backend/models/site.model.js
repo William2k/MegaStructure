@@ -6,7 +6,7 @@ const Site = new Schema({
   type: String,
   owner: String,
   managers: [String],
-  lastModified: [{ date: Date, user: String }]
+  lastModified: { date: Date, user: String }
 });
 
 module.exports = mongoose.model("Site", Site);

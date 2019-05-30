@@ -26,12 +26,12 @@ export class NavComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.accountService.userLoggedInObservable$
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(value => (this.userLoggedIn = value));
+      .subscribe(value => this.userLoggedIn = value);
 
     this.store$
       .select(getCurrentUsername)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(username => (this.username = username));
+      .subscribe(username => this.username = username);
   }
 
   ngOnDestroy() {

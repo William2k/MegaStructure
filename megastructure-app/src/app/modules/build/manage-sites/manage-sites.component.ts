@@ -1,19 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
+import { getUserSites } from 'src/app/store/site-store/selectors';
+import { RootStoreState } from 'src/app/store';
 import { SiteInfoComponent } from './Site/site-info.component';
 import { Site } from 'src/app/core/models/site.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
+import { GetSitesRequestAction } from 'src/app/store/site-store/actions';
 
 @Component({
   selector: 'app-manage-sites',
   templateUrl: './manage-sites.component.html',
   styleUrls: ['./manage-sites.component.scss']
 })
-export class ManageSitesComponent {
+export class ManageSitesComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
   sites: Site[] = [];
 
   constructor(
+    private store$: Store<RootStoreState.State>,
     private location: Location,
     private route: ActivatedRoute,
     private dialog: MatDialog
@@ -23,6 +32,20 @@ export class ManageSitesComponent {
         this.openSiteInfo(params.id);
       }
     });
+  }
+
+  ngOnInit() {
+    this.store$.dispatch(new GetSitesRequestAction());
+
+    this.store$
+      .select(getUserSites)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(sites => (this.sites = sites));
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   clickOpenSiteInfo(param: string): void {

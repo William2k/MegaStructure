@@ -10,6 +10,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Site } from 'src/app/core/models/site.model';
 import { User } from 'src/app/core/models/user.model';
+import { RootStoreState } from 'src/app/store';
+import { Store } from '@ngrx/store';
+import { AddSiteRequestAction } from 'src/app/store/site-store/actions';
 
 @Component({
   selector: 'app-site-info',
@@ -22,6 +25,7 @@ export class SiteInfoComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public site: Site,
+    private store$: Store<RootStoreState.State>,
     public dialogRef: MatDialogRef<SiteInfoComponent>,
     private fb: FormBuilder
   ) {
@@ -32,9 +36,7 @@ export class SiteInfoComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    console.log(this.site.id);
-  }
+  ngOnInit(): void {}
 
   createManager(): FormGroup {
     return this.fb.group({
@@ -55,9 +57,13 @@ export class SiteInfoComponent implements OnInit {
   save(): void {
     const form = {
       ...this.siteForm.value,
-      managers: (this.siteForm.value.managers as User[]).map(m => m.username).filter(Boolean)
-    };
-    console.log(form);
+      managers: (this.siteForm.value.managers as User[])
+        .map(m => m.username)
+        .filter(Boolean)
+    } as Site;
+
+    this.store$.dispatch(new AddSiteRequestAction({ form }));
+
     // post to db
     this.closeDialog();
   }

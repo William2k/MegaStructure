@@ -10,6 +10,6 @@ export interface State {
 export const initialState: State = {
   isLoggedIn: false,
   isLoggingIn: false,
-  user: null,
+  user: { username: null, emailAddress: null } as User,
   error: null
 };

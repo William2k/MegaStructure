@@ -2,9 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { PasswordValidation } from 'src/app/shared/formValidators/password.validator';
 
-import { HomeService } from '../home.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import {
   RootStoreState,
   AccountEffects,
@@ -12,6 +11,7 @@ import {
 } from 'src/app/store';
 import { Store } from '@ngrx/store';
 import { RegisterRequestAction } from 'src/app/store/account-store/actions';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +19,7 @@ import { RegisterRequestAction } from 'src/app/store/account-store/actions';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  private subscriptions = new Subscription();
+  private unsubscribe$ = new Subject<void>();
   registerForm: FormGroup;
 
   constructor(
@@ -44,7 +44,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const registerActionSubscription = this.accountEffects.RegisterRequestEffect$.subscribe(
+    this.accountEffects.RegisterRequestEffect$.pipe(
+      takeUntil(this.unsubscribe$)
+    ).subscribe(
       action => {
         if (action.type === AccountStoreActions.ActionTypes.REGISTER_SUCCESS) {
           this.router.navigate(['/login']);
@@ -52,12 +54,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
       },
       err => this.registerForm.setErrors({ registerFailed: err })
     );
-
-    this.subscriptions.add(registerActionSubscription);
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   postRegister(): void {

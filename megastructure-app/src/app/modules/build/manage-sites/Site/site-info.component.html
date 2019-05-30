@@ -23,22 +23,6 @@
       </mat-form-field>
     </div>
 
-    <!-- <div>
-      <ul>
-        <li *ngFor="let manager of siteForm.value.managers">{{ manager }}</li>
-      </ul>
-      <mat-form-field>
-        <input matInput placeholder="Add Manager" #addManagerInput />
-      </mat-form-field>
-      <button
-        mat-flat-button
-        type="button"
-        (click)="addManager(addManagerInput.value)"
-      >
-        <fa name="plus"></fa>
-      </button>
-    </div> -->
-
     <div
       formArrayName="managers"
       *ngFor="

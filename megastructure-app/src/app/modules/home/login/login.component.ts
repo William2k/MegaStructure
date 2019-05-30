@@ -9,7 +9,8 @@ import {
   AccountEffects,
   AccountStoreActions
 } from 'src/app/store/account-store';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -17,12 +18,12 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
+
   loginForm = new FormGroup({
     username: new FormControl(null, [Validators.required]),
     password: new FormControl(null, [Validators.required])
   });
-
-  private subscriptions = new Subscription();
 
   constructor(
     private store$: Store<RootStoreState.State>,
@@ -34,20 +35,21 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
 
-    const loginActionSubscription = this.accountEffects$.loginRequestEffect$.subscribe(
-      action => {
-        if (action.type === AccountStoreActions.ActionTypes.LOGIN_SUCCESS) {
-          this.router.navigateByUrl(returnUrl);
-        }
-      },
-      err => this.loginForm.setErrors({ loginFailed: err })
-    );
-
-    this.subscriptions.add(loginActionSubscription);
+    this.accountEffects$.loginRequestEffect$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        action => {
+          if (action.type === AccountStoreActions.ActionTypes.LOGIN_SUCCESS) {
+            this.router.navigateByUrl(returnUrl);
+          }
+        },
+        err => this.loginForm.setErrors({ loginFailed: err })
+      );
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   postLogin(): void {

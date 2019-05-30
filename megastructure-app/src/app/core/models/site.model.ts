@@ -4,5 +4,5 @@ export interface Site {
   type: string;
   owner: string;
   managers: [string];
-  lastModified: [{ date: Date; user: string }];
+  lastModified: { date: Date; user: string };
 }
