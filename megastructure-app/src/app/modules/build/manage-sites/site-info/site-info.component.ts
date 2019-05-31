@@ -7,6 +7,9 @@ import { User } from 'src/app/core/models/user.model';
 import { RootStoreState } from 'src/app/store';
 import { Store } from '@ngrx/store';
 import { SaveSiteRequestAction } from 'src/app/store/site-store/actions';
+import { Observable } from 'rxjs';
+import { getAccountState } from 'src/app/store/site-store/selectors';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-site-info',
@@ -14,8 +17,8 @@ import { SaveSiteRequestAction } from 'src/app/store/site-store/actions';
   styleUrls: ['./site-info.component.scss']
 })
 export class SiteInfoComponent implements OnInit {
+  saving$: Observable<boolean>;
   siteForm: FormGroup;
-  managers: FormArray;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public site: Site,
@@ -28,6 +31,10 @@ export class SiteInfoComponent implements OnInit {
       type: ['', [Validators.required]],
       managers: fb.array([this.createManager()])
     });
+
+    this.saving$ = store$
+      .select(getAccountState)
+      .pipe(map(state => state.savingSite));
   }
 
   ngOnInit(): void {
@@ -52,13 +59,19 @@ export class SiteInfoComponent implements OnInit {
   }
 
   addManager(): void {
-    this.managers = this.siteForm.get('managers') as FormArray;
+    const managers = this.siteForm.get('managers') as FormArray;
 
-    if (this.managers.controls.some(m => m.pristine)) {
+    if (managers.controls.some(m => m.pristine)) {
       return;
     }
 
-    this.managers.push(this.createManager());
+    managers.push(this.createManager());
+  }
+
+  removeManager(index: number): void {
+    const managers = this.siteForm.get('managers') as FormArray;
+
+    managers.removeAt(index);
   }
 
   save(): void {

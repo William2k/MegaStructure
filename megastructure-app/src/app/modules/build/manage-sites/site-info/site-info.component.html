@@ -1,12 +1,9 @@
-<h2 class="d-inline-block" mat-dialog-title>
-  Manage Site {{ site.name }}
-
-</h2>
-  <small class="float-right">
-    <label [matTooltip]="'By ' + site.lastModified.user.toUpperCase()">
-      Last modified: {{ site.lastModified.date | date: "medium" }}
-    </label>
-  </small>
+<h2 class="d-inline-block" mat-dialog-title>Manage Site {{ site.name }}</h2>
+<small class="float-right" *ngIf="site.id">
+  <label [matTooltip]="'By ' + site.lastModified.user.toUpperCase()">
+    Last modified: {{ site.lastModified.date | date: "medium" }}
+  </label>
+</small>
 <mat-dialog-content class="mat-typography">
   <form
     id="site-form"
@@ -31,40 +28,48 @@
       </mat-form-field>
     </div>
 
-    <div
-      formArrayName="managers"
-      *ngFor="
-        let manager of siteForm.get('managers')['controls'];
-        let i = index
-      "
-    >
-      <ng-template
-        [ngIf]="i !== siteForm.get('managers')['controls'].length - 1"
-        [ngIfElse]="addManagerInput"
+    <fieldset>
+    <label>Managers: </label>
+
+    <ul class="list-unstyled">
+      <li
+        formArrayName="managers"
+        *ngFor="
+          let manager of siteForm.get('managers')['controls'];
+          let i = index
+        "
       >
-        <div>
-          {{
-            siteForm.controls["managers"].controls[i].controls.username.value
-          }}
-        </div>
-      </ng-template>
+        <ng-template
+          [ngIf]="i !== siteForm.get('managers')['controls'].length - 1"
+          [ngIfElse]="addManagerInput"
+        >
+          <div>
+            {{ manager.controls.username.value }}
+            <fa class="close-icon"
+              name="close"
+              (click)="removeManager(i)"
+              *ngIf="manager.controls.username.value"
+            ></fa>
+          </div>
+        </ng-template>
 
-      <ng-template #addManagerInput>
-        <div [formGroupName]="i">
-          <mat-form-field>
-            <input
-              matInput
-              placeholder="Add Manager"
-              formControlName="username"
-            />
-          </mat-form-field>
-          <button mat-flat-button type="button" (click)="addManager()">
-            <fa name="plus"></fa>
-          </button>
-        </div>
-      </ng-template>
-    </div>
-
+        <ng-template #addManagerInput>
+          <div [formGroupName]="i">
+            <mat-form-field>
+              <input
+                matInput
+                placeholder="Add Manager"
+                formControlName="username"
+              />
+            </mat-form-field>
+            <button mat-flat-button type="button" (click)="addManager()">
+              <fa name="plus"></fa>
+            </button>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+  </fieldset>
     <div *ngIf="siteForm.errors">
       <span *ngFor="let error of siteForm.errors">{{ error }}</span>
     </div>
@@ -75,10 +80,16 @@
   <button
     mat-flat-button
     type="submit"
-    [disabled]="!siteForm.valid"
+    [disabled]="!siteForm.valid || (saving$ | async)"
     form="site-form"
     color="primary"
   >
-    Save
+    {{ (saving$ | async) ? null : "Save" }}
+    <fa
+      class="spinner"
+      name="spinner"
+      animation="spin"
+      *ngIf="saving$ | async"
+    ></fa>
   </button>
 </mat-dialog-actions>

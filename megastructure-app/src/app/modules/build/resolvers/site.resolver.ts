@@ -10,20 +10,14 @@ import { SiteStoreActions, SiteEffects } from 'src/app/store/site-store';
 import { GetSitesRequestAction } from 'src/app/store/site-store/actions';
 import { RootStoreState } from 'src/app/store';
 import { getUserSites } from 'src/app/store/site-store/selectors';
-import { takeUntil, map, take, skip } from 'rxjs/operators';
+import { map, take, skip } from 'rxjs/operators';
 import { Site } from 'src/app/core/models/site.model';
 
 @Injectable()
-export class SiteResolver implements Resolve<any> {
-  constructor(
-    private store$: Store<RootStoreState.State>,
-    private effects$: SiteEffects
-  ) {}
+export class SiteResolver implements Resolve<Site[]> {
+  constructor(private store$: Store<RootStoreState.State>) {}
 
-  resolve(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<any> {
+  resolve(): Observable<Site[]> {
     this.store$.dispatch(new GetSitesRequestAction());
 
     return this.store$.select(getUserSites).pipe(
