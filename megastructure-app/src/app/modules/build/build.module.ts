@@ -6,7 +6,7 @@ import { BuildLayoutComponent } from 'src/app/layouts/build/layout/build-layout.
 import { BuildRoutingModule } from './build-routing.module';
 import { BuildNavComponent } from 'src/app/layouts/build/nav/build-nav.component';
 import { ManageSitesComponent } from './manage-sites/manage-sites.component';
-import { SiteInfoComponent } from './manage-sites/Site/site-info.component';
+import { SiteInfoComponent } from './manage-sites/site-info/site-info.component';
 
 @NgModule({
   declarations: [

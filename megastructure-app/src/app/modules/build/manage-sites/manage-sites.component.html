@@ -10,18 +10,38 @@
 
   <mat-card class="card" *ngFor="let site of sites">
     <mat-card-title>{{ site.name }}</mat-card-title>
-    <mat-card-content
-      >{{ site.type }}
+    <mat-card-content>
+      {{ site.type }}
       <div>
-        <label [matTooltip]="site.managers.join(', ')">Managers </label>
-        <span>({{ site.managers.length }})</span>
+        <label [matTooltip]="site.managers.join(', ')">
+          {{ site.managers.length }} Manager(s)
+        </label>
       </div>
 
-      <span [matTooltip]="site.lastModified.date | date: 'medium'"
-        >Last modified by: {{ site.lastModified.user.toUpperCase() }}
-      </span>
+      <label [matTooltip]="site.lastModified.date | date: 'medium'">
+        Last modified by: {{ site.lastModified.user.toUpperCase() }}
+      </label>
     </mat-card-content>
     <mat-divider></mat-divider>
-    <mat-card-footer></mat-card-footer>
+    <mat-card-footer>
+      <ul class="card-btns list-unstyled">
+        <li>
+          <button
+            class="edit-btn card-footer-btn"
+            (click)="clickOpenSiteInfo(site.name)"
+            mat-flat-button
+          >
+            <fa name="edit"></fa>
+            Edit
+          </button>
+        </li>
+        <li>
+          <button class="view-btn card-footer-btn" mat-flat-button>
+            <fa name="eye"></fa>
+            View Site
+          </button>
+        </li>
+      </ul>
+    </mat-card-footer>
   </mat-card>
 </div>

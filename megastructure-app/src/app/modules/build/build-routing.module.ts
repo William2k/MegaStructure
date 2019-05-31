@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { BuildComponent } from './build,component';
 import { BuildLayoutComponent } from 'src/app/layouts/build/layout/build-layout.component';
 import { ManageSitesComponent } from './manage-sites/manage-sites.component';
+import { SiteResolver } from './resolvers/site.resolver';
 
 const routes: Routes = [
   {
@@ -11,15 +12,28 @@ const routes: Routes = [
     component: BuildLayoutComponent,
     children: [
       { path: '', component: BuildComponent },
-      { path: 'manage-sites', component: ManageSitesComponent },
-      { path: 'manage-sites/add', component: ManageSitesComponent },
-      { path: 'manage-sites/:id', component: ManageSitesComponent }
+      {
+        path: 'manage-sites',
+        component: ManageSitesComponent,
+        resolve: { sites: SiteResolver }
+      },
+      {
+        path: 'manage-sites/add',
+        component: ManageSitesComponent,
+        resolve: { sites: SiteResolver }
+      },
+      {
+        path: 'manage-sites/:sitename',
+        component: ManageSitesComponent,
+        resolve: { sites: SiteResolver }
+      }
     ]
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [SiteResolver]
 })
 export class BuildRoutingModule {}

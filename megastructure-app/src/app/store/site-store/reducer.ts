@@ -13,7 +13,12 @@ export const siteReducer = (state = initialState, action: Actions): State => {
       return {
         ...state,
         savingSite: false,
-        sites: [...state.sites, action.payload.result]
+        sites: [
+          ...state.sites.filter(
+            site => site.name !== action.payload.result.name
+          ),
+          action.payload.result
+        ]
       };
     }
     case ActionTypes.ADD_SITE_FAILURE: {

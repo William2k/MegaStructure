@@ -8,9 +8,8 @@ import { Subject } from 'rxjs';
 
 import { getUserSites } from 'src/app/store/site-store/selectors';
 import { RootStoreState } from 'src/app/store';
-import { SiteInfoComponent } from './Site/site-info.component';
+import { SiteInfoComponent } from './site-info/site-info.component';
 import { Site } from 'src/app/core/models/site.model';
-import { GetSitesRequestAction } from 'src/app/store/site-store/actions';
 
 @Component({
   selector: 'app-manage-sites',
@@ -26,21 +25,22 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
     private location: Location,
     private route: ActivatedRoute,
     private dialog: MatDialog
-  ) {
-    route.params.subscribe(params => {
-      if (params.id || route.routeConfig.path.includes('manage-sites/add')) {
-        this.openSiteInfo(params.id);
-      }
-    });
-  }
+  ) {}
 
   ngOnInit() {
-    this.store$.dispatch(new GetSitesRequestAction());
-
     this.store$
       .select(getUserSites)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(sites => (this.sites = sites));
+
+    this.route.params.subscribe(params => {
+      if (
+        params.sitename ||
+        this.route.routeConfig.path.includes('manage-sites/add')
+      ) {
+        setTimeout(() => this.openSiteInfo(params.sitename as string), 0);
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -51,14 +51,16 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
   clickOpenSiteInfo(param: string): void {
     this.location.go(`${this.location.path()}/${param}`);
 
-    this.openSiteInfo(param !== 'add' ? param : null);
+    param === 'add' ? this.openSiteInfo() : this.openSiteInfo(param);
   }
 
-  openSiteInfo(siteId: string = ''): void {
-    const site = this.sites.find(s => s.id === siteId) || ({} as Site);
+  private openSiteInfo(siteName: string = ''): void {
+    const site =
+      this.sites.find(s => s.name.toLowerCase() === siteName.toLowerCase()) ||
+      ({} as Site);
 
     const dialogRef = this.dialog.open(SiteInfoComponent, {
-      autoFocus: !site.id,
+      autoFocus: !site.name,
       width: '90%',
       position: { top: '20px' },
       data: site

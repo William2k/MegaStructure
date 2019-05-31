@@ -9,7 +9,9 @@ import { Subject } from 'rxjs';
 import { AccountService } from './services/account.service';
 import { takeUntil } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthGuard implements CanActivate, OnInit {
   private userLoggedIn: boolean;
   private unsubscribe$ = new Subject<void>();

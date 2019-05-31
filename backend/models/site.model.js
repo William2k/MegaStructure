@@ -9,4 +9,10 @@ const Site = new Schema({
   lastModified: { date: Date, user: String }
 });
 
+Site.methods.toJSON = function() {
+  let obj = this.toObject();
+  delete obj._id;
+  return obj;
+ }
+
 module.exports = mongoose.model("Site", Site);

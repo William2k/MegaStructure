@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {
-  FormControl,
   Validators,
   FormGroup,
   FormArray,
@@ -36,11 +35,24 @@ export class SiteInfoComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.site.name) {
+      this.siteForm.controls.name.setValue(this.site.name);
+      this.siteForm.controls.type.setValue(this.site.type);
 
-  createManager(): FormGroup {
+      const managerControls = this.siteForm.get('managers') as FormArray;
+
+      for (const name of this.site.managers) {
+        managerControls.push(this.createManager(name));
+      }
+
+      managerControls.push(this.createManager());
+    }
+  }
+
+  createManager(username: string = ''): FormGroup {
     return this.fb.group({
-      username: ['']
+      username: [username]
     });
   }
 
