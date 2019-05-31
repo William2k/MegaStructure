@@ -12,15 +12,15 @@ export class SiteEffects {
   constructor(private actions: Actions, private siteService: SiteService) {}
 
   @Effect()
-  AddSiteRequestEffect$: Observable<Action> = this.actions.pipe(
-    ofType<siteActions.AddSiteRequestAction>(
-      siteActions.ActionTypes.ADD_SITE_REQUEST
+  SaveSiteRequestEffect$: Observable<Action> = this.actions.pipe(
+    ofType<siteActions.SaveSiteRequestAction>(
+      siteActions.ActionTypes.SAVE_SITE_REQUEST
     ),
     switchMap(action =>
       this.siteService.add(action.payload.form).pipe(
-        map(result => new siteActions.AddSiteSuccessAction({ result })),
+        map(result => new siteActions.SaveSiteSuccessAction({ result })),
         catchError(error =>
-          observableOf(new siteActions.AddSiteFailureAction({ error }))
+          observableOf(new siteActions.SaveSiteFailureAction({ error }))
         )
       )
     ),

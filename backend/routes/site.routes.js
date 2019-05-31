@@ -47,7 +47,7 @@ routes.route("/").post((req, res) => {
       name: site.name
     },
     site,
-    { upsert: true },
+    { upsert: true, new: true },
     (err, resultSite) => {
       if (resultSite) {
         res.status(201).json(resultSite);

@@ -3,13 +3,13 @@ import { initialState, State } from './state';
 
 export const siteReducer = (state = initialState, action: Actions): State => {
   switch (action.type) {
-    case ActionTypes.ADD_SITE_REQUEST: {
+    case ActionTypes.SAVE_SITE_REQUEST: {
       return {
         ...state,
         savingSite: true
       };
     }
-    case ActionTypes.ADD_SITE_SUCCESS: {
+    case ActionTypes.SAVE_SITE_SUCCESS: {
       return {
         ...state,
         savingSite: false,
@@ -21,7 +21,7 @@ export const siteReducer = (state = initialState, action: Actions): State => {
         ]
       };
     }
-    case ActionTypes.ADD_SITE_FAILURE: {
+    case ActionTypes.SAVE_SITE_FAILURE: {
       return {
         ...state,
         savingSite: false,

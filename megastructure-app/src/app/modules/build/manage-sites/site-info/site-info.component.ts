@@ -1,17 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {
-  Validators,
-  FormGroup,
-  FormArray,
-  FormBuilder
-} from '@angular/forms';
+import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { Site } from 'src/app/core/models/site.model';
 import { User } from 'src/app/core/models/user.model';
 import { RootStoreState } from 'src/app/store';
 import { Store } from '@ngrx/store';
-import { AddSiteRequestAction } from 'src/app/store/site-store/actions';
+import { SaveSiteRequestAction } from 'src/app/store/site-store/actions';
 
 @Component({
   selector: 'app-site-info',
@@ -74,7 +69,7 @@ export class SiteInfoComponent implements OnInit {
         .filter(Boolean)
     } as Site;
 
-    this.store$.dispatch(new AddSiteRequestAction({ form }));
+    this.store$.dispatch(new SaveSiteRequestAction({ form }));
 
     // post to db
     this.closeDialog();
