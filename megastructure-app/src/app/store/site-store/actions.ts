@@ -10,7 +10,7 @@ export enum ActionTypes {
   GET_SITES_SUCCESS = '[Site] Get Sites Success'
 }
 
-// Add Site
+// Save Site
 export class SaveSiteRequestAction implements Action {
   readonly type = ActionTypes.SAVE_SITE_REQUEST;
   constructor(public payload: { form: Site }) {}

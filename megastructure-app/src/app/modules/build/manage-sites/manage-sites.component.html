@@ -17,10 +17,6 @@
           {{ site.managers.length }} Manager(s)
         </label>
       </div>
-
-      <label [matTooltip]="site.lastModified.date | date: 'medium'">
-        Last modified by: {{ site.lastModified.user.toUpperCase() }}
-      </label>
     </mat-card-content>
     <mat-divider></mat-divider>
     <mat-card-footer>

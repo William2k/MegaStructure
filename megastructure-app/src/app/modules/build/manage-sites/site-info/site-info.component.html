@@ -1,4 +1,12 @@
-<h2 mat-dialog-title>Manage Site {{ site.name }}</h2>
+<h2 class="d-inline-block" mat-dialog-title>
+  Manage Site {{ site.name }}
+
+</h2>
+  <small class="float-right">
+    <label [matTooltip]="'By ' + site.lastModified.user.toUpperCase()">
+      Last modified: {{ site.lastModified.date | date: "medium" }}
+    </label>
+  </small>
 <mat-dialog-content class="mat-typography">
   <form
     id="site-form"
@@ -34,7 +42,11 @@
         [ngIf]="i !== siteForm.get('managers')['controls'].length - 1"
         [ngIfElse]="addManagerInput"
       >
-        <div>{{ siteForm.controls['managers'].controls[i].controls.username.value }}</div>
+        <div>
+          {{
+            siteForm.controls["managers"].controls[i].controls.username.value
+          }}
+        </div>
       </ng-template>
 
       <ng-template #addManagerInput>
@@ -46,11 +58,7 @@
               formControlName="username"
             />
           </mat-form-field>
-          <button
-            mat-flat-button
-            type="button"
-            (click)="addManager()"
-          >
+          <button mat-flat-button type="button" (click)="addManager()">
             <fa name="plus"></fa>
           </button>
         </div>
