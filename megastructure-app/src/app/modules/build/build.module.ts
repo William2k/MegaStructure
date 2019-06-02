@@ -7,6 +7,7 @@ import { BuildRoutingModule } from './build-routing.module';
 import { BuildNavComponent } from 'src/app/layouts/build/nav/build-nav.component';
 import { ManageSitesComponent } from './manage-sites/manage-sites.component';
 import { SiteInfoComponent } from './manage-sites/site-info/site-info.component';
+import { ViewSiteComponent } from './manage-sites/view-site/view-site.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { SiteInfoComponent } from './manage-sites/site-info/site-info.component'
     BuildLayoutComponent,
     BuildNavComponent,
     ManageSitesComponent,
-    SiteInfoComponent
+    SiteInfoComponent,
+    ViewSiteComponent
   ],
   imports: [BuildRoutingModule, SharedModule],
   entryComponents: [SiteInfoComponent],

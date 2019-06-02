@@ -5,6 +5,7 @@ import { BuildComponent } from './build,component';
 import { BuildLayoutComponent } from 'src/app/layouts/build/layout/build-layout.component';
 import { ManageSitesComponent } from './manage-sites/manage-sites.component';
 import { SiteResolver } from './resolvers/site.resolver';
+import { ViewSiteComponent } from './manage-sites/view-site/view-site.component';
 
 const routes: Routes = [
   {
@@ -23,10 +24,16 @@ const routes: Routes = [
         resolve: { sites: SiteResolver }
       },
       {
+        path: 'manage-sites/view/:sitename',
+        component: ViewSiteComponent,
+        resolve: { sites: SiteResolver }
+      },
+      {
         path: 'manage-sites/:sitename',
         component: ManageSitesComponent,
         resolve: { sites: SiteResolver }
-      }
+      },
+      { path: '**', redirectTo: '' }
     ]
   }
 ];
