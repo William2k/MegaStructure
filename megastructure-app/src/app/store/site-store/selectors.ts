@@ -2,9 +2,9 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { State } from './state';
 
-export const getAccountState = createFeatureSelector<State>('site');
+export const getSiteState = createFeatureSelector<State>('site');
 
 export const getUserSites = createSelector(
-  getAccountState,
+  getSiteState,
   (state: State) => state.sites
 );

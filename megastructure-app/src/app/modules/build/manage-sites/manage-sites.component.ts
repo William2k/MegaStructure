@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { getUserSites } from 'src/app/store/site-store/selectors';
@@ -24,7 +24,8 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
     private store$: Store<RootStoreState.State>,
     private location: Location,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -66,10 +67,17 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
       data: site
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.location.go('build/manage-sites');
+    dialogRef
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((result: boolean) => {
+        this.location.go('build/manage-sites');
 
-      console.log(`Dialog result: ${result}`);
-    });
+        if (result) {
+          this.snackBar.open('Saved Succesfully', 'Close', {
+            duration: 2000
+          });
+        }
+      });
   }
 }

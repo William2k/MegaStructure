@@ -6,6 +6,7 @@ export enum ActionTypes {
   SAVE_SITE_FAILURE = '[Site] Save Site Failure',
   SAVE_SITE_SUCCESS = '[Site] Save Site Success',
   GET_SITES_REQUEST = '[Site] Get Sites Request',
+  GET_SITES_SKIP = '[Site] Get Sites Skip',
   GET_SITES_FAILURE = '[Site] Get Sites Failure',
   GET_SITES_SUCCESS = '[Site] Get Sites Success'
 }
@@ -36,6 +37,10 @@ export class GetSitesFailureAction implements Action {
   constructor(public payload: { error: string }) {}
 }
 
+export class GetSitesSkipAction implements Action {
+  readonly type = ActionTypes.GET_SITES_SKIP;
+}
+
 export class GetSitesSuccessAction implements Action {
   readonly type = ActionTypes.GET_SITES_SUCCESS;
   constructor(public payload: { result: Site[] }) {}
@@ -46,5 +51,6 @@ export type Actions =
   | SaveSiteFailureAction
   | SaveSiteSuccessAction
   | GetSitesRequestAction
+  | GetSitesSkipAction
   | GetSitesFailureAction
   | GetSitesSuccessAction;

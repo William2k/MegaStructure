@@ -1,22 +1,23 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { map, take, skip, takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { Observable, Subject } from 'rxjs';
 
 import { Site } from 'src/app/core/models/site.model';
 import { User } from 'src/app/core/models/user.model';
 import { RootStoreState } from 'src/app/store';
-import { Store } from '@ngrx/store';
 import { SaveSiteRequestAction } from 'src/app/store/site-store/actions';
-import { Observable } from 'rxjs';
-import { getAccountState } from 'src/app/store/site-store/selectors';
-import { map } from 'rxjs/operators';
+import { getSiteState } from 'src/app/store/site-store/selectors';
 
 @Component({
   selector: 'app-site-info',
   templateUrl: './site-info.component.html',
   styleUrls: ['./site-info.component.scss']
 })
-export class SiteInfoComponent implements OnInit {
+export class SiteInfoComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
   saving$: Observable<boolean>;
   siteForm: FormGroup;
 
@@ -33,7 +34,7 @@ export class SiteInfoComponent implements OnInit {
     });
 
     this.saving$ = store$
-      .select(getAccountState)
+      .select(getSiteState)
       .pipe(map(state => state.savingSite));
   }
 
@@ -50,6 +51,11 @@ export class SiteInfoComponent implements OnInit {
 
       managerControls.push(this.createManager());
     }
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   createManager(username: string = ''): FormGroup {
@@ -84,11 +90,13 @@ export class SiteInfoComponent implements OnInit {
 
     this.store$.dispatch(new SaveSiteRequestAction({ form }));
 
-    // post to db
-    this.closeDialog();
-  }
-
-  closeDialog(): void {
-    this.dialogRef.close('Saved');
+    this.store$
+      .select(getSiteState)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(state => {
+        if (!state.savingSite) {
+          this.dialogRef.close(true);
+        }
+      });
   }
 }

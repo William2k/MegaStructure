@@ -1,27 +1,23 @@
-import {
-  Resolve,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot
-} from '@angular/router';
+import { Resolve } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Store, State, Action } from '@ngrx/store';
-import { SiteStoreActions, SiteEffects } from 'src/app/store/site-store';
+import { Store } from '@ngrx/store';
+import { take, filter } from 'rxjs/operators';
+
 import { GetSitesRequestAction } from 'src/app/store/site-store/actions';
 import { RootStoreState } from 'src/app/store';
-import { getUserSites } from 'src/app/store/site-store/selectors';
-import { map, take, skip } from 'rxjs/operators';
-import { Site } from 'src/app/core/models/site.model';
+import { getSiteState } from 'src/app/store/site-store/selectors';
+import { State } from 'src/app/store/site-store/state';
 
 @Injectable()
-export class SiteResolver implements Resolve<Site[]> {
+export class SiteResolver implements Resolve<State> {
   constructor(private store$: Store<RootStoreState.State>) {}
 
-  resolve(): Observable<Site[]> {
+  resolve(): Observable<State> {
     this.store$.dispatch(new GetSitesRequestAction());
 
-    return this.store$.select(getUserSites).pipe(
-      skip(1),
+    return this.store$.select(getSiteState).pipe(
+      filter(state => !!state.lastFetch),
       take(1)
     );
   }
