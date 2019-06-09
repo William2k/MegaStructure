@@ -1,0 +1,17 @@
+<div class="elem-block" cdkDrag>
+  <div class="top-bar">
+    <div class="options-container">
+      <fa name="arrows" cdkDragHandle></fa>
+      <fa name="edit"></fa>
+      <fa name="plus" (click)="addElemClick(siteElement.elementRef)"></fa>
+    </div>
+  </div>
+
+  <textarea [ngModel]="siteElement.textContent"></textarea>
+
+  <app-site-element
+    *ngFor="let elem of siteElement.childElements"
+    [siteElement]="elem"
+    (addElem)="addElem"
+  ></app-site-element>
+</div>

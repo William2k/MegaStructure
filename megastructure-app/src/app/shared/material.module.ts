@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
@@ -17,14 +18,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatSliderModule, MatDialogModule } from '@angular/material/';
+import { MatSliderModule, MatDialogModule, MatNativeDateModule } from '@angular/material/';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material';
 
 @NgModule({
   declarations: [],
   imports: [],
   exports: [
+    DragDropModule,
     MatButtonModule,
     MatToolbarModule,
     MatMenuModule,

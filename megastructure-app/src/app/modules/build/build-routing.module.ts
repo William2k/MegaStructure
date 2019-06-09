@@ -29,6 +29,11 @@ const routes: Routes = [
         resolve: { sites: SiteResolver }
       },
       {
+        path: 'manage-sites/view/:sitename/:page',
+        component: ViewSiteComponent,
+        resolve: { sites: SiteResolver }
+      },
+      {
         path: 'manage-sites/:sitename',
         component: ManageSitesComponent,
         resolve: { sites: SiteResolver }

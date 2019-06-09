@@ -1,1 +1,11 @@
 {{ site.name }}
+<div class="content">
+  <div class="top-bar">
+    <button (click)="addElem()" mat-flat-button>
+      <fa name="plus"></fa>
+      Add
+    </button>
+  </div>
+
+  <app-site-element [siteElement]="currentPage.content" (addElem)="addElem($event)"></app-site-element>
+</div>
