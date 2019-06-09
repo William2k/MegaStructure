@@ -1,40 +1,73 @@
 <div class="elem-block" cdkDrag [ngSwitch]="siteElement.type">
-  <div class="top-bar">
+  <div class="top-bar" [ngClass]="{ expanded: openEdit }">
     <div class="options-container">
       <fa name="arrows" cdkDragHandle></fa>
-      <fa name="edit"></fa>
+      <fa name="edit" (click)="editClick()"></fa>
       <fa name="plus" (click)="addElemClick(siteElement.elementRef)"></fa>
     </div>
+    <form>
+      <mat-form-field>
+        <mat-label>Set type</mat-label>
+        <mat-select [(ngModel)]="siteElement.type" name="type">
+          <mat-option
+            *ngFor="let enum of typeEnums | keyvalue"
+            [value]="enum.value"
+          >
+            {{ enum.key | titlecase }}
+          </mat-option>
+        </mat-select></mat-form-field
+      >
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Set height"
+          name="name"
+          [(ngModel)]="siteElement.styles['main'].height"
+          (change)="updateCss()"
+      /></mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Set width"
+          name="name"
+          [(ngModel)]="siteElement.styles['main'].width"
+          (change)="updateCss()"
+      /></mat-form-field>
+    </form>
   </div>
 
-  <main *ngSwitchCase="typeEnums.main">
+  <main [class]="classes['main']" *ngSwitchCase="typeEnums.main">
     <app-site-element
       *ngFor="let elem of siteElement.childElements"
       [siteElement]="elem"
-      (addElem)="(addElem)"
     ></app-site-element>
   </main>
 
-  <section *ngSwitchCase="typeEnums.section">
+  <section [class]="classes['main']" *ngSwitchCase="typeEnums.section">
     <app-site-element
       *ngFor="let elem of siteElement.childElements"
       [siteElement]="elem"
-      (addElem)="(addElem)"
     ></app-site-element>
   </section>
 
-  <div *ngSwitchCase="typeEnums.div">
+  <div [class]="classes['main']" *ngSwitchDefault>
     <app-site-element
       *ngFor="let elem of siteElement.childElements"
       [siteElement]="elem"
-      (addElem)="(addElem)"
     ></app-site-element>
   </div>
 
   <textarea
+    [class]="classes['main']"
     *ngSwitchCase="typeEnums.text"
-    [ngModel]="siteElement.textContent"
+    [(ngModel)]="siteElement.textContent"
   ></textarea>
 
-  <img *ngSwitchCase="typeEnums.image" [src]="siteElement.attributes['src']" />
+  <img
+    [class]="classes['main']"
+    *ngSwitchCase="typeEnums.image"
+    [src]="siteElement.attributes['src']"
+  />
 </div>

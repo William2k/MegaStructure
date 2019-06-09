@@ -1,31 +1,52 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  Input,
-  Output,
-  EventEmitter
-} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import jss from 'jss';
 
 import { SiteElement, SiteElementTypes } from 'src/app/core/models/site.model';
+import { ViewSiteService } from '../view-site.service';
 
 @Component({
   selector: 'app-site-element',
   templateUrl: './site-element.component.html',
   styleUrls: ['./site-element.component.scss']
 })
-export class SiteElementComponent implements OnInit, OnDestroy {
-  @Input() siteElement: SiteElement;
-  @Output() addElem = new EventEmitter<number>();
+export class SiteElementComponent implements OnInit {
   typeEnums = SiteElementTypes;
+  openEdit = false;
 
-  constructor() {}
+  @Input() siteElement: SiteElement;
+  classes: Record<never, string>;
+  typeEnumKeys: string[];
 
-  ngOnInit(): void {}
+  constructor(private viewSiteService: ViewSiteService) {}
 
-  ngOnDestroy(): void {}
+  ngOnInit(): void {
+    const style = {
+      main: {
+        height: '100px',
+        width: '100px'
+      }
+    };
+
+    this.siteElement.styles = this.siteElement.styles || style;
+
+    this.updateCss();
+
+    this.typeEnumKeys = Object.keys(this.typeEnums);
+  }
+
+  updateCss() {
+    const sheet = jss
+      .createStyleSheet(this.siteElement.styles, { link: true })
+      .attach();
+
+    this.classes = sheet.classes;
+  }
 
   addElemClick(parentRef: number): void {
-    this.addElem.emit(parentRef);
+    this.viewSiteService.addElem(parentRef);
+  }
+
+  editClick(): void {
+    this.openEdit = !this.openEdit;
   }
 }

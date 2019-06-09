@@ -11,6 +11,10 @@ import { environment } from '../environments/environment';
 import { AppService } from './core/services/app.service';
 import { CustomHttpInterceptor } from './core/http-interceptor';
 
+import jss from 'jss';
+import preset from 'jss-preset-default';
+jss.setup(preset());
+
 @NgModule({
   declarations: [AppComponent],
   imports: [

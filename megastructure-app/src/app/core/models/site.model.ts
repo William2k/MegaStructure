@@ -12,8 +12,8 @@ export enum SiteElementTypes {
   main = 'main',
   section = 'section',
   div = 'div',
-  image = 'img',
-  text = 'span'
+  image = 'image',
+  text = 'text'
 }
 
 export interface SitePage {
@@ -25,9 +25,10 @@ export interface SitePage {
 
 export interface SiteElement {
   elementRef: number;
-  attributes: {};
+  attributes: object;
   type: SiteElementTypes;
   textContent: string;
+  styles: object;
   location: { x: number; y: number };
   childElements: SiteElement[];
 }

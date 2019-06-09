@@ -8,10 +8,10 @@ import { getUserSites } from 'src/app/store/site-store/selectors';
 import { RootStoreState } from 'src/app/store';
 import {
   Site,
-  SiteElement,
   SitePage,
   SiteElementTypes
 } from 'src/app/core/models/site.model';
+import { ViewSiteService } from './view-site.service';
 
 @Component({
   selector: 'app-view-site',
@@ -21,7 +21,6 @@ import {
 export class ViewSiteComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
-  lastElemRef = 1;
   site = { pages: [] } as Site;
   currentPage = {
     pageRef: 1,
@@ -29,15 +28,16 @@ export class ViewSiteComponent implements OnInit, OnDestroy {
     content: {
       elementRef: 1,
       type: SiteElementTypes.main,
+      location: {},
       textContent: '',
       childElements: []
     }
   } as SitePage;
-  allElements = [] as SiteElement[];
 
   constructor(
     private store$: Store<RootStoreState.State>,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private viewSiteService: ViewSiteService
   ) {}
 
   ngOnInit(): void {
@@ -78,24 +78,10 @@ export class ViewSiteComponent implements OnInit, OnDestroy {
       this.currentPage = { ...this.currentPage, ...pageFound };
     }
 
-    this.allElements.push(this.currentPage.content);
+    this.viewSiteService.allElements.push(this.currentPage.content);
   }
 
   addElem(parentRef: number): void {
-    const newElem = {
-      elementRef: this.lastElemRef + 1,
-      type: null,
-      textContent: '',
-      location: { x: 0, y: 0 },
-      childElements: []
-    } as SiteElement;
-
-    const parentElem = this.allElements.find(
-      elem => elem.elementRef === parentRef
-    );
-
-    parentElem.childElements.push(newElem);
-    this.allElements.push(newElem);
-    this.lastElemRef = newElem.elementRef;
+    this.viewSiteService.addElem(parentRef);
   }
 }
