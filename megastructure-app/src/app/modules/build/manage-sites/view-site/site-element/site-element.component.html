@@ -1,4 +1,4 @@
-<div class="elem-block" cdkDrag>
+<div class="elem-block" cdkDrag [ngSwitch]="siteElement.type">
   <div class="top-bar">
     <div class="options-container">
       <fa name="arrows" cdkDragHandle></fa>
@@ -7,11 +7,34 @@
     </div>
   </div>
 
-  <textarea [ngModel]="siteElement.textContent"></textarea>
+  <main *ngSwitchCase="typeEnums.main">
+    <app-site-element
+      *ngFor="let elem of siteElement.childElements"
+      [siteElement]="elem"
+      (addElem)="(addElem)"
+    ></app-site-element>
+  </main>
 
-  <app-site-element
-    *ngFor="let elem of siteElement.childElements"
-    [siteElement]="elem"
-    (addElem)="addElem"
-  ></app-site-element>
+  <section *ngSwitchCase="typeEnums.section">
+    <app-site-element
+      *ngFor="let elem of siteElement.childElements"
+      [siteElement]="elem"
+      (addElem)="(addElem)"
+    ></app-site-element>
+  </section>
+
+  <div *ngSwitchCase="typeEnums.div">
+    <app-site-element
+      *ngFor="let elem of siteElement.childElements"
+      [siteElement]="elem"
+      (addElem)="(addElem)"
+    ></app-site-element>
+  </div>
+
+  <textarea
+    *ngSwitchCase="typeEnums.text"
+    [ngModel]="siteElement.textContent"
+  ></textarea>
+
+  <img *ngSwitchCase="typeEnums.image" [src]="siteElement.attributes['src']" />
 </div>

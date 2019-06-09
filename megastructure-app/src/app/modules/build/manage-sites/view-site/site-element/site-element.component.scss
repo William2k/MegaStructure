@@ -10,6 +10,8 @@ textarea{
   display: inline-block;
   position: absolute;
   border: 2px solid;
+  min-height: 30px;
+  min-width: 50px;
 
   &:hover {
     > .top-bar {

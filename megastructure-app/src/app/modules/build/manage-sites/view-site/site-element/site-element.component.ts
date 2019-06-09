@@ -7,7 +7,7 @@ import {
   EventEmitter
 } from '@angular/core';
 
-import { SiteElement } from 'src/app/core/models/site.model';
+import { SiteElement, SiteElementTypes } from 'src/app/core/models/site.model';
 
 @Component({
   selector: 'app-site-element',
@@ -17,6 +17,7 @@ import { SiteElement } from 'src/app/core/models/site.model';
 export class SiteElementComponent implements OnInit, OnDestroy {
   @Input() siteElement: SiteElement;
   @Output() addElem = new EventEmitter<number>();
+  typeEnums = SiteElementTypes;
 
   constructor() {}
 

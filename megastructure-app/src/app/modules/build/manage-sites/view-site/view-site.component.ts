@@ -6,7 +6,12 @@ import { Subject } from 'rxjs';
 
 import { getUserSites } from 'src/app/store/site-store/selectors';
 import { RootStoreState } from 'src/app/store';
-import { Site, SiteElement, SitePage } from 'src/app/core/models/site.model';
+import {
+  Site,
+  SiteElement,
+  SitePage,
+  SiteElementTypes
+} from 'src/app/core/models/site.model';
 
 @Component({
   selector: 'app-view-site',
@@ -21,7 +26,12 @@ export class ViewSiteComponent implements OnInit, OnDestroy {
   currentPage = {
     pageRef: 1,
     title: 'page one',
-    content: { elementRef: 1, textContent: '', childElements: [] }
+    content: {
+      elementRef: 1,
+      type: SiteElementTypes.main,
+      textContent: '',
+      childElements: []
+    }
   } as SitePage;
   allElements = [] as SiteElement[];
 
@@ -41,7 +51,7 @@ export class ViewSiteComponent implements OnInit, OnDestroy {
         })
       )
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(sites => this.initialise(sites));
+      .subscribe(sites => this.initialise(sites)); // Can't use as method group
   }
 
   ngOnDestroy(): void {
