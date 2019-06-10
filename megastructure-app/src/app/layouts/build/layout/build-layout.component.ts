@@ -10,11 +10,11 @@ import { fadeAnimation } from 'src/app/shared/route-animations';
 export class BuildLayoutComponent implements OnInit, OnDestroy {
   constructor(private renderer: Renderer2) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.renderer.addClass(document.body, 'bg-purple');
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.renderer.removeClass(document.body, 'bg-purple');
   }
 }

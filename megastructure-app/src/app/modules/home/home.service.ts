@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { HomeServiceModule } from './home-service.module';
-import { Register, Login } from '../../core/models/account.models';
+import { Register, Login, LoginResult } from '../../core/models/account.models';
 import { AccountService } from 'src/app/core/services/account.service';
 
 @Injectable({
@@ -10,11 +11,11 @@ import { AccountService } from 'src/app/core/services/account.service';
 export class HomeService {
   constructor(private accountService: AccountService) {}
 
-  register(form: Register) {
+  register(form: Register): Observable<void> {
     return this.accountService.register(form);
   }
 
-  login(form: Login) {
+  login(form: Login): Observable<LoginResult> {
     return this.accountService.login(form);
   }
 }

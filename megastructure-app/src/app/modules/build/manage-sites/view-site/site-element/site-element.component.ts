@@ -34,7 +34,7 @@ export class SiteElementComponent implements OnInit {
     this.typeEnumKeys = Object.keys(this.typeEnums);
   }
 
-  updateCss() {
+  updateCss(): void {
     const sheet = jss
       .createStyleSheet(this.siteElement.styles, { link: true })
       .attach();

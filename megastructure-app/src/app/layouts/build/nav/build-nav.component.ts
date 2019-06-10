@@ -21,14 +21,14 @@ export class BuildNavComponent implements OnInit, OnDestroy {
     private store$: Store<AccountStoreState.State>
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.store$
       .select(getCurrentUsername)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(username => (this.username = username));
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

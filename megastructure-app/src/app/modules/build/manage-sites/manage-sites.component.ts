@@ -28,7 +28,7 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.store$
       .select(getUserSites)
       .pipe(takeUntil(this.unsubscribe$))
@@ -44,7 +44,7 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
