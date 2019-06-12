@@ -8,7 +8,7 @@ textarea {
 
 .elem-block {
   display: inline-block;
-  position: relative;
+  position: absolute;
   border: 2px solid;
 
   &:hover {
@@ -29,4 +29,16 @@ textarea {
   &.expanded {
     max-height: 100vh;
   }
+}
+
+.blocks{
+  display: flex;
+  justify-content: center;
+}
+
+.block{
+  background-color: white;
+  border: 1px solid black;
+  width: 150px;
+  height: 150px;
 }

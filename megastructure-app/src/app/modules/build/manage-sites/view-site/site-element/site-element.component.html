@@ -1,4 +1,11 @@
-<div class="elem-block" cdkDrag [ngSwitch]="siteElement.type">
+<div
+  class="elem-block boundary"
+  cdkDrag
+  [ngSwitch]="siteElement.type"
+  cdkDragBoundary=".boundary"
+  [cdkDragDisabled]="siteElement.type == typeEnums.main"
+  (cdkDragEnded)="dropElem($event)"
+>
   <div class="top-bar" [ngClass]="{ expanded: openEdit }">
     <div class="options-container">
       <fa name="arrows" cdkDragHandle></fa>
@@ -43,6 +50,15 @@
       *ngFor="let elem of siteElement.childElements"
       [siteElement]="elem"
     ></app-site-element>
+
+    <div class="blocks">
+      <div [class]="'row-' + row" *ngFor="let row of gridRows">
+        <div
+          [class]="'block column-' + column"
+          *ngFor="let column of gridColumns"
+        ></div>
+      </div>
+    </div>
   </main>
 
   <section [class]="classes['main']" *ngSwitchCase="typeEnums.section">

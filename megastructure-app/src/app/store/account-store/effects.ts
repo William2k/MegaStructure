@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable, of as observableOf } from 'rxjs';
-import { catchError, map, switchMap, share } from 'rxjs/operators';
+import { catchError, map, concatMap, share } from 'rxjs/operators';
 
 import * as accountActions from './actions';
 import { AccountService } from 'src/app/core/services/account.service';
@@ -19,7 +19,7 @@ export class AccountEffects {
     ofType<accountActions.RegisterRequestAction>(
       accountActions.ActionTypes.REGISTER_REQUEST
     ),
-    switchMap(action =>
+    concatMap(action =>
       this.accountService.register(action.payload.form).pipe(
         map(result => new accountActions.RegisterSuccessAction()),
         catchError(error =>
@@ -35,7 +35,7 @@ export class AccountEffects {
     ofType<accountActions.LoginRequestAction>(
       accountActions.ActionTypes.LOGIN_REQUEST
     ),
-    switchMap(action =>
+    concatMap(action =>
       this.accountService.login(action.payload.form).pipe(
         map(
           result =>
@@ -56,7 +56,7 @@ export class AccountEffects {
     ofType<accountActions.GetUserRequestAction>(
       accountActions.ActionTypes.GETUSER_REQUEST
     ),
-    switchMap(action =>
+    concatMap(action =>
       this.accountService.getUser().pipe(
         map(
           result =>

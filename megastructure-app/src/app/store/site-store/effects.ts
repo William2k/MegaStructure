@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import {
   catchError,
   map,
-  switchMap,
+  concatMap,
   share,
   withLatestFrom
 } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class SiteEffects {
     ofType<siteActions.SaveSiteRequestAction>(
       siteActions.ActionTypes.SAVE_SITE_REQUEST
     ),
-    switchMap(action =>
+    concatMap(action =>
       this.siteService.add(action.payload.form).pipe(
         map(result => new siteActions.SaveSiteSuccessAction({ result })),
         catchError(error =>
@@ -45,7 +45,7 @@ export class SiteEffects {
       siteActions.ActionTypes.GET_SITES_REQUEST
     ),
     withLatestFrom(this.store$),
-    switchMap(([action, state]) => {
+    concatMap(([action, state]) => {
       const recentlyFetched = moment()
         .subtract(5, 'minute')
         .isBefore(state.site.lastFetch);
