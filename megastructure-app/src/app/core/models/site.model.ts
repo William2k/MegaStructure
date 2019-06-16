@@ -31,4 +31,5 @@ export interface SiteElement {
   styles: any;
   location: { x: number; y: number };
   childElements: SiteElement[];
+  changes: { amount: number };
 }

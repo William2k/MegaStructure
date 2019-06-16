@@ -16,7 +16,7 @@ export class ViewSiteService {
   private lastElemRef = 1;
   private allElements = [] as SiteElement[];
   private currentPageSubject$ = new BehaviorSubject<SitePage>(null);
-  private editingElemRefSubject$ = new BehaviorSubject<number>(null);
+  private editingElemSubject$ = new BehaviorSubject<SiteElement>(null);
   private showEditOptionsSubject$ = new BehaviorSubject<boolean>(false);
   private site = { pages: [] } as Site;
   private currentPage = {
@@ -27,11 +27,12 @@ export class ViewSiteService {
       type: SiteElementTypes.main,
       location: {},
       textContent: '',
-      childElements: []
+      childElements: [],
+      changes: { amount: 0 }
     }
   } as SitePage;
 
-  public editingElemRef$ = this.editingElemRefSubject$.asObservable();
+  public editingElem$ = this.editingElemSubject$.asObservable();
   public currentPage$ = this.currentPageSubject$.asObservable();
   public showEditOptions$ = this.showEditOptionsSubject$.asObservable();
 
@@ -66,17 +67,27 @@ export class ViewSiteService {
   }
 
   toggleEditingElem(ref: number): void {
-    if (ref === this.editingElemRefSubject$.getValue()) {
-      this.editingElemRefSubject$.next(null);
+    const currenteditingElemValue = this.editingElemSubject$.getValue();
+
+    if (currenteditingElemValue && ref === currenteditingElemValue.elementRef) {
+      this.editingElemSubject$.next(null);
     } else {
-      this.editingElemRefSubject$.next(ref);
+      const elem = this.allElements.find(el => el.elementRef === ref);
+
+      this.editingElemSubject$.next(elem);
     }
   }
 
-  updatePage(newPageData: SitePage): void {
+  updatePage(newPageData: SitePage = null): void {
     const newPage = { ...this.currentPage, ...newPageData } as SitePage;
 
     this.currentPageSubject$.next(newPage);
+  }
+
+  updateCurrentElem(): void {
+    const currentElem = this.editingElemSubject$.getValue();
+
+    currentElem.changes.amount += 1; // Needed to trigger change detection, as change detection does not work with objects except async
   }
 
   addElem(parentRef: number): void {
@@ -85,7 +96,14 @@ export class ViewSiteService {
       type: null,
       textContent: '',
       location: { x: 0, y: 0 },
-      childElements: []
+      childElements: [],
+      changes: { amount: 0 },
+      styles: {
+        main: {
+          height: '50%',
+          width: '50%'
+        }
+      }
     } as SiteElement;
 
     const parentElem = this.allElements.find(
@@ -94,7 +112,8 @@ export class ViewSiteService {
 
     parentElem.childElements.push(newElem);
     this.allElements.push(newElem);
-    this.currentPageSubject$.next(this.currentPage);
+    this.updatePage();
+    this.updateCurrentElem();
     this.lastElemRef = newElem.elementRef;
   }
 }

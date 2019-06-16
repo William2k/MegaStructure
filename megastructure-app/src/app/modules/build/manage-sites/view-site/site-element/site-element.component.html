@@ -1,107 +1,61 @@
 <div class="elem-block" [ngSwitch]="siteElement.type">
-  <div
-    class="top-bar"
-    [ngClass]="{
-      show: (editingElem$ | async) == siteElement.elementRef,
-      expanded:
-        (editingElem$ | async) == siteElement.elementRef &&
-        (showEditOptions$ | async)
-    }"
-  >
-    <div class="options-container">
-      <fa name="arrows" cdkDragHandle></fa>
-      <fa name="edit" (click)="editClick()"></fa>
-      <fa name="plus" (click)="addElemClick(siteElement.elementRef)"></fa>
-    </div>
-    <form>
-      <mat-form-field>
-        <mat-label>Set type</mat-label>
-        <mat-select [(ngModel)]="siteElement.type" name="type">
-          <mat-option
-            *ngFor="let enum of typeEnums | keyvalue"
-            [value]="enum.value"
-          >
-            {{ enum.key | titlecase }}
-          </mat-option>
-        </mat-select></mat-form-field
-      >
-
-      <mat-form-field>
-        <input
-          matInput
-          placeholder="Set height"
-          name="cssHeight"
-          [(ngModel)]="siteElement.styles['main'].height"
-          (change)="updateCss()"
-      /></mat-form-field>
-
-      <mat-form-field>
-        <input
-          matInput
-          placeholder="Set width"
-          name="cssWidth"
-          [(ngModel)]="siteElement.styles['main'].width"
-          (change)="updateCss()"
-      /></mat-form-field>
-
-      <fieldset class="colour-picker">
-        <label for="cssBgColour">
-          Set background colour
-        </label>
-        <input id="cssBgColour"
-          name="cssBgColour"
-          [style.background]="siteElement.styles['main'].backgroundColor"
-          [(colorPicker)]="siteElement.styles['main'].backgroundColor"
-          (cpInputChange)="updateCss()"
-          (cpSliderChange)="updateCss()"
-          (change)="updateCss()"
-        />
-      </fieldset>
-    </form>
-  </div>
-
   <section class="elem-container" (click)="elemClick($event)">
     <main
-      [class]="'elem ' + classes['main']"
+      [class]="
+        'elem ' + (changesAmount | jssStyle: siteElement.styles)
+      "
       *ngSwitchCase="typeEnums.main"
-      #elem
+      #containerElem
     >
       <app-site-element
         *ngFor="let elem of siteElement.childElements"
         [siteElement]="elem"
+        [changesAmount]="elem.changes.amount"
       ></app-site-element>
     </main>
 
     <section
-      [class]="'elem ' + classes['main']"
+      [class]="
+        'elem ' + (changesAmount | jssStyle: siteElement.styles)
+      "
       *ngSwitchCase="typeEnums.section"
-      #elem
+      #containerElem
     >
       <app-site-element
         *ngFor="let elem of siteElement.childElements"
         [siteElement]="elem"
+        [changesAmount]="elem.changes.amount"
       ></app-site-element>
     </section>
 
-    <div [class]="'elem ' + classes['main']" *ngSwitchDefault #elem>
+    <div
+      [class]="'elem ' + (changesAmount | jssStyle: siteElement.styles)"
+      *ngSwitchDefault
+      #containerElem
+    >
       <app-site-element
         *ngFor="let elem of siteElement.childElements"
         [siteElement]="elem"
+        [changesAmount]="elem.changes.amount"
       ></app-site-element>
     </div>
 
     <textarea
-      [class]="'elem ' + classes['main']"
+      [class]="
+        'elem ' + (changesAmount | jssStyle: siteElement.styles)
+      "
       *ngSwitchCase="typeEnums.text"
       [(ngModel)]="siteElement.textContent"
-      #elem
+      #containerElem
     ></textarea>
 
     <img
-      [class]="'elem ' + classes['main']"
+      [class]="
+        'elem ' + (changesAmount| jssStyle: siteElement.styles)
+      "
       *ngSwitchCase="typeEnums.image"
       [src]="siteElement.attributes['src']"
-      #elem
+      #containerElem
     />
   </section>
 </div>

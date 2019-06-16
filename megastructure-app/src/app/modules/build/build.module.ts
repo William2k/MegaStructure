@@ -10,16 +10,20 @@ import { SiteInfoComponent } from './manage-sites/site-info/site-info.component'
 import { ViewSiteComponent } from './manage-sites/view-site/view-site.component';
 import { SiteElementComponent } from './manage-sites/view-site/site-element/site-element.component';
 import { ViewSiteServiceModule } from './manage-sites/view-site/view-site-service-module';
+import { EditElementComponent } from './manage-sites/view-site/edit-element/edit-element.component';
+import { JssPipe } from 'src/app/shared/pipes/jss.pipe';
 
 @NgModule({
   declarations: [
+    JssPipe,
     BuildComponent,
     BuildLayoutComponent,
     BuildNavComponent,
     ManageSitesComponent,
     SiteInfoComponent,
     ViewSiteComponent,
-    SiteElementComponent
+    SiteElementComponent,
+    EditElementComponent
   ],
   imports: [BuildRoutingModule, SharedModule, ViewSiteServiceModule],
   entryComponents: [SiteInfoComponent],

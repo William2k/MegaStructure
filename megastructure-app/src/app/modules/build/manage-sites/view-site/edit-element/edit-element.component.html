@@ -1,0 +1,60 @@
+<div
+  *ngIf="siteElement$ | async as siteElement"
+  class="top-bar"
+  [ngClass]="{
+    show: siteElement,
+    expanded: siteElement && (showEditOptions$ | async)
+  }"
+>
+  <div class="options-container">
+    <fa name="arrows" cdkDragHandle></fa>
+    <fa name="edit" (click)="editClick()"></fa>
+    <fa name="plus" (click)="addElemClick(siteElement.elementRef)"></fa>
+  </div>
+  <form>
+    <mat-form-field>
+      <mat-label>Set type</mat-label>
+      <mat-select [(ngModel)]="siteElement.type" name="type">
+        <mat-option
+          *ngFor="let enum of typeEnums | keyvalue"
+          [value]="enum.value"
+        >
+          {{ enum.key | titlecase }}
+        </mat-option>
+      </mat-select></mat-form-field
+    >
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Set height"
+        name="cssHeight"
+        [(ngModel)]="siteElement.styles['main'].height"
+        (change)="updateComponent()"
+    /></mat-form-field>
+
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Set width"
+        name="cssWidth"
+        [(ngModel)]="siteElement.styles['main'].width"
+        (change)="updateComponent()"
+    /></mat-form-field>
+
+    <fieldset class="colour-picker">
+      <label for="cssBgColour">
+        Set background colour
+      </label>
+      <input
+        id="cssBgColour"
+        name="cssBgColour"
+        [style.background]="siteElement.styles['main'].backgroundColor"
+        [(colorPicker)]="siteElement.styles['main'].backgroundColor"
+        (cpInputChange)="updateComponent()"
+        (cpSliderChange)="updateComponent()"
+        (change)="updateComponent()"
+      />
+    </fieldset>
+  </form>
+</div>

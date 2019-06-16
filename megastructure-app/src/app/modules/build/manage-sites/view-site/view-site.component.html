@@ -1,5 +1,9 @@
 <div class="content">
-  <app-site-element *ngIf="currentPage$ | async as currentPage"
+  <app-edit-element></app-edit-element>
+
+  <app-site-element
+    *ngIf="currentPage$ | async as currentPage"
     [siteElement]="currentPage.content"
+    [changesAmount]="currentPage.content.changes.amount"
   ></app-site-element>
 </div>
