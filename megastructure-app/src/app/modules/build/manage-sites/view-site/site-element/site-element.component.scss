@@ -1,20 +1,9 @@
-textarea {
-  background-color: transparent;
-
-  &:focus {
-    background-color: white;
-  }
-}
-
 .elem-block {
-  display: inline-block;
-  position: absolute;
-  border: 2px solid;
+  display: inherit;
 
-  &:hover {
-    > .top-bar:not(.expanded) {
-      max-height: 22px;
-    }
+  .elem {
+    display: inline-block;
+    border: 1px solid;
   }
 }
 
@@ -26,19 +15,28 @@ textarea {
   background-color: rgb(213, 197, 228);
   transition: max-height 0.8s;
 
+  &.show {
+    max-height: 22px;
+  }
+
   &.expanded {
     max-height: 100vh;
+    overflow: initial;
   }
 }
 
-.blocks{
-  display: flex;
-  justify-content: center;
+.elem-container {
+  display: inherit;
 }
 
-.block{
-  background-color: white;
-  border: 1px solid black;
-  width: 150px;
-  height: 150px;
+.colour-picker {
+  display: inline-block;
+
+  & label {
+    display: block;
+    color: rgba(0,0,0,.54);
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0;
+  }
 }

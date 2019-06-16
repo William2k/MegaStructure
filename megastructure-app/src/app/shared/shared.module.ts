@@ -5,6 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 import { MaterialModule } from './material.module';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   imports: [],
@@ -15,7 +16,8 @@ import { MaterialModule } from './material.module';
     ReactiveFormsModule,
     MaterialModule,
     NgbModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    ColorPickerModule
   ]
 })
 export class SharedModule {}

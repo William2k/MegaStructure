@@ -2,14 +2,15 @@ import {
   Component,
   OnInit,
   Input,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  ElementRef,
+  ViewChild
 } from '@angular/core';
 import jss from 'jss';
-import { CdkDrag } from '@angular/cdk/drag-drop';
+import { Observable } from 'rxjs';
 
 import { SiteElement, SiteElementTypes } from 'src/app/core/models/site.model';
 import { ViewSiteService } from '../view-site.service';
-import { positionOffset } from 'src/app/shared/helpers/dom.helper';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,10 +20,10 @@ import { positionOffset } from 'src/app/shared/helpers/dom.helper';
 })
 export class SiteElementComponent implements OnInit {
   typeEnums = SiteElementTypes;
-  openEdit = false;
-  gridRows: number[];
-  gridColumns: number[];
+  editingElem$: Observable<number>;
+  showEditOptions$: Observable<boolean>;
 
+  @ViewChild('elem') elem: ElementRef;
   @Input() siteElement: SiteElement;
   classes: Record<never, string>;
   typeEnumKeys: string[];
@@ -30,12 +31,14 @@ export class SiteElementComponent implements OnInit {
   constructor(private viewSiteService: ViewSiteService) {}
 
   ngOnInit(): void {
+    this.editingElem$ = this.viewSiteService.editingElemRef$;
+    this.showEditOptions$ = this.viewSiteService.showEditOptions$;
+
     const style = {
       main: {
         height:
-          this.siteElement.type === SiteElementTypes.main ? '100%' : '150px',
-        width:
-          this.siteElement.type === SiteElementTypes.main ? '100%' : '150px'
+          this.siteElement.type === SiteElementTypes.main ? '100%' : '50%',
+        width: this.siteElement.type === SiteElementTypes.main ? '100%' : '50%'
       }
     };
 
@@ -44,10 +47,6 @@ export class SiteElementComponent implements OnInit {
     this.updateCss();
 
     this.typeEnumKeys = Object.keys(this.typeEnums);
-
-    this.gridRows = [...Array(12).keys()].map(v => v + 1);
-
-    this.gridColumns = [...Array(12).keys()].map(v => v + 1);
   }
 
   updateCss(): void {
@@ -62,15 +61,15 @@ export class SiteElementComponent implements OnInit {
     this.viewSiteService.addElem(parentRef);
   }
 
-  editClick(): void {
-    this.openEdit = !this.openEdit;
+  elemClick(e: Event): void {
+    if (e.target !== this.elem.nativeElement) {
+      return;
+    }
+
+    this.viewSiteService.toggleEditingElem(this.siteElement.elementRef);
   }
 
-  dropElem(e: any): void {
-    const drag = e.source as CdkDrag;
-
-    const elem = drag.element.nativeElement as HTMLDivElement;
-
-    console.log(positionOffset(elem));
+  editClick(): void {
+    this.viewSiteService.toggleEditingOptions();
   }
 }

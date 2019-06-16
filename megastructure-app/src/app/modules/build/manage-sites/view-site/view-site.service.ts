@@ -7,7 +7,7 @@ import {
   SitePage,
   Site
 } from 'src/app/core/models/site.model';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: ViewSiteServiceModule
@@ -16,11 +16,8 @@ export class ViewSiteService {
   private lastElemRef = 1;
   private allElements = [] as SiteElement[];
   private currentPageSubject$ = new BehaviorSubject<SitePage>(null);
-
-  public currentPage$: Observable<
-    SitePage
-  > = this.currentPageSubject$.asObservable();
-
+  private editingElemRefSubject$ = new BehaviorSubject<number>(null);
+  private showEditOptionsSubject$ = new BehaviorSubject<boolean>(false);
   private site = { pages: [] } as Site;
   private currentPage = {
     pageRef: 1,
@@ -33,6 +30,10 @@ export class ViewSiteService {
       childElements: []
     }
   } as SitePage;
+
+  public editingElemRef$ = this.editingElemRefSubject$.asObservable();
+  public currentPage$ = this.currentPageSubject$.asObservable();
+  public showEditOptions$ = this.showEditOptionsSubject$.asObservable();
 
   constructor() {}
 
@@ -47,9 +48,7 @@ export class ViewSiteService {
 
     if (link) {
       const pageFound = this.site.pages.find(
-        page =>
-          page.link &&
-          page.link.toLowerCase() === link.toLowerCase()
+        page => page.link && page.link.toLowerCase() === link.toLowerCase()
       );
 
       this.currentPage = { ...this.currentPage, ...pageFound };
@@ -58,6 +57,20 @@ export class ViewSiteService {
     this.allElements.push(this.currentPage.content);
 
     this.currentPageSubject$.next(this.currentPage);
+  }
+
+  toggleEditingOptions(): void {
+    const current = this.showEditOptionsSubject$.getValue();
+
+    this.showEditOptionsSubject$.next(!current);
+  }
+
+  toggleEditingElem(ref: number): void {
+    if (ref === this.editingElemRefSubject$.getValue()) {
+      this.editingElemRefSubject$.next(null);
+    } else {
+      this.editingElemRefSubject$.next(ref);
+    }
   }
 
   updatePage(newPageData: SitePage): void {

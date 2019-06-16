@@ -1,12 +1,13 @@
-<div
-  class="elem-block boundary"
-  cdkDrag
-  [ngSwitch]="siteElement.type"
-  cdkDragBoundary=".boundary"
-  [cdkDragDisabled]="siteElement.type == typeEnums.main"
-  (cdkDragEnded)="dropElem($event)"
->
-  <div class="top-bar" [ngClass]="{ expanded: openEdit }">
+<div class="elem-block" [ngSwitch]="siteElement.type">
+  <div
+    class="top-bar"
+    [ngClass]="{
+      show: (editingElem$ | async) == siteElement.elementRef,
+      expanded:
+        (editingElem$ | async) == siteElement.elementRef &&
+        (showEditOptions$ | async)
+    }"
+  >
     <div class="options-container">
       <fa name="arrows" cdkDragHandle></fa>
       <fa name="edit" (click)="editClick()"></fa>
@@ -29,7 +30,7 @@
         <input
           matInput
           placeholder="Set height"
-          name="name"
+          name="cssHeight"
           [(ngModel)]="siteElement.styles['main'].height"
           (change)="updateCss()"
       /></mat-form-field>
@@ -38,52 +39,69 @@
         <input
           matInput
           placeholder="Set width"
-          name="name"
+          name="cssWidth"
           [(ngModel)]="siteElement.styles['main'].width"
           (change)="updateCss()"
       /></mat-form-field>
+
+      <fieldset class="colour-picker">
+        <label for="cssBgColour">
+          Set background colour
+        </label>
+        <input id="cssBgColour"
+          name="cssBgColour"
+          [style.background]="siteElement.styles['main'].backgroundColor"
+          [(colorPicker)]="siteElement.styles['main'].backgroundColor"
+          (cpInputChange)="updateCss()"
+          (cpSliderChange)="updateCss()"
+          (change)="updateCss()"
+        />
+      </fieldset>
     </form>
   </div>
 
-  <main [class]="classes['main']" *ngSwitchCase="typeEnums.main">
-    <app-site-element
-      *ngFor="let elem of siteElement.childElements"
-      [siteElement]="elem"
-    ></app-site-element>
+  <section class="elem-container" (click)="elemClick($event)">
+    <main
+      [class]="'elem ' + classes['main']"
+      *ngSwitchCase="typeEnums.main"
+      #elem
+    >
+      <app-site-element
+        *ngFor="let elem of siteElement.childElements"
+        [siteElement]="elem"
+      ></app-site-element>
+    </main>
 
-    <div class="blocks">
-      <div [class]="'row-' + row" *ngFor="let row of gridRows">
-        <div
-          [class]="'block column-' + column"
-          *ngFor="let column of gridColumns"
-        ></div>
-      </div>
+    <section
+      [class]="'elem ' + classes['main']"
+      *ngSwitchCase="typeEnums.section"
+      #elem
+    >
+      <app-site-element
+        *ngFor="let elem of siteElement.childElements"
+        [siteElement]="elem"
+      ></app-site-element>
+    </section>
+
+    <div [class]="'elem ' + classes['main']" *ngSwitchDefault #elem>
+      <app-site-element
+        *ngFor="let elem of siteElement.childElements"
+        [siteElement]="elem"
+      ></app-site-element>
     </div>
-  </main>
 
-  <section [class]="classes['main']" *ngSwitchCase="typeEnums.section">
-    <app-site-element
-      *ngFor="let elem of siteElement.childElements"
-      [siteElement]="elem"
-    ></app-site-element>
+    <textarea
+      [class]="'elem ' + classes['main']"
+      *ngSwitchCase="typeEnums.text"
+      [(ngModel)]="siteElement.textContent"
+      #elem
+    ></textarea>
+
+    <img
+      [class]="'elem ' + classes['main']"
+      *ngSwitchCase="typeEnums.image"
+      [src]="siteElement.attributes['src']"
+      #elem
+    />
   </section>
-
-  <div [class]="classes['main']" *ngSwitchDefault>
-    <app-site-element
-      *ngFor="let elem of siteElement.childElements"
-      [siteElement]="elem"
-    ></app-site-element>
-  </div>
-
-  <textarea
-    [class]="classes['main']"
-    *ngSwitchCase="typeEnums.text"
-    [(ngModel)]="siteElement.textContent"
-  ></textarea>
-
-  <img
-    [class]="classes['main']"
-    *ngSwitchCase="typeEnums.image"
-    [src]="siteElement.attributes['src']"
-  />
 </div>

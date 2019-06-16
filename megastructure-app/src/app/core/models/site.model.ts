@@ -3,7 +3,7 @@ export interface Site {
   name: string;
   type: string;
   owner: string;
-  managers: [string];
+  managers: string[];
   lastModified: { date: Date; user: string };
   pages: SitePage[];
 }
@@ -28,7 +28,7 @@ export interface SiteElement {
   attributes: object;
   type: SiteElementTypes;
   textContent: string;
-  styles: object;
+  styles: any;
   location: { x: number; y: number };
   childElements: SiteElement[];
 }
