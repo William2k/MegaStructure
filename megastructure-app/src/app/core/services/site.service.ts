@@ -14,6 +14,10 @@ export class SiteService {
     return this.apiService.post('site', form);
   }
 
+  addPage(site: Site): Observable<Site> {
+    return this.apiService.post('site/page', site);
+  }
+
   get(): Observable<Site[]> {
     return this.apiService.get('site');
   }

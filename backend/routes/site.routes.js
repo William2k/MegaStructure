@@ -1,7 +1,9 @@
 const express = require("express");
 const routes = express.Router();
 
-let Site = require("../models/site.model");
+const siteModels = require("../models/site.model");
+
+let Site = siteModels.site;
 
 routes.route("/").get((req, res) => {
   Site.find({ managers: req.decoded.normalisedUsername })
@@ -34,7 +36,7 @@ routes.route("/").get((req, res) => {
 //     .catch(err => res.status(400).send("Error saving site"));
 // });
 
-routes.route("/").post((req, res) => {
+routes.route("/page").post((req, res) => {
   const currentUser = req.decoded.normalisedUsername;
   let site = req.body;
   site.lastModified = { user: currentUser, date: new Date() };

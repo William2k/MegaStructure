@@ -40,6 +40,22 @@ export class SiteEffects {
   );
 
   @Effect()
+  SavePageRequestEffect$: Observable<Action> = this.actions.pipe(
+    ofType<siteActions.SavePageRequestAction>(
+      siteActions.ActionTypes.SAVE_PAGE_REQUEST
+    ),
+    concatMap(action =>
+      this.siteService.addPage(action.payload.site).pipe(
+        map(result => new siteActions.SavePageSuccessAction({ result })),
+        catchError(error =>
+          of(new siteActions.SavePageFailureAction({ error }))
+        )
+      )
+    ),
+    share()
+  );
+
+  @Effect()
   GetSitesRequestEffect$: Observable<Action> = this.actions.pipe(
     ofType<siteActions.GetSitesRequestAction>(
       siteActions.ActionTypes.GET_SITES_REQUEST

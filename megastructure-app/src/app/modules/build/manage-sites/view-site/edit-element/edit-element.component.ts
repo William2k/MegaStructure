@@ -35,4 +35,8 @@ export class EditElementComponent implements OnInit {
   updateComponent(): void {
     this.viewSiteService.updateCurrentElem();
   }
+
+  savePage(): void {
+    this.viewSiteService.savePage();
+  }
 }

@@ -1,4 +1,7 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { RootStoreState } from 'src/app/store';
+import { Store } from '@ngrx/store';
 
 import { ViewSiteServiceModule } from './view-site-service-module';
 import {
@@ -7,7 +10,7 @@ import {
   SitePage,
   Site
 } from 'src/app/core/models/site.model';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { SavePageRequestAction } from 'src/app/store/site-store/actions';
 
 @Injectable({
   providedIn: ViewSiteServiceModule
@@ -19,28 +22,33 @@ export class ViewSiteService {
   private editingElemSubject$ = new BehaviorSubject<SiteElement>(null);
   private showEditOptionsSubject$ = new BehaviorSubject<boolean>(false);
   private elemChangeDetectionSubject$ = new Subject<number>();
-  private site = { pages: [] } as Site;
-  private currentPage = {
-    pageRef: 1,
-    title: 'page one',
-    content: {
-      elementRef: 1,
-      type: SiteElementTypes.main,
-      location: {},
-      textContent: '',
-      childElements: [],
-      changes: { amount: 0 }
-    }
-  } as SitePage;
+  private site = {
+    pages: [
+      {
+        pageRef: 1,
+        title: 'page one',
+        link: '',
+        content: {
+          elementRef: 1,
+          type: SiteElementTypes.main,
+          textContent: '',
+          location: {},
+          childElements: [],
+          changes: { amount: 0 }
+        }
+      } as SitePage
+    ]
+  } as Site;
+  private currentPage = this.site.pages[0];
 
   public editingElem$ = this.editingElemSubject$.asObservable();
   public currentPage$ = this.currentPageSubject$.asObservable();
   public showEditOptions$ = this.showEditOptionsSubject$.asObservable();
   public elemChangeDetection$ = this.elemChangeDetectionSubject$.asObservable();
 
-  constructor() {}
+  constructor(private store$: Store<RootStoreState.State>) {}
 
-  initialise(sitename: string, link: string, sites: Site[]): void {
+  initialise(sitename: string, link: string = '', sites: Site[]): void {
     if (sitename) {
       const siteFound = sites.find(
         site => site.name.toLowerCase() === sitename.toLowerCase()
@@ -49,17 +57,27 @@ export class ViewSiteService {
       this.site = { ...this.site, ...siteFound };
     }
 
-    if (link) {
-      const pageFound = this.site.pages.find(
-        page => page.link && page.link.toLowerCase() === link.toLowerCase()
-      );
+    const pageFound = this.site.pages.find(
+      page => page.link.toLowerCase() === link.toLowerCase()
+    );
 
-      this.currentPage = { ...this.currentPage, ...pageFound };
-    }
-
-    this.allElements.push(this.currentPage.content);
+    this.currentPage = { ...this.currentPage, ...pageFound };
 
     this.currentPageSubject$.next(this.currentPage);
+
+    this.setAllElements(this.currentPage.content);
+  }
+
+  setAllElements(parentElem: SiteElement): void {
+    this.allElements.push(parentElem);
+
+    if (!parentElem.childElements) {
+      return;
+    }
+
+    for (const elem of parentElem.childElements) {
+      this.setAllElements(elem);
+    }
   }
 
   toggleEditingOptions(): void {
@@ -84,6 +102,11 @@ export class ViewSiteService {
     const newPage = { ...this.currentPage, ...newPageData } as SitePage;
 
     this.currentPageSubject$.next(newPage);
+
+    this.site.pages = [
+      ...this.site.pages.filter(page => page.pageRef !== newPage.pageRef),
+      newPage
+    ];
   }
 
   updateCurrentElem(): void {
@@ -119,5 +142,9 @@ export class ViewSiteService {
     this.updatePage();
     this.updateCurrentElem();
     this.lastElemRef = newElem.elementRef;
+  }
+
+  savePage(): void {
+    this.store$.dispatch(new SavePageRequestAction({ site: this.site }));
   }
 }

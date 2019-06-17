@@ -28,6 +28,31 @@ export const siteReducer = (state = initialState, action: Actions): State => {
         error: action.payload.error
       };
     }
+    case ActionTypes.SAVE_PAGE_REQUEST: {
+      return {
+        ...state,
+        savingSite: true
+      };
+    }
+    case ActionTypes.SAVE_PAGE_SUCCESS: {
+      return {
+        ...state,
+        savingSite: false,
+        sites: [
+          ...state.sites.filter(
+            site => site.name !== action.payload.result.name
+          ),
+          action.payload.result
+        ]
+      };
+    }
+    case ActionTypes.SAVE_PAGE_FAILURE: {
+      return {
+        ...state,
+        savingSite: false,
+        error: action.payload.error
+      };
+    }
     case ActionTypes.GET_SITES_REQUEST: {
       return {
         ...state,
