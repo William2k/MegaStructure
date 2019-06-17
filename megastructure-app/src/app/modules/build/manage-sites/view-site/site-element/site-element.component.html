@@ -1,58 +1,47 @@
 <div class="elem-block" [ngSwitch]="siteElement.type">
   <section class="elem-container" (click)="elemClick($event)">
     <main
-      [class]="
-        'elem ' + (changesAmount | jssStyle: siteElement.styles)
-      "
+      [class]="'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)"
       *ngSwitchCase="typeEnums.main"
       #containerElem
     >
       <app-site-element
-        *ngFor="let elem of siteElement.childElements"
+        *ngFor="let elem of siteElement.childElements; trackBy: elemTrackByFn"
         [siteElement]="elem"
-        [changesAmount]="elem.changes.amount"
       ></app-site-element>
     </main>
 
     <section
-      [class]="
-        'elem ' + (changesAmount | jssStyle: siteElement.styles)
-      "
+      [class]="'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)"
       *ngSwitchCase="typeEnums.section"
       #containerElem
     >
       <app-site-element
-        *ngFor="let elem of siteElement.childElements"
+        *ngFor="let elem of siteElement.childElements; trackBy: elemTrackByFn"
         [siteElement]="elem"
-        [changesAmount]="elem.changes.amount"
       ></app-site-element>
     </section>
 
     <div
-      [class]="'elem ' + (changesAmount | jssStyle: siteElement.styles)"
+      [class]="'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)"
       *ngSwitchDefault
       #containerElem
     >
       <app-site-element
-        *ngFor="let elem of siteElement.childElements"
+        *ngFor="let elem of siteElement.childElements; trackBy: elemTrackByFn"
         [siteElement]="elem"
-        [changesAmount]="elem.changes.amount"
       ></app-site-element>
     </div>
 
     <textarea
-      [class]="
-        'elem ' + (changesAmount | jssStyle: siteElement.styles)
-      "
+      [class]="'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)"
       *ngSwitchCase="typeEnums.text"
       [(ngModel)]="siteElement.textContent"
       #containerElem
     ></textarea>
 
     <img
-      [class]="
-        'elem ' + (changesAmount| jssStyle: siteElement.styles)
-      "
+      [class]="'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)"
       *ngSwitchCase="typeEnums.image"
       [src]="siteElement.attributes['src']"
       #containerElem

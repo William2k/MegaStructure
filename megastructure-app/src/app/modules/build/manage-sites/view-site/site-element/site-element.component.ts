@@ -3,13 +3,16 @@ import {
   OnInit,
   Input,
   ElementRef,
-  ViewChild
+  ViewChild,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import { SiteElement, SiteElementTypes } from 'src/app/core/models/site.model';
 import { ViewSiteService } from '../view-site.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-site-element',
   templateUrl: './site-element.component.html',
   styleUrls: ['./site-element.component.scss']
@@ -20,10 +23,12 @@ export class SiteElementComponent implements OnInit {
 
   @ViewChild('containerElem') elem: ElementRef;
   @Input() siteElement: SiteElement;
-  @Input() changesAmount: number;
   typeEnumKeys: string[];
 
-  constructor(private viewSiteService: ViewSiteService) {}
+  constructor(
+    private viewSiteService: ViewSiteService,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     const style = {
@@ -36,6 +41,12 @@ export class SiteElementComponent implements OnInit {
     this.siteElement.styles = this.siteElement.styles || style;
 
     this.typeEnumKeys = Object.keys(this.typeEnums);
+
+    this.viewSiteService.elemChangeDetection$.subscribe((el: number) => {
+      if (el === this.siteElement.elementRef) {
+        this.cdRef.detectChanges();
+      }
+    });
   }
 
   elemClick(e: Event): void {
@@ -44,5 +55,9 @@ export class SiteElementComponent implements OnInit {
     }
 
     this.viewSiteService.toggleEditingElem(this.siteElement.elementRef);
+  }
+
+  elemTrackByFn(index: number, item: SiteElement): number {
+    return item.elementRef;
   }
 }

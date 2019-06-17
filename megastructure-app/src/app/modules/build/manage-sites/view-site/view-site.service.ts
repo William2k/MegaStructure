@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 import { ViewSiteServiceModule } from './view-site-service-module';
 import {
@@ -7,7 +7,7 @@ import {
   SitePage,
   Site
 } from 'src/app/core/models/site.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: ViewSiteServiceModule
@@ -18,6 +18,7 @@ export class ViewSiteService {
   private currentPageSubject$ = new BehaviorSubject<SitePage>(null);
   private editingElemSubject$ = new BehaviorSubject<SiteElement>(null);
   private showEditOptionsSubject$ = new BehaviorSubject<boolean>(false);
+  private elemChangeDetectionSubject$ = new Subject<number>();
   private site = { pages: [] } as Site;
   private currentPage = {
     pageRef: 1,
@@ -35,6 +36,7 @@ export class ViewSiteService {
   public editingElem$ = this.editingElemSubject$.asObservable();
   public currentPage$ = this.currentPageSubject$.asObservable();
   public showEditOptions$ = this.showEditOptionsSubject$.asObservable();
+  public elemChangeDetection$ = this.elemChangeDetectionSubject$.asObservable();
 
   constructor() {}
 
@@ -88,6 +90,8 @@ export class ViewSiteService {
     const currentElem = this.editingElemSubject$.getValue();
 
     currentElem.changes.amount += 1; // Needed to trigger change detection, as change detection does not work with objects except async
+
+    this.elemChangeDetectionSubject$.next(currentElem.elementRef);
   }
 
   addElem(parentRef: number): void {

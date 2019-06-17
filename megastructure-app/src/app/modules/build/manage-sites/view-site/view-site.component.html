@@ -4,6 +4,5 @@
   <app-site-element
     *ngIf="currentPage$ | async as currentPage"
     [siteElement]="currentPage.content"
-    [changesAmount]="currentPage.content.changes.amount"
   ></app-site-element>
 </div>
