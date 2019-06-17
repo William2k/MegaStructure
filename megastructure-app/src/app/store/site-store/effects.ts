@@ -29,7 +29,7 @@ export class SiteEffects {
       siteActions.ActionTypes.SAVE_SITE_REQUEST
     ),
     concatMap(action =>
-      this.siteService.add(action.payload.form).pipe(
+      this.siteService.add(action.payload.site).pipe(
         map(result => new siteActions.SaveSiteSuccessAction({ result })),
         catchError(error =>
           of(new siteActions.SaveSiteFailureAction({ error }))
@@ -45,7 +45,7 @@ export class SiteEffects {
       siteActions.ActionTypes.SAVE_PAGE_REQUEST
     ),
     concatMap(action =>
-      this.siteService.addPage(action.payload.site).pipe(
+      this.siteService.addPage(action.payload.sitename, action.payload.page).pipe(
         map(result => new siteActions.SavePageSuccessAction({ result })),
         catchError(error =>
           of(new siteActions.SavePageFailureAction({ error }))

@@ -10,7 +10,10 @@ import {
   SitePage,
   Site
 } from 'src/app/core/models/site.model';
-import { SavePageRequestAction } from 'src/app/store/site-store/actions';
+import {
+  SavePageRequestAction,
+  SaveSiteRequestAction
+} from 'src/app/store/site-store/actions';
 
 @Injectable({
   providedIn: ViewSiteServiceModule
@@ -22,7 +25,7 @@ export class ViewSiteService {
   private editingElemSubject$ = new BehaviorSubject<SiteElement>(null);
   private showEditOptionsSubject$ = new BehaviorSubject<boolean>(false);
   private elemChangeDetectionSubject$ = new Subject<number>();
-  private site = {
+  private baseSite = {
     pages: [
       {
         pageRef: 1,
@@ -39,6 +42,7 @@ export class ViewSiteService {
       } as SitePage
     ]
   } as Site;
+  private site = this.baseSite;
   private currentPage = this.site.pages[0];
 
   public editingElem$ = this.editingElemSubject$.asObservable();
@@ -49,6 +53,10 @@ export class ViewSiteService {
   constructor(private store$: Store<RootStoreState.State>) {}
 
   initialise(sitename: string, link: string = '', sites: Site[]): void {
+    if (this.site.name && sitename.toLowerCase() !== this.site.name.toLowerCase()) {
+      this.resetSite();
+    }
+
     if (sitename) {
       const siteFound = sites.find(
         site => site.name.toLowerCase() === sitename.toLowerCase()
@@ -66,6 +74,11 @@ export class ViewSiteService {
     this.currentPageSubject$.next(this.currentPage);
 
     this.setAllElements(this.currentPage.content);
+  }
+
+  resetSite(): void {
+    this.site = this.baseSite;
+    this.currentPage = this.site.pages[0];
   }
 
   setAllElements(parentElem: SiteElement): void {
@@ -144,7 +157,16 @@ export class ViewSiteService {
     this.lastElemRef = newElem.elementRef;
   }
 
+  saveSite(): void {
+    this.store$.dispatch(new SaveSiteRequestAction({ site: this.site }));
+  }
+
   savePage(): void {
-    this.store$.dispatch(new SavePageRequestAction({ site: this.site }));
+    this.store$.dispatch(
+      new SavePageRequestAction({
+        sitename: this.site.name,
+        page: this.currentPage
+      })
+    );
   }
 }

@@ -88,7 +88,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
         .filter(Boolean)
     } as Site;
 
-    this.store$.dispatch(new SaveSiteRequestAction({ form }));
+    this.store$.dispatch(new SaveSiteRequestAction({ site: form }));
 
     this.store$
       .select(getSiteState)

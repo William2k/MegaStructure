@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Site } from 'src/app/core/models/site.model';
+import { Site, SitePage } from 'src/app/core/models/site.model';
 
 export enum ActionTypes {
   SAVE_SITE_REQUEST = '[Site] Save Site Request',
@@ -17,7 +17,7 @@ export enum ActionTypes {
 // Save Site
 export class SaveSiteRequestAction implements Action {
   readonly type = ActionTypes.SAVE_SITE_REQUEST;
-  constructor(public payload: { form: Site }) {}
+  constructor(public payload: { site: Site }) {}
 }
 
 export class SaveSiteFailureAction implements Action {
@@ -52,7 +52,7 @@ export class GetSitesSuccessAction implements Action {
 // Save Page
 export class SavePageRequestAction implements Action {
   readonly type = ActionTypes.SAVE_PAGE_REQUEST;
-  constructor(public payload: { site: Site }) {}
+  constructor(public payload: { sitename: string, page: SitePage }) {}
 }
 
 export class SavePageFailureAction implements Action {
@@ -62,7 +62,7 @@ export class SavePageFailureAction implements Action {
 
 export class SavePageSuccessAction implements Action {
   readonly type = ActionTypes.SAVE_PAGE_SUCCESS;
-  constructor(public payload: { result: Site }) {}
+  constructor(public payload: { result: SitePage }) {}
 }
 
 export type Actions =

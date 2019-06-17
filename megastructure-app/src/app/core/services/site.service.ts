@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ApiService } from 'src/app/core/services/api.service';
-import { Site } from '../models/site.model';
+import { Site, SitePage } from '../models/site.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +10,12 @@ import { Site } from '../models/site.model';
 export class SiteService {
   constructor(private apiService: ApiService) {}
 
-  add(form: Site): Observable<Site> {
-    return this.apiService.post('site', form);
+  add(site: Site): Observable<Site> {
+    return this.apiService.post('site', site);
   }
 
-  addPage(site: Site): Observable<Site> {
-    return this.apiService.post('site/page', site);
+  addPage(sitename: string, page: SitePage): Observable<SitePage> {
+    return this.apiService.post(`site/page/${sitename}`, page);
   }
 
   get(): Observable<Site[]> {

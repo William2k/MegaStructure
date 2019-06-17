@@ -37,6 +37,6 @@ export class EditElementComponent implements OnInit {
   }
 
   savePage(): void {
-    this.viewSiteService.savePage();
+    this.viewSiteService.saveSite();
   }
 }
