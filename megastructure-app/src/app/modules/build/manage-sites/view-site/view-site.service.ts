@@ -84,6 +84,8 @@ export class ViewSiteService {
   setAllElements(parentElem: SiteElement): void {
     this.allElements.push(parentElem);
 
+    this.lastElemRef = Math.max(this.lastElemRef, parentElem.elementRef);
+
     if (!parentElem.childElements) {
       return;
     }
@@ -125,7 +127,7 @@ export class ViewSiteService {
   updateCurrentElem(): void {
     const currentElem = this.editingElemSubject$.getValue();
 
-    currentElem.changes.amount += 1; // Needed to trigger change detection, as change detection does not work with objects except async
+    currentElem.changes.amount += 1; // Used to trigger jss
 
     this.elemChangeDetectionSubject$.next(currentElem.elementRef);
   }

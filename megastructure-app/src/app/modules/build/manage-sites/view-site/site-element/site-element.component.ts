@@ -5,8 +5,11 @@ import {
   ElementRef,
   ViewChild,
   ChangeDetectionStrategy,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnDestroy
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { SiteElement, SiteElementTypes } from 'src/app/core/models/site.model';
 import { ViewSiteService } from '../view-site.service';
@@ -17,10 +20,11 @@ import { ViewSiteService } from '../view-site.service';
   templateUrl: './site-element.component.html',
   styleUrls: ['./site-element.component.scss']
 })
-export class SiteElementComponent implements OnInit {
+export class SiteElementComponent implements OnInit, OnDestroy {
   typeEnums = SiteElementTypes;
   classes: object;
 
+  private unsubscribe$ = new Subject<void>();
   @ViewChild('containerElem') elem: ElementRef;
   @Input() siteElement: SiteElement;
   typeEnumKeys: string[];
@@ -42,11 +46,18 @@ export class SiteElementComponent implements OnInit {
 
     this.typeEnumKeys = Object.keys(this.typeEnums);
 
-    this.viewSiteService.elemChangeDetection$.subscribe((el: number) => {
-      if (el === this.siteElement.elementRef) {
-        this.cdRef.detectChanges();
-      }
-    });
+    this.viewSiteService.elemChangeDetection$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((el: number) => {
+        if (el === this.siteElement.elementRef) {
+          this.cdRef.detectChanges();
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   elemClick(e: Event): void {
