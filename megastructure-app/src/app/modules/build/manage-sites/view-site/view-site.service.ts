@@ -19,12 +19,6 @@ import {
   providedIn: ViewSiteServiceModule
 })
 export class ViewSiteService {
-  private lastElemRef = 1;
-  private allElements = [] as SiteElement[];
-  private currentPageSubject$ = new BehaviorSubject<SitePage>(null);
-  private editingElemSubject$ = new BehaviorSubject<SiteElement>(null);
-  private showEditOptionsSubject$ = new BehaviorSubject<boolean>(false);
-  private elemChangeDetectionSubject$ = new Subject<number>();
   private baseSite = {
     pages: [
       {
@@ -42,6 +36,12 @@ export class ViewSiteService {
       } as SitePage
     ]
   } as Site;
+  private lastElemRef = 1;
+  private allElements = [] as SiteElement[];
+  private currentPageSubject$ = new BehaviorSubject<SitePage>(null);
+  private editingElemSubject$ = new BehaviorSubject<SiteElement>(null);
+  private showEditOptionsSubject$ = new BehaviorSubject<boolean>(false);
+  private elemChangeDetectionSubject$ = new Subject<number>();
   private site = this.baseSite;
   private currentPage = this.site.pages[0];
 
@@ -53,7 +53,10 @@ export class ViewSiteService {
   constructor(private store$: Store<RootStoreState.State>) {}
 
   initialise(sitename: string, link: string = '', sites: Site[]): void {
-    if (this.site.name && sitename.toLowerCase() !== this.site.name.toLowerCase()) {
+    if (
+      this.site.name &&
+      sitename.toLowerCase() !== this.site.name.toLowerCase()
+    ) {
       this.resetSite();
     }
 
@@ -79,6 +82,11 @@ export class ViewSiteService {
   resetSite(): void {
     this.site = this.baseSite;
     this.currentPage = this.site.pages[0];
+    this.lastElemRef = 0;
+    this.allElements = [];
+    this.currentPageSubject$.next(null);
+    this.editingElemSubject$.next(null);
+    this.showEditOptionsSubject$.next(false);
   }
 
   setAllElements(parentElem: SiteElement): void {
