@@ -62,7 +62,7 @@ export class SavePageFailureAction implements Action {
 
 export class SavePageSuccessAction implements Action {
   readonly type = ActionTypes.SAVE_PAGE_SUCCESS;
-  constructor(public payload: { result: SitePage }) {}
+  constructor(public payload: { result: Site }) {}
 }
 
 export type Actions =

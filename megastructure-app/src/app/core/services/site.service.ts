@@ -14,7 +14,7 @@ export class SiteService {
     return this.apiService.post('site', site);
   }
 
-  addPage(sitename: string, page: SitePage): Observable<SitePage> {
+  addPage(sitename: string, page: SitePage): Observable<Site> {
     return this.apiService.post(`site/page/${sitename}`, page);
   }
 

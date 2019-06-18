@@ -37,7 +37,13 @@ export const siteReducer = (state = initialState, action: Actions): State => {
     case ActionTypes.SAVE_PAGE_SUCCESS: {
       return {
         ...state,
-        savingSite: false
+        savingSite: false,
+        sites: [
+          ...state.sites.filter(
+            site => site.name !== action.payload.result.name
+          ),
+          action.payload.result
+        ]
       };
     }
     case ActionTypes.SAVE_PAGE_FAILURE: {
