@@ -29,7 +29,7 @@ export class SiteEffects {
       siteActions.ActionTypes.SAVE_SITE_REQUEST
     ),
     concatMap(action =>
-      this.siteService.add(action.payload.site).pipe(
+      this.siteService.addSite(action.payload.site).pipe(
         map(result => new siteActions.SaveSiteSuccessAction({ result })),
         catchError(error =>
           of(new siteActions.SaveSiteFailureAction({ error }))
@@ -68,7 +68,7 @@ export class SiteEffects {
 
       const source = recentlyFetched
         ? of(state.site.sites)
-        : this.siteService.get();
+        : this.siteService.getSites();
 
       return source.pipe(
         map(result => {
@@ -78,6 +78,36 @@ export class SiteEffects {
         }),
         catchError(error =>
           of(new siteActions.GetSitesFailureAction({ error }))
+        )
+      );
+    }),
+    share()
+  );
+
+  @Effect()
+  GetPageRequestEffect$: Observable<Action> = this.actions.pipe(
+    ofType<siteActions.GetPageRequestAction>(
+      siteActions.ActionTypes.GET_PAGE_REQUEST
+    ),
+    withLatestFrom(this.store$),
+    concatMap(([action, state]) => {
+      const site = state.site.sites.find(m => m.name.toLowerCase() === action.payload.sitename.toLowerCase());
+      const page = site.pages.find(m => m.pageRef === action.payload.pageRef);
+
+      const fetched = !!page.content;
+
+      const source = fetched
+        ? of(page)
+        : this.siteService.getPage(action.payload.sitename, action.payload.pageRef);
+
+      return source.pipe(
+        map(result => {
+          return fetched
+            ? new siteActions.GetPageSkipAction()
+            : new siteActions.GetPageSuccessAction({ sitename: site.name, page: result });
+        }),
+        catchError(error =>
+          of(new siteActions.GetPageFailureAction({ error }))
         )
       );
     }),

@@ -2,32 +2,20 @@ import { Action } from '@ngrx/store';
 import { Site, SitePage } from 'src/app/core/models/site.model';
 
 export enum ActionTypes {
-  SAVE_SITE_REQUEST = '[Site] Save Site Request',
-  SAVE_SITE_FAILURE = '[Site] Save Site Failure',
-  SAVE_SITE_SUCCESS = '[Site] Save Site Success',
-  SAVE_PAGE_REQUEST = '[Site] Save Page Request',
-  SAVE_PAGE_FAILURE = '[Site] Save Page Failure',
-  SAVE_PAGE_SUCCESS = '[Site] Save Page Success',
   GET_SITES_REQUEST = '[Site] Get Sites Request',
   GET_SITES_SKIP = '[Site] Get Sites Skip',
   GET_SITES_FAILURE = '[Site] Get Sites Failure',
-  GET_SITES_SUCCESS = '[Site] Get Sites Success'
-}
-
-// Save Site
-export class SaveSiteRequestAction implements Action {
-  readonly type = ActionTypes.SAVE_SITE_REQUEST;
-  constructor(public payload: { site: Site }) {}
-}
-
-export class SaveSiteFailureAction implements Action {
-  readonly type = ActionTypes.SAVE_SITE_FAILURE;
-  constructor(public payload: { error: string }) {}
-}
-
-export class SaveSiteSuccessAction implements Action {
-  readonly type = ActionTypes.SAVE_SITE_SUCCESS;
-  constructor(public payload: { result: Site }) {}
+  GET_SITES_SUCCESS = '[Site] Get Sites Success',
+  SAVE_SITE_REQUEST = '[Site] Save Site Request',
+  SAVE_SITE_FAILURE = '[Site] Save Site Failure',
+  SAVE_SITE_SUCCESS = '[Site] Save Site Success',
+  GET_PAGE_REQUEST = '[Site] Get Page Request',
+  GET_PAGE_SKIP = '[Site] Get Page Skip',
+  GET_PAGE_FAILURE = '[Site] Get Page Failure',
+  GET_PAGE_SUCCESS = '[Site] Get Page Success',
+  SAVE_PAGE_REQUEST = '[Site] Save Page Request',
+  SAVE_PAGE_FAILURE = '[Site] Save Page Failure',
+  SAVE_PAGE_SUCCESS = '[Site] Save Page Success'
 }
 
 // Get Sites
@@ -49,10 +37,46 @@ export class GetSitesSuccessAction implements Action {
   constructor(public payload: { result: Site[] }) {}
 }
 
+// Save Site
+export class SaveSiteRequestAction implements Action {
+  readonly type = ActionTypes.SAVE_SITE_REQUEST;
+  constructor(public payload: { site: Site }) {}
+}
+
+export class SaveSiteFailureAction implements Action {
+  readonly type = ActionTypes.SAVE_SITE_FAILURE;
+  constructor(public payload: { error: string }) {}
+}
+
+export class SaveSiteSuccessAction implements Action {
+  readonly type = ActionTypes.SAVE_SITE_SUCCESS;
+  constructor(public payload: { result: Site }) {}
+}
+
+// Get Page
+export class GetPageRequestAction implements Action {
+  readonly type = ActionTypes.GET_PAGE_REQUEST;
+  constructor(public payload: { sitename: string, pageRef: number }) {}
+}
+
+export class GetPageFailureAction implements Action {
+  readonly type = ActionTypes.GET_PAGE_FAILURE;
+  constructor(public payload: { error: string }) {}
+}
+
+export class GetPageSkipAction implements Action {
+  readonly type = ActionTypes.GET_PAGE_SKIP;
+}
+
+export class GetPageSuccessAction implements Action {
+  readonly type = ActionTypes.GET_PAGE_SUCCESS;
+  constructor(public payload: { sitename: string, page: SitePage }) {}
+}
+
 // Save Page
 export class SavePageRequestAction implements Action {
   readonly type = ActionTypes.SAVE_PAGE_REQUEST;
-  constructor(public payload: { sitename: string, page: SitePage }) {}
+  constructor(public payload: { sitename: string; page: SitePage }) {}
 }
 
 export class SavePageFailureAction implements Action {
@@ -66,13 +90,17 @@ export class SavePageSuccessAction implements Action {
 }
 
 export type Actions =
-  | SaveSiteRequestAction
-  | SaveSiteFailureAction
-  | SaveSiteSuccessAction
   | GetSitesRequestAction
   | GetSitesSkipAction
   | GetSitesFailureAction
   | GetSitesSuccessAction
+  | SaveSiteRequestAction
+  | SaveSiteFailureAction
+  | SaveSiteSuccessAction
+  | GetPageRequestAction
+  | GetPageSkipAction
+  | GetPageFailureAction
+  | GetPageSuccessAction
   | SavePageRequestAction
   | SavePageFailureAction
   | SavePageSuccessAction;

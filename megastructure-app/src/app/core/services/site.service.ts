@@ -10,15 +10,23 @@ import { Site, SitePage } from '../models/site.model';
 export class SiteService {
   constructor(private apiService: ApiService) {}
 
-  add(site: Site): Observable<Site> {
+  getSites(): Observable<Site[]> {
+    return this.apiService.get('site');
+  }
+
+  getSite(sitename: string): Observable<Site> {
+    return this.apiService.get(`site/${sitename}`);
+  }
+
+  addSite(site: Site): Observable<Site> {
     return this.apiService.post('site', site);
+  }
+
+  getPage(sitename: string, pageRef: number): Observable<SitePage> {
+    return this.apiService.get(`site/${sitename}/page/${pageRef}`);
   }
 
   addPage(sitename: string, page: SitePage): Observable<Site> {
     return this.apiService.post(`site/page/${sitename}`, page);
-  }
-
-  get(): Observable<Site[]> {
-    return this.apiService.get('site');
   }
 }
