@@ -2,8 +2,6 @@ import { Actions, ActionTypes } from './actions';
 import { initialState, State } from './state';
 
 export const siteReducer = (state = initialState, action: Actions): State => {
-  console.log(action);
-
   switch (action.type) {
     case ActionTypes.GET_SITES_REQUEST: {
       return {

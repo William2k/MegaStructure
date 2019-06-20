@@ -22,7 +22,6 @@ import { ViewSiteService } from '../view-site.service';
 })
 export class SiteElementComponent implements OnInit, OnDestroy {
   typeEnums = SiteElementTypes;
-  classes: object;
 
   private unsubscribe$ = new Subject<void>();
   @ViewChild('containerElem') elem: ElementRef;

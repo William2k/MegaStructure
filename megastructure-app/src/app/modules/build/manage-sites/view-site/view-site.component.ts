@@ -46,7 +46,7 @@ export class ViewSiteComponent implements OnInit, OnDestroy {
         })
       )
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(sites => this.viewSiteService.initialise(sitename, link, sites)); // Can't use as method group
+      .subscribe(sites => this.viewSiteService.initialise(sitename, link, sites));
   }
 
   ngOnDestroy(): void {

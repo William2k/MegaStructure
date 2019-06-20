@@ -12,7 +12,8 @@ import {
 } from 'src/app/core/models/site.model';
 import {
   SavePageRequestAction,
-  SaveSiteRequestAction
+  SaveSiteRequestAction,
+  GetPageRequestAction
 } from 'src/app/store/site-store/actions';
 
 @Injectable({
@@ -72,8 +73,17 @@ export class ViewSiteService {
       page => page.link.toLowerCase() === link.toLowerCase()
     );
 
-    this.currentPage = { ...this.currentPage, ...pageFound };
+    if (pageFound && !pageFound.content) {
+      this.store$.dispatch(
+        new GetPageRequestAction({
+          sitename: this.site.name,
+          pageRef: pageFound.pageRef
+        })
+      );
 
+      return;
+    }
+    this.currentPage = { ...this.currentPage, ...pageFound };
     this.currentPageSubject$.next(this.currentPage);
 
     this.setAllElements(this.currentPage.content);
