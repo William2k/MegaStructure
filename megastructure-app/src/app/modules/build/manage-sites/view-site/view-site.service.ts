@@ -8,7 +8,9 @@ import {
   SiteElement,
   SiteElementTypes,
   SitePage,
-  Site
+  Site,
+  ElementAttribute,
+  CssStyle
 } from 'src/app/core/models/site.model';
 import {
   SavePageRequestAction,
@@ -29,12 +31,13 @@ export class ViewSiteService {
         content: {
           elementRef: 1,
           type: SiteElementTypes.main,
+          attributes: [],
           textContent: '',
           location: {},
           childElements: [],
           changes: { amount: 0 }
         }
-      } as SitePage
+      }
     ]
   } as Site;
   private lastElemRef = 1;
@@ -43,6 +46,7 @@ export class ViewSiteService {
   private editingElemSubject$ = new BehaviorSubject<SiteElement>(null);
   private showEditOptionsSubject$ = new BehaviorSubject<boolean>(false);
   private elemChangeDetectionSubject$ = new Subject<number>();
+  private updateAttributesSubject$ = new Subject<number>();
   private site = this.baseSite;
   private currentPage = this.site.pages[0];
 
@@ -50,16 +54,12 @@ export class ViewSiteService {
   public currentPage$ = this.currentPageSubject$.asObservable();
   public showEditOptions$ = this.showEditOptionsSubject$.asObservable();
   public elemChangeDetection$ = this.elemChangeDetectionSubject$.asObservable();
+  public updateAttributes$ = this.updateAttributesSubject$.asObservable();
 
   constructor(private store$: Store<RootStoreState.State>) {}
 
   initialise(sitename: string, link: string = '', sites: Site[]): void {
-    if (
-      this.site.name &&
-      sitename.toLowerCase() !== this.site.name.toLowerCase()
-    ) {
-      this.resetSite();
-    }
+    this.resetSite();
 
     if (sitename) {
       const siteFound = sites.find(
@@ -83,7 +83,13 @@ export class ViewSiteService {
 
       return;
     }
-    this.currentPage = { ...this.currentPage, ...pageFound };
+
+    if (!link && !pageFound) {
+      this.site.pages.push(this.currentPage);
+    } else {
+      this.currentPage = { ...this.currentPage, ...pageFound };
+    }
+
     this.currentPageSubject$.next(this.currentPage);
 
     this.setAllElements(this.currentPage.content);
@@ -131,6 +137,13 @@ export class ViewSiteService {
     }
   }
 
+  elementCleanup(): void {
+    for (const elem of this.allElements) {
+      elem.attributes = elem.attributes.filter(attr => attr.name);
+      elem.changes.amount = 0;
+    }
+  }
+
   updatePage(newPageData: SitePage = null): void {
     const newPage = { ...this.currentPage, ...newPageData } as SitePage;
 
@@ -150,6 +163,27 @@ export class ViewSiteService {
     this.elemChangeDetectionSubject$.next(currentElem.elementRef);
   }
 
+  updateElementAttributes(elemRef: number): void {
+    this.updateAttributesSubject$.next(elemRef);
+  }
+
+  addAttribute(elemRef: number, attr: ElementAttribute): void {
+    const element = this.allElements.find(elem => elem.elementRef === elemRef);
+
+    element.attributes.push(attr);
+
+    this.updateCurrentElem();
+    this.updateElementAttributes(elemRef);
+  }
+
+  addStyle(elemRef: number, newStyle: CssStyle): void {
+    const element = this.allElements.find(elem => elem.elementRef === elemRef);
+
+    element.styles.main[newStyle.name] = newStyle.value;
+
+    this.updateCurrentElem();
+  }
+
   addElem(parentRef: number): void {
     const newElem = {
       elementRef: this.lastElemRef + 1,
@@ -158,6 +192,7 @@ export class ViewSiteService {
       location: { x: 0, y: 0 },
       childElements: [],
       changes: { amount: 0 },
+      attributes: [],
       styles: {
         main: {
           height: '50%',
@@ -177,11 +212,19 @@ export class ViewSiteService {
     this.lastElemRef = newElem.elementRef;
   }
 
-  saveSite(): void {
+  saveSite(cleanUp: boolean = true): void {
+    if (cleanUp) {
+      this.elementCleanup();
+    }
+
     this.store$.dispatch(new SaveSiteRequestAction({ site: this.site }));
   }
 
-  savePage(): void {
+  savePage(cleanUp: boolean = true): void {
+    if (cleanUp) {
+      this.elementCleanup();
+    }
+
     this.store$.dispatch(
       new SavePageRequestAction({
         sitename: this.site.name,

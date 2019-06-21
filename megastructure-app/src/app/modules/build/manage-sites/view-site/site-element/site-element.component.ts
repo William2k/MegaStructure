@@ -6,7 +6,8 @@ import {
   ViewChild,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  OnDestroy
+  OnDestroy,
+  Renderer2
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -26,9 +27,9 @@ export class SiteElementComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   @ViewChild('containerElem') elem: ElementRef;
   @Input() siteElement: SiteElement;
-  typeEnumKeys: string[];
 
   constructor(
+    private renderer: Renderer2,
     private viewSiteService: ViewSiteService,
     private cdRef: ChangeDetectorRef
   ) {}
@@ -43,8 +44,6 @@ export class SiteElementComponent implements OnInit, OnDestroy {
 
     this.siteElement.styles = this.siteElement.styles || style;
 
-    this.typeEnumKeys = Object.keys(this.typeEnums);
-
     this.viewSiteService.elemChangeDetection$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((el: number) => {
@@ -52,11 +51,29 @@ export class SiteElementComponent implements OnInit, OnDestroy {
           this.cdRef.detectChanges();
         }
       });
+
+    this.viewSiteService.updateAttributes$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(el => {
+        if (el === this.siteElement.elementRef) {
+          this.setAttributes();
+        }
+      });
+
+    setTimeout(() => this.setAttributes(), 0);
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  setAttributes() {
+    const elem = this.elem.nativeElement as HTMLElement;
+
+    for (const attr of this.siteElement.attributes) {
+      this.renderer.setAttribute(elem, attr.name, attr.value);
+    }
   }
 
   elemClick(e: Event): void {

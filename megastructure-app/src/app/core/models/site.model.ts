@@ -25,11 +25,21 @@ export interface SitePage {
 
 export interface SiteElement {
   elementRef: number;
-  attributes: object;
+  attributes: ElementAttribute[];
   type: SiteElementTypes;
   textContent: string;
   styles: any;
   location: { x: number; y: number };
   childElements: SiteElement[];
   changes: { amount: number };
+}
+
+export interface ElementAttribute {
+  name: string;
+  value: string;
+}
+
+export interface CssStyle {
+  name: string;
+  value: string;
 }

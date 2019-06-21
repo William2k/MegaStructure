@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const SiteElement = new Schema();
 SiteElement.add({
   elementRef: Number,
-  attributes: Object,
+  attributes: [{ name: String, value: String }],
   type: String,
   textContent: String,
   styles: Object,

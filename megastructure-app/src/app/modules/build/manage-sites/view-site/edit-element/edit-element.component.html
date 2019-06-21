@@ -49,13 +49,134 @@
       <input
         id="cssBgColour"
         name="cssBgColour"
-        [style.background]="siteElement.styles['main'].backgroundColor"
-        [(colorPicker)]="siteElement.styles['main'].backgroundColor"
+        [style.background]="siteElement.styles['main']['background-color']"
+        [(colorPicker)]="siteElement.styles['main']['background-color']"
         (cpInputChange)="updateComponent()"
         (cpSliderChange)="updateComponent()"
         (change)="updateComponent()"
       />
     </fieldset>
+
+    <div>
+      <fieldset class="attributes" *ngIf="siteElement.attributes">
+        <h3>Attributes</h3>
+
+        <div
+          *ngFor="
+            let attribute of siteElement.attributes;
+            let i = index;
+            trackBy: indexTrackByFn
+          "
+        >
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="attribute.name"
+              [name]="'attribute-name-' + i"
+              placeholder="Name"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="attribute.value"
+              [name]="'attribute-value-' + i"
+              placeholder="Value"
+              (change)="updateAttributes(siteElement.elementRef)"
+          /></mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="newAttr.name"
+              name="attr-name"
+              placeholder="Name"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="newAttr.value"
+              name="attr-value"
+              placeholder="Value"
+          /></mat-form-field>
+
+          <div>
+            <button
+              class="w-100"
+              mat-flat-button
+              type="button"
+              (click)="addAttribute(siteElement.elementRef)"
+            >
+              Add attribute
+            </button>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="css-styles" *ngIf="siteElement.styles['main']">
+        <h3>CSS Styles</h3>
+
+        <div
+          *ngFor="
+            let style of siteElement.styles['main'] | keyvalue;
+            let i = index;
+            trackBy: indexTrackByFn
+          "
+        >
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="style.key"
+              [name]="'style-name-' + i"
+              placeholder="Name"
+              (keyup)="updateComponent()"
+              (change)="updateComponent()"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="siteElement.styles['main'][style.key]"
+              [name]="'style-value-' + i"
+              placeholder="Value"
+              (keyup)="updateComponent()"
+              (change)="updateComponent()"
+          /></mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="newStyle.name"
+              name="style-name"
+              placeholder="Name"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              [(ngModel)]="newStyle.value"
+              name="style-value"
+              placeholder="Value"
+          /></mat-form-field>
+
+          <div>
+            <button
+              class="w-100"
+              mat-flat-button
+              type="button"
+              (click)="addStyle(siteElement.elementRef)"
+            >
+              Add Style
+            </button>
+          </div>
+        </div>
+      </fieldset>
+    </div>
   </form>
 
   <button class="save-btn" (click)="savePage()">
