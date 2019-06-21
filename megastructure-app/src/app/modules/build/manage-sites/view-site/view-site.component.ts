@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { takeUntil, switchMap } from 'rxjs/operators';
+import { takeUntil, switchMap, skip } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 
 import { getUserSites } from 'src/app/store/site-store/selectors';
@@ -46,7 +46,9 @@ export class ViewSiteComponent implements OnInit, OnDestroy {
         })
       )
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(sites => this.viewSiteService.initialise(sitename, link, sites));
+      .subscribe(sites =>
+        this.viewSiteService.initialise(sitename, link, sites)
+      );
   }
 
   ngOnDestroy(): void {

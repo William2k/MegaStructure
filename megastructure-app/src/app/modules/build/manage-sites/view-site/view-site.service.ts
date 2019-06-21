@@ -172,6 +172,8 @@ export class ViewSiteService {
 
     element.attributes.push(attr);
 
+    element.attributes = element.attributes.sort((a, b) => a.name.localeCompare(b.name));
+
     this.updateCurrentElem();
     this.updateElementAttributes(elemRef);
   }

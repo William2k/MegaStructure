@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const helmet = require('helmet')
 const compression = require("compression");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -12,6 +13,7 @@ const userRoutes = require("./routes/user.routes");
 const siteRoutes = require("./routes/site.routes");
 
 const mainInit = () => {
+  app.use(helmet());
   app.use(cors());
   app.use(bodyParser.json());
   app.use(compression());

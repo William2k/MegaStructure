@@ -68,7 +68,7 @@ export class SiteElementComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  setAttributes() {
+  setAttributes(): void {
     const elem = this.elem.nativeElement as HTMLElement;
 
     for (const attr of this.siteElement.attributes) {
