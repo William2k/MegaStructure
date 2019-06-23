@@ -2,9 +2,9 @@ import express from "express";
 
 const routes = express.Router();
 
-import siteModels from "../../app/models/site.model";
+import siteModels from "../models/site.model";
 
-const Site = siteModels.site;
+const Site = siteModels.site as any;
 
 routes.route("/").get((req: any, res) => {
   const currentUser = req.decoded.normalisedUsername;

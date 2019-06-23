@@ -2,8 +2,8 @@ import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import config from "..";
-import userModels from "../../app/models/user.model";
+import config from "../config";
+import userModels from "../models/user.model";
 
 const routes = express.Router();
 const User = userModels.user as any;

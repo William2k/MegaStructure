@@ -4,16 +4,9 @@ import compression from "compression";
 import bodyParser from "body-parser";
 import cors from "cors";
 
-import config from ".";
+import config from "./config";
 import dbInit from "./db";
-import middlewares from "./middlewares";
-import routes from "./routes";
-
-const routesInit = (app: express.Express) => {
-  app.use("/api/user", routes.publicUserRoutes);
-  app.use("/api/user", middlewares.token.checkToken, routes.userRoutes);
-  app.use("/api/site", middlewares.token.checkToken, routes.siteRoutes);
-};
+import routesInit from "./routes";
 
 const middlewaresInit = (app: express.Express) => {
   app.use(helmet());
@@ -32,5 +25,4 @@ const mainInit = () => {
   });
 };
 
-dbInit();
-mainInit();
+dbInit().then(() => mainInit());

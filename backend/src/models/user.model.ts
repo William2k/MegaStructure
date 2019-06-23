@@ -11,12 +11,10 @@ const User = new Schema({
 });
 
 User.methods.toJSON = function() {
-  let obj = this.toObject();
+  const obj = this.toObject();
   delete obj._id;
   delete obj.password;
   return obj;
 };
 
 export default { user: mongoose.model("User", User) };
-
-// module.exports = mongoose.model("User", User);

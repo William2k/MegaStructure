@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
-import { Response, NextFunction, Request } from "express";
+import { Response, NextFunction } from "express";
 
-import config from "..";
+import config from "../config";
 
 const checkToken = (req: any, res: Response, next: NextFunction) => {
   let token = (req.headers["x-access-token"] ||

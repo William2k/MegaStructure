@@ -1,7 +1,7 @@
 import express from "express";
 const routes = express.Router();
 
-import userModels from "../../app/models/user.model";
+import userModels from "../models/user.model";
 
 const User = userModels.user as any;
 

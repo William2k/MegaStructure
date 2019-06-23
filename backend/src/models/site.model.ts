@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const SiteElement = new Schema();
@@ -31,22 +31,6 @@ const Site = new Schema({
   pages: [SitePage],
   isActive: Boolean
 });
-
-Site.methods.toJSON = function() {
-  let obj = this.toObject();
-  delete obj._id;
-  return obj;
-};
-SitePage.method.toJSON = function() {
-  let obj = this.toObject();
-  delete obj._id;
-  return obj;
-};
-SiteElement.method.toJSON = function() {
-  let obj = this.toObject();
-  delete obj._id;
-  return obj;
-};
 
 export default {
   site: mongoose.model("Site", Site),
