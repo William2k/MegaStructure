@@ -3,8 +3,8 @@ const bcrypt = require("bcrypt");
 const routes = express.Router();
 const jwt = require("jsonwebtoken");
 
-const config = require("../config");
-let User = require("../models/user.model");
+const config = require("../../config");
+let User = require("../../app/models/user.model");
 
 routes.route("/").post((req, res) => {
   let user = new User(req.body);

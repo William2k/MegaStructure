@@ -1,7 +1,7 @@
 const express = require("express");
 const routes = express.Router();
 
-let User = require("../models/user.model");
+let User = require("../../app/models/user.model");
 
 routes.route("/").get((req, res) => {
   User.findOne({ normalisedUsername: req.decoded.normalisedUsername })

@@ -1,7 +1,7 @@
 const express = require("express");
 const routes = express.Router();
 
-const siteModels = require("../models/site.model");
+const siteModels = require("../../app/models/site.model");
 
 let Site = siteModels.site;
 
