@@ -9,4 +9,4 @@ const config = {
   tokenSaltRounds: Number(process.env.TOKEN_SALT_ROUNDS)
 };
 
-module.exports = config;
+export default config;

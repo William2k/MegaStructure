@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const User = new Schema({
@@ -7,7 +7,7 @@ const User = new Schema({
   firstname: String,
   lastname: String,
   emailAddress: String,
-  password: String,
+  password: String
 });
 
 User.methods.toJSON = function() {
@@ -15,6 +15,8 @@ User.methods.toJSON = function() {
   delete obj._id;
   delete obj.password;
   return obj;
- }
+};
 
-module.exports = mongoose.model("User", User);
+export default { user: mongoose.model("User", User) };
+
+// module.exports = mongoose.model("User", User);

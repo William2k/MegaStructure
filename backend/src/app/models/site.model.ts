@@ -32,17 +32,23 @@ const Site = new Schema({
   isActive: Boolean
 });
 
-const removeId = function() {
+Site.methods.toJSON = function() {
+  let obj = this.toObject();
+  delete obj._id;
+  return obj;
+};
+SitePage.method.toJSON = function() {
+  let obj = this.toObject();
+  delete obj._id;
+  return obj;
+};
+SiteElement.method.toJSON = function() {
   let obj = this.toObject();
   delete obj._id;
   return obj;
 };
 
-Site.methods.toJSON = removeId;
-SitePage.method.toJSON = removeId;
-SiteElement.method.toJSON = removeId;
-
-module.exports = {
+export default {
   site: mongoose.model("Site", Site),
   sitePage: mongoose.model("SitePage", SitePage),
   siteElement: mongoose.model("SiteElement", SiteElement)

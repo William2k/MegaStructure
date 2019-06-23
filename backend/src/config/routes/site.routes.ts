@@ -1,11 +1,12 @@
-const express = require("express");
+import express from "express";
+
 const routes = express.Router();
 
-const siteModels = require("../../app/models/site.model");
+import siteModels from "../../app/models/site.model";
 
 let Site = siteModels.site;
 
-routes.route("/").get((req, res) => {
+routes.route("/").get((req: any, res) => {
   const currentUser = req.decoded.normalisedUsername;
 
   Site.find(
@@ -20,7 +21,7 @@ routes.route("/").get((req, res) => {
     .catch(err => res.status(400).send("Error finding sites"));
 });
 
-routes.route("/full").get((req, res) => {
+routes.route("/full").get((req: any, res) => {
   const currentUser = req.decoded.normalisedUsername;
 
   Site.find({ $or: [{ owner: currentUser }, { managers: currentUser }] })
@@ -32,7 +33,7 @@ routes.route("/full").get((req, res) => {
     .catch(err => res.status(400).send("Error finding sites"));
 });
 
-routes.route("/:sitename").get((req, res) => {
+routes.route("/:sitename").get((req: any, res) => {
   const currentUser = req.decoded.normalisedUsername;
   const siteName = req.params.sitename;
 
@@ -48,7 +49,7 @@ routes.route("/:sitename").get((req, res) => {
     .catch(err => res.status(400).send("Error finding site"));
 });
 
-routes.route("/").post((req, res) => {
+routes.route("/").post((req: any, res) => {
   const currentUser = req.decoded.normalisedUsername;
   let site = req.body;
   site.lastModified = { user: currentUser, date: new Date() };
@@ -72,7 +73,7 @@ routes.route("/").post((req, res) => {
   );
 });
 
-routes.route("/:sitename/page/:pageref").get((req, res) => {
+routes.route("/:sitename/page/:pageref").get((req: any, res) => {
   const siteName = req.params.sitename;
   const pageRef = Number(req.params.pageref);
 
@@ -94,7 +95,7 @@ routes.route("/:sitename/page/:pageref").get((req, res) => {
     .catch(err => res.status(400).send("Error finding page"));
 });
 
-routes.route("/page/:sitename").post((req, res) => {
+routes.route("/page/:sitename").post((req: any, res) => {
   const currentUser = req.decoded.normalisedUsername;
   const page = req.body;
   const site = {
@@ -121,4 +122,4 @@ routes.route("/page/:sitename").post((req, res) => {
     .catch(err => res.status(400).send("Error saving site"));
 });
 
-module.exports = routes;
+export default routes;

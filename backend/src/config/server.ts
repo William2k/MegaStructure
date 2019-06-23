@@ -1,16 +1,18 @@
-const express = require("express");
-const app = express();
-const helmet = require("helmet");
-const compression = require("compression");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+import express from "express";
+import helmet from "helmet";
+import compression from "compression";
+import bodyParser from "body-parser";
+import cors from "cors";
 
-const config = require("../config");
-const dbInit = require("./db");
-const middlewares = require("./middlewares");
-const routes = require("./routes");
+import config from ".";
+import dbInit from "./db";
+import middlewares from "./middlewares";
+import routes from "./routes";
+
+
 
 const mainInit = () => {
+  const app = express();
   app.use(helmet());
   app.use(cors());
   app.use(bodyParser.json());
