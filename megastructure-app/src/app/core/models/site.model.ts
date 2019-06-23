@@ -6,6 +6,8 @@ export interface Site {
   managers: string[];
   lastModified: { date: Date; user: string };
   pages: SitePage[];
+  isActive: boolean;
+  delete: boolean;
 }
 
 export enum SiteElementTypes {
@@ -21,6 +23,8 @@ export interface SitePage {
   title: string;
   link: string;
   content: SiteElement;
+  isActive: boolean;
+  delete: boolean;
 }
 
 export interface SiteElement {
@@ -32,6 +36,8 @@ export interface SiteElement {
   location: { x: number; y: number };
   childElements: SiteElement[];
   changes: { amount: number };
+  isActive: boolean;
+  delete: boolean;
 }
 
 export interface ElementAttribute {

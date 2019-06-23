@@ -69,6 +69,10 @@ export class SiteElementComponent implements OnInit, OnDestroy {
   }
 
   setAttributes(): void {
+    if (!this.elem) {
+      return;
+    }
+
     const elem = this.elem.nativeElement as HTMLElement;
 
     for (const attr of this.siteElement.attributes) {

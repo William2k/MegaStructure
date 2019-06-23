@@ -10,14 +10,16 @@ SiteElement.add({
   styles: Object,
   location: { x: Number, y: Number },
   childElements: [SiteElement],
-  changes: { amount: Number }
+  changes: { amount: Number },
+  isActive: Boolean
 });
 
 const SitePage = new Schema({
   pageRef: Number,
   title: String,
   link: String,
-  content: SiteElement
+  content: SiteElement,
+  isActive: Boolean
 });
 
 const Site = new Schema({
@@ -26,7 +28,8 @@ const Site = new Schema({
   owner: String,
   managers: [String],
   lastModified: { date: Date, user: String },
-  pages: [SitePage]
+  pages: [SitePage],
+  isActive: Boolean
 });
 
 const removeId = function() {

@@ -12,7 +12,8 @@ import {
   ElementAttribute
 } from 'src/app/core/models/site.model';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,7 +30,10 @@ export class EditElementComponent implements OnInit, OnDestroy {
   siteElement$: Observable<SiteElement>;
   showEditOptions$: Observable<boolean>;
 
-  constructor(private viewSiteService: ViewSiteService) {}
+  constructor(
+    private viewSiteService: ViewSiteService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.showEditOptions$ = this.viewSiteService.showEditOptions$;
@@ -39,9 +43,11 @@ export class EditElementComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(site => this.resetFields());
 
-    this.showEditOptions$
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(show => show && this.resetFields());
+    this.showEditOptions$.pipe(takeUntil(this.unsubscribe$)).subscribe(show => {
+      if (show) {
+        this.resetFields();
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -88,6 +94,26 @@ export class EditElementComponent implements OnInit, OnDestroy {
 
   updateComponent(): void {
     this.viewSiteService.updateCurrentElem();
+  }
+
+  removeElem(elemRef: number): void {
+    const success = this.viewSiteService.toggleElemActive(elemRef, false);
+
+    this.snackBar
+      .open(
+        `Removing element ${elemRef} ${success ? 'successful' : 'failed'}`,
+        success ? 'Undo' : 'close',
+        {
+          duration: 2000
+        }
+      )
+      .onAction()
+      .pipe(take(1))
+      .subscribe(() => {
+        if (success) {
+          this.viewSiteService.toggleElemActive(elemRef);
+        }
+      });
   }
 
   savePage(): void {

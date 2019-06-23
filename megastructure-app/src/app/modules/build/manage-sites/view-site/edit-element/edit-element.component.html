@@ -10,11 +10,16 @@
     <fa name="arrows" cdkDragHandle></fa>
     <fa name="edit" (click)="editClick()"></fa>
     <fa name="plus" (click)="addElemClick(siteElement.elementRef)"></fa>
+    <fa name="trash" (click)="removeElem(siteElement.elementRef)"></fa>
   </div>
   <form>
     <mat-form-field>
       <mat-label>Set type</mat-label>
-      <mat-select [(ngModel)]="siteElement.type" name="type">
+      <mat-select
+        [(ngModel)]="siteElement.type"
+        name="type"
+        (selectionChange)="updateComponent()"
+      >
         <mat-option
           *ngFor="let enum of typeEnums | keyvalue"
           [value]="enum.value"

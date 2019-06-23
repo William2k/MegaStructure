@@ -1,4 +1,4 @@
-<div class="elem-block" [ngSwitch]="siteElement.type">
+<div class="elem-block" *ngIf="siteElement.isActive" [ngSwitch]="siteElement.type">
   <section class="elem-container" (click)="elemClick($event)">
     <main
       [class]="'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)"

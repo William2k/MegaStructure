@@ -35,8 +35,10 @@ export class ViewSiteService {
           textContent: '',
           location: {},
           childElements: [],
-          changes: { amount: 0 }
-        }
+          changes: { amount: 0 },
+          isActive: true
+        },
+        isActive: true
       }
     ]
   } as Site;
@@ -58,20 +60,26 @@ export class ViewSiteService {
 
   constructor(private store$: Store<RootStoreState.State>) {}
 
-  initialise(sitename: string, link: string = '', sites: Site[]): void {
+  initialise(sitename: string, link: string = '', sites: Site[]): boolean {
     this.resetSite();
 
-    if (sitename) {
-      const siteFound = sites.find(
-        site => site.name.toLowerCase() === sitename.toLowerCase()
-      );
+    const siteFound = sites.find(
+      site => site.name.toLowerCase() === sitename.toLowerCase()
+    );
 
-      this.site = { ...this.site, ...siteFound };
+    if (!siteFound) {
+      return false;
     }
+
+    this.site = { ...this.site, ...siteFound };
 
     const pageFound = this.site.pages.find(
       page => page.link.toLowerCase() === link.toLowerCase()
     );
+
+    if (!pageFound && link) {
+      return false;
+    }
 
     if (pageFound && !pageFound.content) {
       this.store$.dispatch(
@@ -81,7 +89,7 @@ export class ViewSiteService {
         })
       );
 
-      return;
+      return true;
     }
 
     if (!link && !pageFound) {
@@ -93,6 +101,8 @@ export class ViewSiteService {
     this.currentPageSubject$.next(this.currentPage);
 
     this.setAllElements(this.currentPage.content);
+
+    return true;
   }
 
   resetSite(): void {
@@ -138,7 +148,7 @@ export class ViewSiteService {
   }
 
   elementCleanup(): void {
-    for (const elem of this.allElements) {
+    for (const elem of this.allElements.filter(el => el.isActive)) {
       elem.attributes = elem.attributes.filter(attr => attr.name);
       elem.changes.amount = 0;
     }
@@ -172,7 +182,9 @@ export class ViewSiteService {
 
     element.attributes.push(attr);
 
-    element.attributes = element.attributes.sort((a, b) => a.name.localeCompare(b.name));
+    element.attributes = element.attributes.sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
 
     this.updateCurrentElem();
     this.updateElementAttributes(elemRef);
@@ -200,7 +212,8 @@ export class ViewSiteService {
           height: '50%',
           width: '50%'
         }
-      }
+      },
+      isActive: true
     } as SiteElement;
 
     const parentElem = this.allElements.find(
@@ -212,6 +225,29 @@ export class ViewSiteService {
     this.updatePage();
     this.updateCurrentElem();
     this.lastElemRef = newElem.elementRef;
+  }
+
+  toggleElemActive(elemRef: number, state: boolean = null): boolean {
+    if (elemRef === 1) {
+      // can't remove main parent element
+      return false;
+    }
+
+    const elem = this.allElements.find(el => el.elementRef === elemRef);
+
+    elem.isActive = state === null ? !elem.isActive : state;
+
+    this.updateCurrentElem();
+
+    return true;
+  }
+
+  elementsRemoved(): number[] {
+    return this.allElements.reduce(
+      (filtered, elem) =>
+        !elem.isActive ? filtered.concat(elem.elementRef) : filtered,
+      [] as number[]
+    );
   }
 
   saveSite(cleanUp: boolean = true): void {

@@ -1,13 +1,12 @@
 .elem-block {
-  display: inherit;
+  display: contents;
 
   .elem {
-    display: inline-block;
     border: 1px solid;
-    overflow: hidden;
+    float: left;
   }
 }
 
 .elem-container {
-  display: inherit;
+  display: contents;
 }

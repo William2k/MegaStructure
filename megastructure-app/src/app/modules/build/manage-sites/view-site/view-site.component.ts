@@ -4,9 +4,9 @@ import {
   OnDestroy,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { takeUntil, switchMap, skip } from 'rxjs/operators';
+import { takeUntil, switchMap } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 
 import { getUserSites } from 'src/app/store/site-store/selectors';
@@ -26,6 +26,7 @@ export class ViewSiteComponent implements OnInit, OnDestroy {
 
   constructor(
     private store$: Store<RootStoreState.State>,
+    private router: Router,
     private route: ActivatedRoute,
     private viewSiteService: ViewSiteService
   ) {}
@@ -46,9 +47,12 @@ export class ViewSiteComponent implements OnInit, OnDestroy {
         })
       )
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(sites =>
-        this.viewSiteService.initialise(sitename, link, sites)
-      );
+      .subscribe(sites => {
+        const valid = this.viewSiteService.initialise(sitename, link, sites);
+        if (!valid) {
+          this.router.navigate(['build', 'manage-sites']);
+        }
+      });
   }
 
   ngOnDestroy(): void {
