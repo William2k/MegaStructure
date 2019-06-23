@@ -3,14 +3,13 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import config from "..";
-
-const routes = express.Router();
 import userModels from "../../app/models/user.model";
 
-let User = userModels.user as any;
+const routes = express.Router();
+const User = userModels.user as any;
 
 routes.route("/").post((req, res) => {
-  let user = new User(req.body);
+  const user = new User(req.body);
 
   const normalisedUsername = user.username.toLowerCase();
 
@@ -23,10 +22,10 @@ routes.route("/").post((req, res) => {
 
       user
         .save()
-        .then(user => {
+        .then(savedUser => {
           res.status(201).json("user added successfully");
         })
-        .catch(err => {
+        .catch(error => {
           res.status(400).send("adding new user failed");
         });
     }
@@ -34,7 +33,7 @@ routes.route("/").post((req, res) => {
 });
 
 routes.route("/login").post((req, res) => {
-  let user = req.body;
+  const user = req.body;
 
   const normalisedUsername = user.username.toLowerCase();
 

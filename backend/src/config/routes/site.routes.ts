@@ -4,7 +4,7 @@ const routes = express.Router();
 
 import siteModels from "../../app/models/site.model";
 
-let Site = siteModels.site;
+const Site = siteModels.site;
 
 routes.route("/").get((req: any, res) => {
   const currentUser = req.decoded.normalisedUsername;
@@ -51,7 +51,7 @@ routes.route("/:sitename").get((req: any, res) => {
 
 routes.route("/").post((req: any, res) => {
   const currentUser = req.decoded.normalisedUsername;
-  let site = req.body;
+  const site = req.body;
   site.lastModified = { user: currentUser, date: new Date() };
   const managers = [...site.managers, currentUser];
   site.managers = [...new Set(managers)];
@@ -82,7 +82,7 @@ routes.route("/:sitename/page/:pageref").get((req: any, res) => {
       $match: {
         name: siteName,
         managers: req.decoded.normalisedUsername,
-        pages: { $elemMatch: { pageRef: pageRef } }
+        pages: { $elemMatch: { pageRef } }
       }
     },
     { $project: { page: { $arrayElemAt: ["$pages", 0] } } }

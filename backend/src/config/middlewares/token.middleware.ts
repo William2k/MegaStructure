@@ -3,11 +3,7 @@ import { Response, NextFunction, Request } from "express";
 
 import config from "..";
 
-const checkToken = (
-  req: any,
-  res: Response,
-  next: NextFunction
-) => {
+const checkToken = (req: any, res: Response, next: NextFunction) => {
   let token = (req.headers["x-access-token"] ||
     req.headers.authorization) as string;
 
@@ -41,4 +37,3 @@ const checkToken = (
 };
 
 export default { checkToken };
-

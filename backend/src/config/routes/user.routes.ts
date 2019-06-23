@@ -3,7 +3,7 @@ const routes = express.Router();
 
 import userModels from "../../app/models/user.model";
 
-let User = userModels.user as any;
+const User = userModels.user as any;
 
 routes.route("/").get((req: any, res) => {
   User.findOne({ normalisedUsername: req.decoded.normalisedUsername })
@@ -18,7 +18,7 @@ routes.route("/").get((req: any, res) => {
         res.status(400).send("Login attepted failed");
       }
     })
-    .catch((err: any)=> console.log(err));
+    .catch((err: any) => console.log(err));
 });
 
 export default routes;
