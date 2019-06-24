@@ -45,13 +45,43 @@ export class SiteEffects {
       siteActions.ActionTypes.SAVE_PAGE_REQUEST
     ),
     concatMap(action =>
-      this.siteService.addPage(action.payload.sitename, action.payload.page).pipe(
-        map(result => new siteActions.SavePageSuccessAction({ result })),
-        catchError(error =>
-          of(new siteActions.SavePageFailureAction({ error }))
+      this.siteService
+        .addPage(action.payload.sitename, action.payload.page)
+        .pipe(
+          map(result => new siteActions.SavePageSuccessAction({ result })),
+          catchError(error =>
+            of(new siteActions.SavePageFailureAction({ error }))
+          )
         )
-      )
     ),
+    share()
+  );
+
+  @Effect()
+  GetSiteRequestEffect$: Observable<Action> = this.actions.pipe(
+    ofType<siteActions.GetSiteRequestAction>(
+      siteActions.ActionTypes.GET_SITE_REQUEST
+    ),
+    withLatestFrom(this.store$),
+    concatMap(([action, state]) => {
+      const siteFound = state.site.sites.find(
+        site =>
+          site.name.toLowerCase() === action.payload.sitename.toLowerCase()
+      );
+
+      const source = siteFound
+        ? of(siteFound)
+        : this.siteService.getSite(action.payload.sitename);
+
+      return source.pipe(
+        map(result => {
+          return siteFound
+            ? new siteActions.GetSiteSkipAction()
+            : new siteActions.GetSiteSuccessAction({ result });
+        }),
+        catchError(error => of(new siteActions.GetSiteFailureAction({ error })))
+      );
+    }),
     share()
   );
 
@@ -91,24 +121,30 @@ export class SiteEffects {
     ),
     withLatestFrom(this.store$),
     concatMap(([action, state]) => {
-      const site = state.site.sites.find(m => m.name.toLowerCase() === action.payload.sitename.toLowerCase());
+      const site = state.site.sites.find(
+        m => m.name.toLowerCase() === action.payload.sitename.toLowerCase()
+      );
       const page = site.pages.find(m => m.pageRef === action.payload.pageRef);
 
       const fetched = !!page.content;
 
       const source = fetched
         ? of(page)
-        : this.siteService.getPage(action.payload.sitename, action.payload.pageRef);
+        : this.siteService.getPage(
+            action.payload.sitename,
+            action.payload.pageRef
+          );
 
       return source.pipe(
         map(result => {
           return fetched
             ? new siteActions.GetPageSkipAction()
-            : new siteActions.GetPageSuccessAction({ sitename: site.name, page: result });
+            : new siteActions.GetPageSuccessAction({
+                sitename: site.name,
+                page: result
+              });
         }),
-        catchError(error =>
-          of(new siteActions.GetPageFailureAction({ error }))
-        )
+        catchError(error => of(new siteActions.GetPageFailureAction({ error })))
       );
     }),
     share()

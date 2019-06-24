@@ -37,10 +37,17 @@ routes.route("/:sitename").get((req: any, res) => {
   const currentUser = req.decoded.normalisedUsername;
   const siteName = req.params.sitename;
 
-  Site.find({
-    $or: [{ owner: currentUser }, { managers: currentUser }],
-    name: siteName
-  })
+  Site.find(
+    {
+      $or: [
+        { owner: currentUser },
+        { managers: currentUser },
+        { isActive: true }
+      ],
+      name: siteName
+    },
+    { "pages.content": 0 }
+  )
     .then((resultSite, err) => {
       resultSite.length
         ? res.json(resultSite[0])

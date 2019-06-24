@@ -4,7 +4,12 @@ import { AuthGuard } from './core/auth-guard';
 
 const routes: Routes = [
   { path: '', loadChildren: './modules/home/home.module#HomeModule' },
-  { path: 'build', loadChildren: './modules/build/build.module#BuildModule', canActivate: [AuthGuard] },
+  {
+    path: 'build',
+    loadChildren: './modules/build/build.module#BuildModule',
+    canActivate: [AuthGuard]
+  },
+  { path: 'site', loadChildren: './modules/site/site.module#SiteModule' },
   { path: '**', redirectTo: '' }
 ];
 

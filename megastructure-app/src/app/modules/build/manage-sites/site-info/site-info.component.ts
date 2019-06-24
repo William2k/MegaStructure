@@ -30,6 +30,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
     this.siteForm = fb.group({
       name: ['', [Validators.required]],
       type: ['', [Validators.required]],
+      isActive: [false, [Validators.required]],
       managers: fb.array([this.createManager()])
     });
 
@@ -42,6 +43,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
     if (this.site.name) {
       this.siteForm.controls.name.setValue(this.site.name);
       this.siteForm.controls.type.setValue(this.site.type);
+      this.siteForm.controls.isActive.setValue(this.site.isActive);
 
       const managerControls = this.siteForm.get('managers') as FormArray;
 

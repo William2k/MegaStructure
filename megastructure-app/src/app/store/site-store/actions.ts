@@ -2,6 +2,10 @@ import { Action } from '@ngrx/store';
 import { Site, SitePage } from 'src/app/core/models/site.model';
 
 export enum ActionTypes {
+  GET_SITE_REQUEST = '[Site] Get Site Request',
+  GET_SITE_SKIP = '[Site] Get Site Skip',
+  GET_SITE_FAILURE = '[Site] Get Site Failure',
+  GET_SITE_SUCCESS = '[Site] Get Site Success',
   GET_SITES_REQUEST = '[Site] Get Sites Request',
   GET_SITES_SKIP = '[Site] Get Sites Skip',
   GET_SITES_FAILURE = '[Site] Get Sites Failure',
@@ -16,6 +20,26 @@ export enum ActionTypes {
   SAVE_PAGE_REQUEST = '[Site] Save Page Request',
   SAVE_PAGE_FAILURE = '[Site] Save Page Failure',
   SAVE_PAGE_SUCCESS = '[Site] Save Page Success'
+}
+
+// Get Site
+export class GetSiteRequestAction implements Action {
+  readonly type = ActionTypes.GET_SITE_REQUEST;
+  constructor(public payload: { sitename: string }) {}
+}
+
+export class GetSiteFailureAction implements Action {
+  readonly type = ActionTypes.GET_SITE_FAILURE;
+  constructor(public payload: { error: string }) {}
+}
+
+export class GetSiteSkipAction implements Action {
+  readonly type = ActionTypes.GET_SITE_SKIP;
+}
+
+export class GetSiteSuccessAction implements Action {
+  readonly type = ActionTypes.GET_SITE_SUCCESS;
+  constructor(public payload: { result: Site }) {}
 }
 
 // Get Sites
@@ -56,7 +80,7 @@ export class SaveSiteSuccessAction implements Action {
 // Get Page
 export class GetPageRequestAction implements Action {
   readonly type = ActionTypes.GET_PAGE_REQUEST;
-  constructor(public payload: { sitename: string, pageRef: number }) {}
+  constructor(public payload: { sitename: string; pageRef: number }) {}
 }
 
 export class GetPageFailureAction implements Action {
@@ -70,7 +94,7 @@ export class GetPageSkipAction implements Action {
 
 export class GetPageSuccessAction implements Action {
   readonly type = ActionTypes.GET_PAGE_SUCCESS;
-  constructor(public payload: { sitename: string, page: SitePage }) {}
+  constructor(public payload: { sitename: string; page: SitePage }) {}
 }
 
 // Save Page
@@ -90,6 +114,10 @@ export class SavePageSuccessAction implements Action {
 }
 
 export type Actions =
+  | GetSiteRequestAction
+  | GetSiteSkipAction
+  | GetSiteFailureAction
+  | GetSiteSuccessAction
   | GetSitesRequestAction
   | GetSitesSkipAction
   | GetSitesFailureAction

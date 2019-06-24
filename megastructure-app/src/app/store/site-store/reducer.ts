@@ -3,6 +3,40 @@ import { initialState, State } from './state';
 
 export const siteReducer = (state = initialState, action: Actions): State => {
   switch (action.type) {
+    case ActionTypes.GET_SITE_REQUEST: {
+      return {
+        ...state,
+        fetchingSites: true
+      };
+    }
+    case ActionTypes.GET_SITE_SKIP: {
+      return {
+        ...state,
+        fetchingSites: false
+      };
+    }
+    case ActionTypes.GET_SITE_SUCCESS: {
+      return {
+        ...state,
+        fetchingSites: false,
+        lastFetch: new Date(),
+        sites: [
+          ...state.sites.filter(
+            site =>
+              site.name.toLowerCase() !==
+              action.payload.result.name.toLowerCase()
+          ),
+          action.payload.result
+        ]
+      };
+    }
+    case ActionTypes.GET_SITE_FAILURE: {
+      return {
+        ...state,
+        fetchingSites: false,
+        error: action.payload.error
+      };
+    }
     case ActionTypes.GET_SITES_REQUEST: {
       return {
         ...state,

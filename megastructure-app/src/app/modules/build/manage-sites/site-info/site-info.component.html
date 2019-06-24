@@ -28,48 +28,55 @@
       </mat-form-field>
     </div>
 
+    <div>
+      <mat-checkbox color="primary" formControlName="isActive">
+        Is Active
+      </mat-checkbox>
+    </div>
+
     <fieldset>
-    <label>Managers: </label>
+      <label>Managers: </label>
 
-    <ul class="list-unstyled">
-      <li
-        formArrayName="managers"
-        *ngFor="
-          let manager of siteForm.get('managers')['controls'];
-          let i = index
-        "
-      >
-        <ng-template
-          [ngIf]="i !== siteForm.get('managers')['controls'].length - 1"
-          [ngIfElse]="addManagerInput"
+      <ul class="list-unstyled">
+        <li
+          formArrayName="managers"
+          *ngFor="
+            let manager of siteForm.get('managers')['controls'];
+            let i = index
+          "
         >
-          <div>
-            {{ manager.controls.username.value }}
-            <fa class="close-icon"
-              name="close"
-              (click)="removeManager(i)"
-              *ngIf="manager.controls.username.value"
-            ></fa>
-          </div>
-        </ng-template>
+          <ng-template
+            [ngIf]="i !== siteForm.get('managers')['controls'].length - 1"
+            [ngIfElse]="addManagerInput"
+          >
+            <div>
+              {{ manager.controls.username.value }}
+              <fa
+                class="close-icon"
+                name="close"
+                (click)="removeManager(i)"
+                *ngIf="manager.controls.username.value"
+              ></fa>
+            </div>
+          </ng-template>
 
-        <ng-template #addManagerInput>
-          <div [formGroupName]="i">
-            <mat-form-field>
-              <input
-                matInput
-                placeholder="Add Manager"
-                formControlName="username"
-              />
-            </mat-form-field>
-            <button mat-flat-button type="button" (click)="addManager()">
-              <fa name="plus"></fa>
-            </button>
-          </div>
-        </ng-template>
-      </li>
-    </ul>
-  </fieldset>
+          <ng-template #addManagerInput>
+            <div [formGroupName]="i">
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="Add Manager"
+                  formControlName="username"
+                />
+              </mat-form-field>
+              <button mat-flat-button type="button" (click)="addManager()">
+                <fa name="plus"></fa>
+              </button>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+    </fieldset>
     <div *ngIf="siteForm.errors">
       <span *ngFor="let error of siteForm.errors">{{ error }}</span>
     </div>
