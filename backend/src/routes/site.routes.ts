@@ -40,8 +40,7 @@ routes.route("/:sitename").get((req: any, res) => {
     {
       $or: [
         { owner: currentUser },
-        { managers: currentUser },
-        { isActive: true }
+        { managers: currentUser }
       ],
       name: siteName
     },

@@ -3,13 +3,22 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './core/auth-guard';
 
 const routes: Routes = [
-  { path: '', loadChildren: './modules/home/home.module#HomeModule' },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./modules/home/home.module').then(mod => mod.HomeModule)
+  },
   {
     path: 'build',
-    loadChildren: './modules/build/build.module#BuildModule',
-    canActivate: [AuthGuard]
+    loadChildren: () =>
+      import('./modules/build/build.module').then(mod => mod.BuildModule),
+    canLoad: [AuthGuard]
   },
-  { path: 'site', loadChildren: './modules/site/site.module#SiteModule' },
+  {
+    path: 'site',
+    loadChildren: () =>
+      import('./modules/site/site.module').then(mod => mod.SiteModule)
+  },
   { path: '**', redirectTo: '' }
 ];
 

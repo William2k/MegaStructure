@@ -8,17 +8,38 @@ const Site = siteModels.site as any;
 routes.route("/live/:sitename").get((req, res) => {
   const siteName = req.params.sitename;
 
-  Site.find(
+  Site.aggregate([
+    { $match: { isActive: true, name: siteName } },
     {
-      isActive: true,
-      name: siteName
-    },
-    { "pages.content": 0 }
-  )
-    .then((resultSite, err) => {
-      resultSite.length
-        ? res.json(resultSite[0])
-        : res.status(400).send("Site not found");
+      $project: {
+        name: "$name",
+        isActive: "$isActive",
+        managers: "$managers",
+        lastModified: "$lastModified",
+        type: "$type",
+        pages: {
+          $filter: {
+            input: "$pages",
+            as: "page",
+            cond: { $eq: ["$$page.isActive", true] }
+          }
+        }
+      }
+    }
+  ])
+    .then((result, err) => {
+      if (result.length) {
+        const resultSite = result[0];
+
+        resultSite.pages = resultSite.pages.map(page => {
+          page.content = null;
+          return page;
+        });
+
+        res.json(resultSite);
+      } else {
+        res.status(400).send("Site not found");
+      }
     })
     .catch(err => res.status(400).send("Error finding site"));
 });

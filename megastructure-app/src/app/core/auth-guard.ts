@@ -10,7 +10,7 @@ import { AccountService } from './services/account.service';
 import { takeUntil } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthGuard implements CanActivate, OnInit {
   private userLoggedIn: boolean;
@@ -27,7 +27,18 @@ export class AuthGuard implements CanActivate, OnInit {
     this.unsubscribe$.complete();
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean {
+    return this.loggedInGuard(state);
+  }
+
+  canLoad(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    return this.loggedInGuard(state);
+  }
+
+  loggedInGuard(state: RouterStateSnapshot): boolean {
     if (!this.userLoggedIn) {
       this.router.navigate(['/login'], {
         queryParams: { returnUrl: state.url }
