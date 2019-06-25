@@ -59,8 +59,11 @@ export class SiteEffects {
 
   @Effect()
   GetSiteRequestEffect$: Observable<Action> = this.actions.pipe(
-    ofType<siteActions.GetSiteRequestAction>(
-      siteActions.ActionTypes.GET_SITE_REQUEST
+    ofType<
+      siteActions.GetSiteRequestAction | siteActions.GetLiveSiteRequestAction
+    >(
+      siteActions.ActionTypes.GET_SITE_REQUEST,
+      siteActions.ActionTypes.GET_LIVE_SITE_REQUEST
     ),
     withLatestFrom(this.store$),
     concatMap(([action, state]) => {
@@ -71,7 +74,10 @@ export class SiteEffects {
 
       const source = siteFound
         ? of(siteFound)
-        : this.siteService.getSite(action.payload.sitename);
+        : this.siteService.getSite(
+            action.payload.sitename,
+            action.type === siteActions.ActionTypes.GET_LIVE_SITE_REQUEST
+          );
 
       return source.pipe(
         map(result => {
@@ -116,8 +122,11 @@ export class SiteEffects {
 
   @Effect()
   GetPageRequestEffect$: Observable<Action> = this.actions.pipe(
-    ofType<siteActions.GetPageRequestAction>(
-      siteActions.ActionTypes.GET_PAGE_REQUEST
+    ofType<
+      siteActions.GetPageRequestAction | siteActions.GetLivePageRequestAction
+    >(
+      siteActions.ActionTypes.GET_PAGE_REQUEST,
+      siteActions.ActionTypes.GET_LIVE_PAGE_REQUEST
     ),
     withLatestFrom(this.store$),
     concatMap(([action, state]) => {
@@ -132,7 +141,8 @@ export class SiteEffects {
         ? of(page)
         : this.siteService.getPage(
             action.payload.sitename,
-            action.payload.pageRef
+            action.payload.pageRef,
+            action.type === siteActions.ActionTypes.GET_LIVE_PAGE_REQUEST
           );
 
       return source.pipe(

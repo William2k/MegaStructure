@@ -1,3 +1,3 @@
-<ng-template *ngIf="currentPage$ | async as currentPage">
-
-</ng-template>
+<div class="element-container" *ngIf="currentPage">
+  <app-element [element]="currentPage.content"></app-element>
+</div>

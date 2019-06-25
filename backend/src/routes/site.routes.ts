@@ -1,9 +1,8 @@
 import express from "express";
 
-const routes = express.Router();
-
 import siteModels from "../models/site.model";
 
+const routes = express.Router();
 const Site = siteModels.site as any;
 
 routes.route("/").get((req: any, res) => {

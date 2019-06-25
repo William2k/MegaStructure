@@ -1,8 +1,8 @@
 import express from "express";
-const routes = express.Router();
 
 import userModels from "../models/user.model";
 
+const routes = express.Router();
 const User = userModels.user as any;
 
 routes.route("/").get((req: any, res) => {

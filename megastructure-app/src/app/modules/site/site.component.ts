@@ -1,22 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { switchMap, take, skip } from 'rxjs/operators';
 
 import { RootStoreState } from 'src/app/store';
-import { GetSiteRequestAction } from 'src/app/store/site-store/actions';
-import { SitePage } from 'src/app/core/models/site.model';
+import {
+  GetLiveSiteRequestAction,
+  GetLivePageRequestAction
+} from 'src/app/store/site-store/actions';
+import { SitePage, Site } from 'src/app/core/models/site.model';
 import { getSiteState } from 'src/app/store/site-store/selectors';
-import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-site',
   templateUrl: './site.component.html',
   styleUrls: ['./site.component.scss']
 })
-export class SiteComponent implements OnInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
-  currentPage$: Subject<SitePage>;
+export class SiteComponent implements OnInit {
+  currentPage: SitePage;
 
   constructor(
     private store$: Store<RootStoreState.State>,
@@ -26,24 +27,49 @@ export class SiteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     let sitename: string;
-    let page: string;
+    let pageLink: string;
 
     this.route.params
       .pipe(
         switchMap(params => {
           sitename = params.sitename || '';
-          page = params.page || '';
+          pageLink = params.page || '';
 
-          this.store$.dispatch(new GetSiteRequestAction({ sitename }));
+          this.store$.dispatch(new GetLiveSiteRequestAction({ sitename }));
 
           return this.store$.select(getSiteState);
-        })
+        }),
+        skip(1),
+        take(1)
       )
-      .subscribe(siteState => console.log(sitename));
+      .subscribe(siteState => {
+        const currentSite = siteState.sites.find(
+          site => site.name.toLowerCase() === sitename.toLowerCase()
+        );
+
+        this.intialise(currentSite, pageLink);
+      });
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  intialise(currentSite: Site, pageLink: string): void {
+    if (!currentSite) {
+      this.router.navigate(['site', 'not-found']);
+      return;
+    }
+
+    const currentPage = currentSite.pages.find(
+      page => page.link.toLowerCase() === pageLink.toLowerCase()
+    );
+
+    this.currentPage = currentPage;
+
+    if (!currentPage.content) {
+      this.store$.dispatch(
+        new GetLivePageRequestAction({
+          sitename: currentSite.name,
+          pageRef: currentPage.pageRef
+        })
+      );
+    }
   }
 }

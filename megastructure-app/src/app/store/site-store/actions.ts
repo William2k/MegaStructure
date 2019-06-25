@@ -3,6 +3,7 @@ import { Site, SitePage } from 'src/app/core/models/site.model';
 
 export enum ActionTypes {
   GET_SITE_REQUEST = '[Site] Get Site Request',
+  GET_LIVE_SITE_REQUEST = '[Site] Get Live Site Request',
   GET_SITE_SKIP = '[Site] Get Site Skip',
   GET_SITE_FAILURE = '[Site] Get Site Failure',
   GET_SITE_SUCCESS = '[Site] Get Site Success',
@@ -14,6 +15,7 @@ export enum ActionTypes {
   SAVE_SITE_FAILURE = '[Site] Save Site Failure',
   SAVE_SITE_SUCCESS = '[Site] Save Site Success',
   GET_PAGE_REQUEST = '[Site] Get Page Request',
+  GET_LIVE_PAGE_REQUEST = '[Site] Get Live Page Request',
   GET_PAGE_SKIP = '[Site] Get Page Skip',
   GET_PAGE_FAILURE = '[Site] Get Page Failure',
   GET_PAGE_SUCCESS = '[Site] Get Page Success',
@@ -25,6 +27,11 @@ export enum ActionTypes {
 // Get Site
 export class GetSiteRequestAction implements Action {
   readonly type = ActionTypes.GET_SITE_REQUEST;
+  constructor(public payload: { sitename: string }) {}
+}
+
+export class GetLiveSiteRequestAction implements Action {
+  readonly type = ActionTypes.GET_LIVE_SITE_REQUEST;
   constructor(public payload: { sitename: string }) {}
 }
 
@@ -83,6 +90,11 @@ export class GetPageRequestAction implements Action {
   constructor(public payload: { sitename: string; pageRef: number }) {}
 }
 
+export class GetLivePageRequestAction implements Action {
+  readonly type = ActionTypes.GET_LIVE_PAGE_REQUEST;
+  constructor(public payload: { sitename: string; pageRef: number }) {}
+}
+
 export class GetPageFailureAction implements Action {
   readonly type = ActionTypes.GET_PAGE_FAILURE;
   constructor(public payload: { error: string }) {}
@@ -115,6 +127,7 @@ export class SavePageSuccessAction implements Action {
 
 export type Actions =
   | GetSiteRequestAction
+  | GetLiveSiteRequestAction
   | GetSiteSkipAction
   | GetSiteFailureAction
   | GetSiteSuccessAction
@@ -126,6 +139,7 @@ export type Actions =
   | SaveSiteFailureAction
   | SaveSiteSuccessAction
   | GetPageRequestAction
+  | GetLivePageRequestAction
   | GetPageSkipAction
   | GetPageFailureAction
   | GetPageSuccessAction

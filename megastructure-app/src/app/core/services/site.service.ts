@@ -14,16 +14,22 @@ export class SiteService {
     return this.apiService.get('site');
   }
 
-  getSite(sitename: string): Observable<Site> {
-    return this.apiService.get(`site/${sitename}`);
+  getSite(sitename: string, live: boolean = false): Observable<Site> {
+    return this.apiService.get(`site/${live ? 'live/' : ''}${sitename}`);
   }
 
   addSite(site: Site): Observable<Site> {
     return this.apiService.post('site', site);
   }
 
-  getPage(sitename: string, pageRef: number): Observable<SitePage> {
-    return this.apiService.get(`site/${sitename}/page/${pageRef}`);
+  getPage(
+    sitename: string,
+    pageRef: number,
+    live: boolean = false
+  ): Observable<SitePage> {
+    return this.apiService.get(
+      `site/${live ? 'live/' : ''}${sitename}/page/${pageRef}`
+    );
   }
 
   addPage(sitename: string, page: SitePage): Observable<Site> {

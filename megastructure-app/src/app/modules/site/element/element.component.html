@@ -1,0 +1,47 @@
+<ng-container *ngIf="element && element.isActive" [ngSwitch]="element.type">
+  <main
+    [class]="'elem ' + (element.styles | jssStyleStatic)"
+    *ngSwitchCase="typeEnums.main"
+    #containerElem
+  >
+    <app-element
+      *ngFor="let elem of element.childElements; trackBy: elemTrackByFn"
+      [element]="elem"
+    ></app-element>
+  </main>
+
+  <section
+    [class]="'elem ' + (element.styles | jssStyleStatic)"
+    *ngSwitchCase="typeEnums.section"
+    #containerElem
+  >
+    <app-element
+      *ngFor="let elem of element.childElements; trackBy: elemTrackByFn"
+      [element]="elem"
+    ></app-element>
+  </section>
+
+  <div
+    [class]="'elem ' + (element.styles | jssStyleStatic)"
+    *ngSwitchDefault
+    #containerElem
+  >
+    <app-element
+      *ngFor="let elem of element.childElements; trackBy: elemTrackByFn"
+      [element]="elem"
+    ></app-element>
+  </div>
+
+  <p
+    [class]="'elem ' + (element.styles | jssStyleStatic)"
+    *ngSwitchCase="typeEnums.text"
+    #containerElem
+  >{{element.textContent}}</p>
+
+  <img
+    [class]="'elem ' + (element.styles | jssStyleStatic)"
+    *ngSwitchCase="typeEnums.image"
+    [src]="element.attributes['src']"
+    #containerElem
+  />
+</ng-container>

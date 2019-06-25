@@ -3,6 +3,7 @@ import { initialState, State } from './state';
 
 export const siteReducer = (state = initialState, action: Actions): State => {
   switch (action.type) {
+    case ActionTypes.GET_LIVE_SITE_REQUEST:
     case ActionTypes.GET_SITE_REQUEST: {
       return {
         ...state,
@@ -89,6 +90,7 @@ export const siteReducer = (state = initialState, action: Actions): State => {
         error: action.payload.error
       };
     }
+    case ActionTypes.GET_LIVE_PAGE_REQUEST:
     case ActionTypes.GET_PAGE_REQUEST: {
       return {
         ...state,

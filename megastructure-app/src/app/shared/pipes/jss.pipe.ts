@@ -11,3 +11,15 @@ export class JssPipe implements PipeTransform {
     return sheet.classes.main;
   }
 }
+
+@Pipe({ name: 'jssStyleStatic' })
+export class StaticJssPipe implements PipeTransform {
+  transform(styleObj: object): any {
+    const sheet = jss
+      .createStyleSheet(styleObj, { link: true })
+      .attach() as any;
+
+    return sheet.classes.main;
+  }
+}
+
