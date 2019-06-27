@@ -12,15 +12,15 @@ import { Subject, Observable } from 'rxjs';
 import { getUserSites } from 'src/app/store/site-store/selectors';
 import { RootStoreState } from 'src/app/store';
 import { SitePage } from 'src/app/core/models/site.model';
-import { ViewSiteService } from './view-site.service';
+import { EditSiteService } from './edit-site.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'app-view-site',
-  templateUrl: './view-site.component.html',
-  styleUrls: ['./view-site.component.scss']
+  selector: 'app-edit-site',
+  templateUrl: './edit-site.component.html',
+  styleUrls: ['./edit-site.component.scss']
 })
-export class ViewSiteComponent implements OnInit, OnDestroy {
+export class EditSiteComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   currentPage$: Observable<SitePage>;
 
@@ -28,14 +28,14 @@ export class ViewSiteComponent implements OnInit, OnDestroy {
     private store$: Store<RootStoreState.State>,
     private router: Router,
     private route: ActivatedRoute,
-    private viewSiteService: ViewSiteService
+    private editSiteService: EditSiteService
   ) {}
 
   ngOnInit(): void {
     let link: string;
     let sitename: string;
 
-    this.currentPage$ = this.viewSiteService.currentPage$;
+    this.currentPage$ = this.editSiteService.currentPage$;
 
     this.route.params
       .pipe(
@@ -48,7 +48,7 @@ export class ViewSiteComponent implements OnInit, OnDestroy {
       )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(sites => {
-        const valid = this.viewSiteService.initialise(sitename, link, sites);
+        const valid = this.editSiteService.initialise(sitename, link, sites);
         if (!valid) {
           this.router.navigate(['build', 'manage-sites']);
         }
@@ -61,6 +61,6 @@ export class ViewSiteComponent implements OnInit, OnDestroy {
   }
 
   addElem(parentRef: number): void {
-    this.viewSiteService.addElem(parentRef);
+    this.editSiteService.addElem(parentRef);
   }
 }

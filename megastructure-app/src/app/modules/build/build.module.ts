@@ -7,10 +7,10 @@ import { BuildRoutingModule } from './build-routing.module';
 import { BuildNavComponent } from 'src/app/layouts/build/nav/build-nav.component';
 import { ManageSitesComponent } from './manage-sites/manage-sites.component';
 import { SiteInfoComponent } from './manage-sites/site-info/site-info.component';
-import { ViewSiteComponent } from './manage-sites/view-site/view-site.component';
-import { SiteElementComponent } from './manage-sites/view-site/site-element/site-element.component';
-import { ViewSiteServiceModule } from './manage-sites/view-site/view-site-service-module';
-import { EditElementComponent } from './manage-sites/view-site/edit-element/edit-element.component';
+import { EditSiteComponent } from './manage-sites/edit-site/edit-site.component';
+import { SiteElementComponent } from './manage-sites/edit-site/site-element/site-element.component';
+import { EditSiteServiceModule } from './manage-sites/edit-site/edit-site-service-module';
+import { EditElementComponent } from './manage-sites/edit-site/edit-element/edit-element.component';
 import { JssPipe } from 'src/app/shared/pipes/jss.pipe';
 
 @NgModule({
@@ -21,11 +21,11 @@ import { JssPipe } from 'src/app/shared/pipes/jss.pipe';
     BuildNavComponent,
     ManageSitesComponent,
     SiteInfoComponent,
-    ViewSiteComponent,
+    EditSiteComponent,
     SiteElementComponent,
     EditElementComponent
   ],
-  imports: [BuildRoutingModule, SharedModule, ViewSiteServiceModule],
+  imports: [BuildRoutingModule, SharedModule, EditSiteServiceModule],
   entryComponents: [SiteInfoComponent],
   exports: [],
   providers: []

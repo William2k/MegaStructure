@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { SiteElement, SiteElementTypes } from 'src/app/core/models/site.model';
-import { ViewSiteService } from '../view-site.service';
+import { EditSiteService } from '../edit-site.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,7 +30,7 @@ export class SiteElementComponent implements OnInit, OnDestroy {
 
   constructor(
     private renderer: Renderer2,
-    private viewSiteService: ViewSiteService,
+    private editSiteService: EditSiteService,
     private cdRef: ChangeDetectorRef
   ) {}
 
@@ -45,7 +45,7 @@ export class SiteElementComponent implements OnInit, OnDestroy {
 
     this.siteElement.styles = this.siteElement.styles || style;
 
-    this.viewSiteService.elemChangeDetection$
+    this.editSiteService.elemChangeDetection$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((el: number) => {
         if (el === this.siteElement.elementRef) {
@@ -53,7 +53,7 @@ export class SiteElementComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.viewSiteService.updateAttributes$
+    this.editSiteService.updateAttributes$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(el => {
         if (el === this.siteElement.elementRef) {
@@ -86,7 +86,7 @@ export class SiteElementComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.viewSiteService.toggleEditingElem(this.siteElement.elementRef);
+    this.editSiteService.toggleEditingElem(this.siteElement.elementRef);
   }
 
   elemTrackByFn(index: number, item: SiteElement): number {

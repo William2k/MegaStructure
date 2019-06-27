@@ -5,7 +5,7 @@ import { BuildComponent } from './build,component';
 import { BuildLayoutComponent } from 'src/app/layouts/build/layout/build-layout.component';
 import { ManageSitesComponent } from './manage-sites/manage-sites.component';
 import { SiteResolver } from './resolvers/site.resolver';
-import { ViewSiteComponent } from './manage-sites/view-site/view-site.component';
+import { EditSiteComponent } from './manage-sites/edit-site/edit-site.component';
 
 const routes: Routes = [
   {
@@ -25,12 +25,12 @@ const routes: Routes = [
       },
       {
         path: 'manage-sites/view/:sitename',
-        component: ViewSiteComponent,
+        component: EditSiteComponent,
         resolve: { sites: SiteResolver }
       },
       {
         path: 'manage-sites/view/:sitename/:page',
-        component: ViewSiteComponent,
+        component: EditSiteComponent,
         resolve: { sites: SiteResolver }
       },
       {

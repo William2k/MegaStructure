@@ -3,7 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { RootStoreState } from 'src/app/store';
 import { Store } from '@ngrx/store';
 
-import { ViewSiteServiceModule } from './view-site-service-module';
+import { EditSiteServiceModule } from './edit-site-service-module';
 import {
   SiteElement,
   SiteElementTypes,
@@ -19,9 +19,9 @@ import {
 } from 'src/app/store/site-store/actions';
 
 @Injectable({
-  providedIn: ViewSiteServiceModule
+  providedIn: EditSiteServiceModule
 })
-export class ViewSiteService {
+export class EditSiteService {
   private baseSite = {
     pages: [
       {

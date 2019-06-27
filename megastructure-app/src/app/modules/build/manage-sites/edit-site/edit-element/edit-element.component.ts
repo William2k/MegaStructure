@@ -5,7 +5,7 @@ import {
   OnDestroy
 } from '@angular/core';
 
-import { ViewSiteService } from '../view-site.service';
+import { EditSiteService } from '../edit-site.service';
 import {
   SiteElement,
   SiteElementTypes,
@@ -32,13 +32,13 @@ export class EditElementComponent implements OnInit, OnDestroy {
   showEditOptions$: Observable<boolean>;
 
   constructor(
-    private viewSiteService: ViewSiteService,
+    private editSiteService: EditSiteService,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    this.showEditOptions$ = this.viewSiteService.showEditOptions$;
-    this.siteElement$ = this.viewSiteService.editingElem$;
+    this.showEditOptions$ = this.editSiteService.showEditOptions$;
+    this.siteElement$ = this.editSiteService.editingElem$;
 
     this.siteElement$
       .pipe(takeUntil(this.unsubscribe$))
@@ -62,11 +62,11 @@ export class EditElementComponent implements OnInit, OnDestroy {
   }
 
   addElemClick(parentRef: number): void {
-    this.viewSiteService.addElem(parentRef);
+    this.editSiteService.addElem(parentRef);
   }
 
   editClick(): void {
-    this.viewSiteService.toggleEditingOptions();
+    this.editSiteService.toggleEditingOptions();
   }
 
   addAttribute(elemRef: number): void {
@@ -74,7 +74,7 @@ export class EditElementComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.viewSiteService.addAttribute(elemRef, this.newAttr);
+    this.editSiteService.addAttribute(elemRef, this.newAttr);
 
     this.newAttr = {} as ElementAttribute;
   }
@@ -84,21 +84,21 @@ export class EditElementComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.viewSiteService.addStyle(elemRef, this.newStyle);
+    this.editSiteService.addStyle(elemRef, this.newStyle);
 
     this.newStyle = {} as CssStyle;
   }
 
   updateAttributes(elemRef: number) {
-    this.viewSiteService.updateElementAttributes(elemRef);
+    this.editSiteService.updateElementAttributes(elemRef);
   }
 
   updateComponent(): void {
-    this.viewSiteService.updateCurrentElem();
+    this.editSiteService.updateCurrentElem();
   }
 
   removeElem(elemRef: number): void {
-    const success = this.viewSiteService.toggleElemActive(elemRef, false);
+    const success = this.editSiteService.toggleElemActive(elemRef, false);
 
     this.snackBar
       .open(
@@ -112,13 +112,13 @@ export class EditElementComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         if (success) {
-          this.viewSiteService.toggleElemActive(elemRef);
+          this.editSiteService.toggleElemActive(elemRef);
         }
       });
   }
 
   savePage(): void {
-    this.viewSiteService.saveSite();
+    this.editSiteService.saveSite();
   }
 
   indexTrackByFn(index: number): number {
