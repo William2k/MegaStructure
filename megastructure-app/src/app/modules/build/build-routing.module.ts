@@ -24,12 +24,12 @@ const routes: Routes = [
         resolve: { sites: SiteResolver }
       },
       {
-        path: 'manage-sites/view/:sitename',
+        path: 'manage-sites/edit/:sitename',
         component: EditSiteComponent,
         resolve: { sites: SiteResolver }
       },
       {
-        path: 'manage-sites/view/:sitename/:page',
+        path: 'manage-sites/edit/:sitename/:page',
         component: EditSiteComponent,
         resolve: { sites: SiteResolver }
       },

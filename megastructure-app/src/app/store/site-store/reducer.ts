@@ -20,7 +20,6 @@ export const siteReducer = (state = initialState, action: Actions): State => {
       return {
         ...state,
         fetchingSites: false,
-        lastFetch: new Date(),
         sites: [
           ...state.sites.filter(
             site =>
