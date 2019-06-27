@@ -28,13 +28,18 @@
             mat-flat-button
           >
             <fa name="edit"></fa>
-            Edit
+            Edit Site Info
           </button>
         </li>
         <li>
           <button class="view-btn card-footer-btn" mat-flat-button [routerLink]="['view', site.name]">
+            <fa name="edit"></fa>
+            Edit Site
+          </button>
+
+          <button class="view-btn card-footer-btn" mat-flat-button [routerLink]="['/site', site.name]">
             <fa name="eye"></fa>
-            View Site
+            View Live Site
           </button>
         </li>
       </ul>

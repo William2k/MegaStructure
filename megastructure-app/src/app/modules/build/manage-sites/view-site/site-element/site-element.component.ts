@@ -37,6 +37,7 @@ export class SiteElementComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const style = {
       main: {
+        float: 'left',
         height: '100%',
         width: '100%'
       }

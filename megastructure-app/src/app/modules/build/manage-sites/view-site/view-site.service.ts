@@ -209,6 +209,7 @@ export class ViewSiteService {
       attributes: [],
       styles: {
         main: {
+          float: 'left',
           height: '50%',
           width: '50%'
         }

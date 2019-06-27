@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { switchMap, take, skip } from 'rxjs/operators';
+import { switchMap, take, skip, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 import { RootStoreState } from 'src/app/store';
 import {
@@ -16,7 +17,8 @@ import { getSiteState } from 'src/app/store/site-store/selectors';
   templateUrl: './site.component.html',
   styleUrls: ['./site.component.scss']
 })
-export class SiteComponent implements OnInit {
+export class SiteComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
   currentPage: SitePage;
 
   constructor(
@@ -39,16 +41,24 @@ export class SiteComponent implements OnInit {
 
           return this.store$.select(getSiteState);
         }),
-        skip(1),
-        take(1)
+        takeUntil(this.unsubscribe$)
       )
       .subscribe(siteState => {
+        if (siteState.fetchingSites || siteState.fetchingPage) {
+          return;
+        }
+
         const currentSite = siteState.sites.find(
           site => site.name.toLowerCase() === sitename.toLowerCase()
         );
 
         this.intialise(currentSite, pageLink);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   intialise(currentSite: Site, pageLink: string): void {
