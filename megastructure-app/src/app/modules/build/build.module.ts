@@ -13,6 +13,7 @@ import { EditSiteServiceModule } from './manage-sites/edit-site/edit-site-servic
 import { EditElementComponent } from './manage-sites/edit-site/edit-element/edit-element.component';
 import { JssPipe } from 'src/app/shared/pipes/jss.pipe';
 import { SiteMapComponent } from './manage-sites/site-map/site-map.component';
+import { PageComponent } from './manage-sites/site-map/page/page.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SiteMapComponent } from './manage-sites/site-map/site-map.component';
     SiteMapComponent,
     EditSiteComponent,
     SiteElementComponent,
-    EditElementComponent
+    EditElementComponent,
+    PageComponent
   ],
   imports: [BuildRoutingModule, SharedModule, EditSiteServiceModule],
   entryComponents: [SiteInfoComponent, SiteMapComponent],

@@ -5,7 +5,7 @@
   </label>
 </small>
 <mat-dialog-content class="mat-typography">
-
+<app-page [pageTree]="pagesTree" (addPage)="onAddPage($event)"></app-page>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="false">Cancel</button>

@@ -1,0 +1,21 @@
+<div>
+  <div class="page-info" [ngClass]="{active: pageTree.page.isActive}">
+    <h3 class="d-inline-block">
+      {{ pageTree.page.title }}
+    </h3>
+
+    <button mat-flat-button>
+      <fa name="edit"></fa>
+    </button>
+
+    <button mat-flat-button (click)="addPageClick()">
+        <fa name="plus"></fa>
+      </button>
+  </div>
+
+  <ul *ngIf="pageTree.subPages">
+    <li *ngFor="let childPage of pageTree.subPages">
+      <app-page [pageTree]="childPage" (addPage)="onAddPage($event)"></app-page>
+    </li>
+  </ul>
+</div>

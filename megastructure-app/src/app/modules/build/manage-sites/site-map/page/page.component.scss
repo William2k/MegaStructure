@@ -1,0 +1,13 @@
+h3 {
+  margin: 5px;
+}
+
+.page-info{
+    &.active{
+        background-color: aquamarine;
+    }
+
+    button{
+        background-color: transparent;
+    }
+}
