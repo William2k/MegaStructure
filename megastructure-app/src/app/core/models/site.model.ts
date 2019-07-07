@@ -23,6 +23,7 @@ export interface SitePage {
   title: string;
   link: string;
   content: SiteElement;
+  parentRef: number;
   isActive: boolean;
   delete: boolean;
 }
@@ -48,4 +49,9 @@ export interface ElementAttribute {
 export interface CssStyle {
   name: string;
   value: string;
+}
+
+export interface SitePageTree {
+  page: SitePage;
+  subPages: SitePageTree[];
 }

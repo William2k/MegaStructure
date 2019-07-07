@@ -1,0 +1,18 @@
+<h2 class="d-inline-block" mat-dialog-title>{{ site.name }} site map</h2>
+<small class="float-right" *ngIf="site.id">
+  <label [matTooltip]="'By ' + site.lastModified.user.toUpperCase()">
+    Last modified: {{ site.lastModified.date | date: "medium" }}
+  </label>
+</small>
+<mat-dialog-content class="mat-typography">
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false">Cancel</button>
+  <button
+    mat-flat-button
+    type="button"
+    color="primary"
+  >
+  </button>
+</mat-dialog-actions>

@@ -38,6 +38,11 @@ const routes: Routes = [
         component: ManageSitesComponent,
         resolve: { sites: SiteResolver }
       },
+      {
+        path: 'manage-sites/:sitename/map',
+        component: ManageSitesComponent,
+        resolve: { sites: SiteResolver }
+      },
       { path: '**', redirectTo: '' }
     ]
   }

@@ -28,6 +28,7 @@ export class EditSiteService {
         pageRef: 1,
         title: 'page one',
         link: '',
+        parentRef: 0,
         content: {
           elementRef: 1,
           type: SiteElementTypes.main,

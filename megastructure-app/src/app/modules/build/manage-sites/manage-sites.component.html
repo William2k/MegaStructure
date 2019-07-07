@@ -31,13 +31,33 @@
             Edit Site Info
           </button>
         </li>
+
         <li>
-          <button class="view-btn card-footer-btn" mat-flat-button [routerLink]="['edit', site.name]">
+          <button
+            class="view-btn card-footer-btn"
+            mat-flat-button
+            [routerLink]="['edit', site.name]"
+          >
             <fa name="edit"></fa>
             Edit Site
           </button>
-
-          <button class="view-btn card-footer-btn" mat-flat-button [routerLink]="['/site', site.name]">
+        </li>
+        <li>
+          <button
+            class="edit-btn card-footer-btn"
+            (click)="clickOpenSiteMap(site.name)"
+            mat-flat-button
+          >
+            <fa name="eye"></fa>
+            View Site Map
+          </button>
+        </li>
+        <li>
+          <button
+            class="view-btn card-footer-btn"
+            mat-flat-button
+            [routerLink]="['/site', site.name]"
+          >
             <fa name="eye"></fa>
             View Live Site
           </button>

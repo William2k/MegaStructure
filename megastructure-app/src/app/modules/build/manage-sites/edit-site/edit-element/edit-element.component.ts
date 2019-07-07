@@ -4,6 +4,9 @@ import {
   ChangeDetectionStrategy,
   OnDestroy
 } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil, take } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 import { EditSiteService } from '../edit-site.service';
 import {
@@ -12,9 +15,6 @@ import {
   CssStyle,
   ElementAttribute
 } from 'src/app/core/models/site.model';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
