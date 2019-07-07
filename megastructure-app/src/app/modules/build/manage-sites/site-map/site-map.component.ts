@@ -15,8 +15,6 @@ export class SiteMapComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public site: Site) {}
 
   ngOnInit(): void {
-    
-
     this.pagesTree = pagesArrayToTree(this.site.pages);
   }
 }
