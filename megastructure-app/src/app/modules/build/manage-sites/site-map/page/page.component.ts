@@ -10,6 +10,7 @@ import { SitePageTree } from 'src/app/core/models/site.model';
 export class PageComponent {
   @Input() pageTree: SitePageTree;
   @Output() addPage: EventEmitter<number> = new EventEmitter();
+  @Output() editPage: EventEmitter<number> = new EventEmitter();
 
   constructor() { }
 
@@ -17,7 +18,15 @@ export class PageComponent {
     this.addPage.emit(parentRef);
   }
 
+  onEditPage(pageRef: number): void {
+    this.editPage.emit(pageRef);
+  }
+
   addPageClick(): void {
     this.addPage.emit(this.pageTree.page.pageRef);
+  }
+
+  editPageClick(): void {
+    this.editPage.emit(this.pageTree.page.pageRef);
   }
 }

@@ -1,0 +1,48 @@
+<form
+  id="page-form"
+  class="col-sm-11 col-lg-5 col-xl-4"
+  [formGroup]="editPageForm"
+  (ngSubmit)="save()"
+>
+  <div>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="Page title"
+        formControlName="title"
+        required
+      />
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <input matInput placeholder="Page link" formControlName="link" required />
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-checkbox color="primary" formControlName="isActive">
+      Is Active
+    </mat-checkbox>
+  </div>
+
+  <div *ngIf="editPageForm.errors">
+    <span *ngFor="let error of editPageForm.errors">{{ error }}</span>
+  </div>
+
+  <div>
+    <button mat-button type="button" (click)="cancel()">
+      Cancel Page Edit
+    </button>
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="!editPageForm.valid"
+      color="primary"
+      (click)="save()"
+    >
+      Save Page
+    </button>
+  </div>
+</form>

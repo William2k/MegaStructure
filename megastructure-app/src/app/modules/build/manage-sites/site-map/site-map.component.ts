@@ -18,6 +18,8 @@ import { pagesArrayToTree } from 'src/app/shared/helpers/site.helper';
 export class SiteMapComponent implements OnInit {
   pagesTree: SitePageTree;
   lastPageRef: number;
+  editingPage: SitePage;
+  undatedPages: number[] = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public site: Site) {}
 
@@ -29,10 +31,6 @@ export class SiteMapComponent implements OnInit {
   }
 
   onAddPage(parentRef: number): void {
-    console.log(parentRef);
-
-    console.log(this.lastPageRef + 1);
-
     const newPage = {
       pageRef: this.lastPageRef + 1,
       parentRef,
@@ -46,6 +44,16 @@ export class SiteMapComponent implements OnInit {
     this.site.pages.push(newPage);
 
     this.setPageTree();
+
+    this.undatedPages.push(newPage.pageRef);
+  }
+
+  onEditPage(pageRef: number): void {
+    this.editingPage = this.site.pages.find(page => page.pageRef === pageRef);
+  }
+
+  onCancelEditPage(): void {
+    this.editingPage = null;
   }
 
   setPageTree(): void {

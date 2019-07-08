@@ -5,14 +5,23 @@
   </label>
 </small>
 <mat-dialog-content class="mat-typography">
-<app-page [pageTree]="pagesTree" (addPage)="onAddPage($event)"></app-page>
+  <section class="map-view dialog-content" [ngClass]="{ open: !editingPage }">
+    <app-page
+      *ngIf="!editingPage"
+      [pageTree]="pagesTree"
+      (addPage)="onAddPage($event)"
+      (editPage)="onEditPage($event)"
+    ></app-page>
+  </section>
+  <section class="edit-page dialog-content" [ngClass]="{ open: editingPage }">
+    <app-edit-page
+      *ngIf="editingPage"
+      [page]="editingPage"
+      (cancelEditPage)="onCancelEditPage($event)"
+    ></app-edit-page>
+  </section>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="false">Cancel</button>
-  <button
-    mat-flat-button
-    type="button"
-    color="primary"
-  >
-  </button>
+  <button mat-flat-button type="button" color="primary"></button>
 </mat-dialog-actions>

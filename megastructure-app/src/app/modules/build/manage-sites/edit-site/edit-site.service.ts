@@ -26,7 +26,7 @@ export class EditSiteService {
     pages: [
       {
         pageRef: 1,
-        title: 'page one',
+        title: 'base',
         link: '',
         parentRef: 0,
         content: {

@@ -4,7 +4,7 @@
       {{ pageTree.page.title }}
     </h3>
 
-    <button mat-flat-button>
+    <button mat-flat-button (click)="editPageClick()">
       <fa name="edit"></fa>
     </button>
 
@@ -15,7 +15,7 @@
 
   <ul *ngIf="pageTree.subPages">
     <li *ngFor="let childPage of pageTree.subPages">
-      <app-page [pageTree]="childPage" (addPage)="onAddPage($event)"></app-page>
+      <app-page [pageTree]="childPage" (addPage)="onAddPage($event)" (editPage)="onEditPage($event)"></app-page>
     </li>
   </ul>
 </div>
