@@ -1,21 +1,33 @@
 <div>
-  <div class="page-info" [ngClass]="{active: pageTree.page.isActive}">
-    <h3 class="d-inline-block">
-      {{ pageTree.page.title }}
-    </h3>
+  <ng-template [ngIf]="pageTree" [ngIfElse]="noPageTree">
+    <div class="page-info" [ngClass]="{ active: pageTree.page.isActive }">
+      <h3 class="d-inline-block">
+        {{ pageTree.page.title }}
+      </h3>
 
-    <button mat-flat-button (click)="editPageClick()">
-      <fa name="edit"></fa>
-    </button>
+      <button mat-flat-button (click)="editPageClick()">
+        <fa name="edit"></fa>
+      </button>
 
-    <button mat-flat-button (click)="addPageClick()">
+      <button mat-flat-button (click)="addPageClick()">
         <fa name="plus"></fa>
       </button>
-  </div>
+    </div>
 
-  <ul *ngIf="pageTree.subPages">
-    <li *ngFor="let childPage of pageTree.subPages">
-      <app-page [pageTree]="childPage" (addPage)="onAddPage($event)" (editPage)="onEditPage($event)"></app-page>
-    </li>
-  </ul>
+    <ul *ngIf="pageTree.subPages">
+      <li *ngFor="let childPage of pageTree.subPages">
+        <app-page
+          [pageTree]="childPage"
+          (addPage)="onAddPage($event)"
+          (editPage)="onEditPage($event)"
+        ></app-page>
+      </li>
+    </ul>
+  </ng-template>
+
+  <ng-template #noPageTree>
+    <button mat-flat-button (click)="addPageClick()">
+      <fa name="plus"></fa>
+    </button>
+  </ng-template>
 </div>

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
@@ -7,6 +7,7 @@ import { RootStoreState } from 'src/app/store';
 import { SavePageRequestAction } from 'src/app/store/site-store/actions';
 
 @Component({
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-edit-page',
   templateUrl: './edit-page.component.html',
   styleUrls: ['./edit-page.component.scss']
@@ -39,9 +40,11 @@ export class EditPageComponent implements OnInit {
     this.store$.dispatch(
       new SavePageRequestAction({ sitename: this.siteName, page: this.page })
     );
+
+    this.close();
   }
 
-  cancel(): void {
+  close(): void {
     this.closeEditPage.emit();
   }
 }

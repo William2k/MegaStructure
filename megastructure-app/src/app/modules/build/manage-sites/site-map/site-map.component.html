@@ -6,7 +6,7 @@
 </small>
 <mat-dialog-content class="mat-typography">
   <section class="map-view dialog-content" [ngClass]="{ open: !editingPage }">
-    <app-page
+    <app-page 
       *ngIf="!editingPage"
       [pageTree]="pagesTree"
       (addPage)="onAddPage($event)"
@@ -23,6 +23,5 @@
   </section>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button [mat-dialog-close]="false">Cancel</button>
-  <button mat-flat-button type="button" color="primary"></button>
+  <button mat-flat-button color="warn" [mat-dialog-close]="false">Close</button>
 </mat-dialog-actions>

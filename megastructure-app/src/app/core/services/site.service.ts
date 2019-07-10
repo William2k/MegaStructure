@@ -32,7 +32,7 @@ export class SiteService {
     );
   }
 
-  addPage(sitename: string, page: SitePage): Observable<Site> {
+  addPage(sitename: string, page: SitePage): Observable<SitePage> {
     return this.apiService.post(`site/page/${sitename}`, page);
   }
 }

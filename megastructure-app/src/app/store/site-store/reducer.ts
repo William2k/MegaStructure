@@ -137,15 +137,25 @@ export const siteReducer = (state = initialState, action: Actions): State => {
       };
     }
     case ActionTypes.SAVE_PAGE_SUCCESS: {
+      const editedSite = state.sites.find(
+        site =>
+          site.name.toLowerCase() === action.payload.sitename.toLowerCase()
+      );
+
+      let editedPage = editedSite.pages.find(
+        page => page.pageRef === action.payload.page.pageRef
+      );
+
+      editedPage = { ...editedPage, ...action.payload.page };
+
+      editedSite.pages = [
+        ...editedSite.pages.filter(page => page.pageRef !== editedPage.pageRef),
+        editedPage
+      ];
+
       return {
         ...state,
-        savingSite: false,
-        sites: [
-          ...state.sites.filter(
-            site => site.name !== action.payload.result.name
-          ),
-          action.payload.result
-        ]
+        savingSite: false
       };
     }
     case ActionTypes.SAVE_PAGE_FAILURE: {

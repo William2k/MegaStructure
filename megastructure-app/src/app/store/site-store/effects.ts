@@ -48,7 +48,13 @@ export class SiteEffects {
       this.siteService
         .addPage(action.payload.sitename, action.payload.page)
         .pipe(
-          map(result => new siteActions.SavePageSuccessAction({ result })),
+          map(
+            result =>
+              new siteActions.SavePageSuccessAction({
+                sitename: action.payload.sitename,
+                page: result
+              })
+          ),
           catchError(error =>
             of(new siteActions.SavePageFailureAction({ error }))
           )

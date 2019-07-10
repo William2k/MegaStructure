@@ -119,7 +119,7 @@ routes.route("/page/:sitename").post((req: any, res) => {
       let documentsFound = updatedResult.n;
 
       if (documentsFound) {
-        return res.sendStatus(201);
+        return res.status(201).send(page);
       }
 
       Site.updateOne(
@@ -134,7 +134,7 @@ routes.route("/page/:sitename").post((req: any, res) => {
         documentsFound = savedResult.n;
 
         if (documentsFound) {
-          res.sendStatus(201);
+          res.status(201).send(page);
         } else {
           res.status(400).send("Error saving page");
         }

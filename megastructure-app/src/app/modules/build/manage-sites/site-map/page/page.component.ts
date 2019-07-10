@@ -14,7 +14,7 @@ export class PageComponent {
 
   constructor() { }
 
-  onAddPage(parentRef: number): void {
+  onAddPage(parentRef: number = 0): void {
     this.addPage.emit(parentRef);
   }
 
@@ -23,7 +23,7 @@ export class PageComponent {
   }
 
   addPageClick(): void {
-    this.addPage.emit(this.pageTree.page.pageRef);
+    this.pageTree ? this.addPage.emit(this.pageTree.page.pageRef) : this.addPage.emit();
   }
 
   editPageClick(): void {
