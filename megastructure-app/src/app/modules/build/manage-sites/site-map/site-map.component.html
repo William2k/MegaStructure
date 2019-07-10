@@ -16,8 +16,9 @@
   <section class="edit-page dialog-content" [ngClass]="{ open: editingPage }">
     <app-edit-page
       *ngIf="editingPage"
+      [siteName]="site.name"
       [page]="editingPage"
-      (cancelEditPage)="onCancelEditPage($event)"
+      (closeEditPage)="onCloseEditPage($event)"
     ></app-edit-page>
   </section>
 </mat-dialog-content>

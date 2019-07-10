@@ -46,7 +46,7 @@ export interface ISite {
   owner: string;
   managers: string[];
   lastModified: { date: Date; user: string };
-  basePage: ISitePage;
+  pages: ISitePage[];
   isActive: boolean;
   delete: boolean;
 }
@@ -60,6 +60,7 @@ export enum SiteElementTypes {
 }
 
 export interface ISitePage {
+  id: string;
   pageRef: number;
   title: string;
   link: string;

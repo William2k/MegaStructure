@@ -15,7 +15,7 @@
     </mat-form-field>
   </div>
 
-  <div>
+  <div *ngIf="page.parentRef">
     <mat-form-field>
       <input matInput placeholder="Page link" formControlName="link" required />
     </mat-form-field>
@@ -40,7 +40,6 @@
       type="submit"
       [disabled]="!editPageForm.valid"
       color="primary"
-      (click)="save()"
     >
       Save Page
     </button>

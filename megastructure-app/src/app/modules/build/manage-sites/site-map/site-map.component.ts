@@ -16,14 +16,18 @@ import { pagesArrayToTree } from 'src/app/shared/helpers/site.helper';
   styleUrls: ['./site-map.component.scss']
 })
 export class SiteMapComponent implements OnInit {
+  private lastPageRef = 0;
   pagesTree: SitePageTree;
-  lastPageRef: number;
   editingPage: SitePage;
-  undatedPages: number[] = [];
+  updatedPages: number[] = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public site: Site) {}
 
   ngOnInit(): void {
+    if (!this.pagesTree || !this.pagesTree.page) {
+      this.onAddPage(0);
+    }
+
     this.setPageTree();
 
     const refs = this.site.pages.map(page => page.pageRef);
@@ -45,14 +49,16 @@ export class SiteMapComponent implements OnInit {
 
     this.setPageTree();
 
-    this.undatedPages.push(newPage.pageRef);
+    this.updatedPages.push(newPage.pageRef);
+
+    this.editingPage = newPage;
   }
 
   onEditPage(pageRef: number): void {
     this.editingPage = this.site.pages.find(page => page.pageRef === pageRef);
   }
 
-  onCancelEditPage(): void {
+  onCloseEditPage(): void {
     this.editingPage = null;
   }
 

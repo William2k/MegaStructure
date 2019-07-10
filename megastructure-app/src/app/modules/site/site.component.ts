@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { switchMap, take, skip, takeUntil } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 import { RootStoreState } from 'src/app/store';
 import {
@@ -19,12 +20,14 @@ import { getSiteState } from 'src/app/store/site-store/selectors';
 })
 export class SiteComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
+  private previousTitle: string;
   currentPage: SitePage;
 
   constructor(
     private store$: Store<RootStoreState.State>,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private titleService: Title
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +60,7 @@ export class SiteComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.titleService.setTitle(this.previousTitle);
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -72,6 +76,10 @@ export class SiteComponent implements OnInit, OnDestroy {
     );
 
     this.currentPage = currentPage;
+
+    this.previousTitle = this.titleService.getTitle();
+
+    this.titleService.setTitle(this.currentPage.title);
 
     if (!currentPage.content) {
       this.store$.dispatch(
