@@ -59,11 +59,29 @@ export class SiteMapComponent implements OnInit, OnDestroy {
   }
 
   onAddPage(parentRef: number = 0): void {
+    const styles = {
+      main: {
+        float: 'left',
+        height: parentRef ? '50%' : '100%',
+        width: parentRef ? '50%' : '100%'
+      }
+    };
+
     const newPage = {
       pageRef: this.lastPageRef + 1,
       parentRef,
       isActive: true,
       link: '',
+      content: {
+        elementRef: 1,
+        type: 'main',
+        styles,
+        attributes: [],
+        textContent: '',
+        childElements: [],
+        isActive: true,
+        changes: { amount: 0 }
+      },
       title: 'page'
     } as SitePage;
 
