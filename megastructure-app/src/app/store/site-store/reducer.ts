@@ -1,5 +1,6 @@
 import { Actions, ActionTypes } from './actions';
 import { initialState, State } from './state';
+import { SitePage } from 'src/app/core/models/site.model';
 
 export const siteReducer = (state = initialState, action: Actions): State => {
   switch (action.type) {
@@ -151,7 +152,7 @@ export const siteReducer = (state = initialState, action: Actions): State => {
       editedSite.pages = [
         ...editedSite.pages.filter(page => page.pageRef !== editedPage.pageRef),
         editedPage
-      ];
+      ].sort((a: SitePage, b: SitePage) => a.pageRef - b.pageRef);
 
       return {
         ...state,
