@@ -11,12 +11,11 @@ import { Site, SitePageTree, SitePage } from 'src/app/core/models/site.model';
 import { pagesArrayToTree } from 'src/app/shared/helpers/site.helper';
 import { RootStoreState } from 'src/app/store';
 import { Store } from '@ngrx/store';
-import { getUserSites, getSiteState } from 'src/app/store/site-store/selectors';
+import { getSiteState } from 'src/app/store/site-store/selectors';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
-  // changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-site-map',
   templateUrl: './site-map.component.html',
   styleUrls: ['./site-map.component.scss']

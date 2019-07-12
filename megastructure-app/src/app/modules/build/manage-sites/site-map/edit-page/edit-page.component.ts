@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 
 import { SitePage } from 'src/app/core/models/site.model';
 import { RootStoreState } from 'src/app/store';
-import { SavePageRequestAction } from 'src/app/store/site-store/actions';
+import { SavePageRequestAction, GetPageRequestAction } from 'src/app/store/site-store/actions';
 
 @Component({
   // changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,6 +24,10 @@ export class EditPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.store$.dispatch(
+      new GetPageRequestAction({ sitename: this.siteName, pageRef: this.page.pageRef })
+    );
+
     this.editPageForm = this.fb.group({
       title: [this.page.title, [Validators.required]],
       link: [
