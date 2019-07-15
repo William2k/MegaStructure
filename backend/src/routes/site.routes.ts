@@ -84,28 +84,33 @@ routes.route("/:sitename/page/:pageref").get((req: any, res) => {
   const pageRef = Number(req.params.pageref);
 
   (Site as any)
-    .aggregate([
+    .findOne(
       {
-        $match: {
-          name: siteName,
-          managers: req.decoded.normalisedUsername,
-          pages: { $elemMatch: { pageRef } }
-        }
+        name: siteName,
+        managers: req.decoded.normalisedUsername,
+        pages: { $elemMatch: { pageRef } }
       },
-      { $project: { page: { $arrayElemAt: ["$pages", 0] } } }
-    ])
-    .then((resultPages, err) => {
-      resultPages.length
-        ? res.json(resultPages[0].page)
-        : res.status(400).send("Page not found");
+      "pages"
+    )
+    .then((result, err) => {
+      const resultPages = result.pages;
+
+      if (resultPages.length) {
+        const updatedPage = resultPages.find(
+          (page: ISitePage) => page.pageRef === pageRef
+        );
+        res.json(updatedPage);
+      } else {
+        res.status(400).send("Page not found");
+      }
     })
     .catch(err => res.status(400).send("Error finding page"));
 });
 
 routes.route("/page/:sitename").post((req: any, res) => {
-  const currentUser = req.decoded.normalisedUsername;
+  const currentUser = req.decoded.normalisedUsername as string;
   const page = req.body as ISitePage;
-  const sitename = req.params.sitename;
+  const sitename = req.params.sitename as string;
 
   Site.updateOne(
     {

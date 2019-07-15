@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   Inject,
-  ChangeDetectionStrategy,
   OnDestroy
 } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
@@ -61,8 +60,8 @@ export class SiteMapComponent implements OnInit, OnDestroy {
     const styles = {
       main: {
         float: 'left',
-        height: parentRef ? '50%' : '100%',
-        width: parentRef ? '50%' : '100%'
+        height: '100%',
+        width: '100%'
       }
     };
 
