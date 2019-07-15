@@ -118,7 +118,7 @@ export class EditElementComponent implements OnInit, OnDestroy {
   }
 
   savePage(): void {
-    this.editSiteService.saveSite();
+    this.editSiteService.savePage();
   }
 
   indexTrackByFn(index: number): number {

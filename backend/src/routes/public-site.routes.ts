@@ -1,6 +1,6 @@
 import express from "express";
 
-import siteModels from "../models/site.model";
+import siteModels, { ISitePage } from "../models/site.model";
 
 const routes = express.Router();
 const Site = siteModels.site as any;
@@ -48,20 +48,25 @@ routes.route("/live/:sitename/page/:pageref").get((req, res) => {
   const siteName = req.params.sitename;
   const pageRef = Number(req.params.pageref);
 
-  Site.aggregate([
+  Site.findOne(
     {
-      $match: {
-        name: siteName,
-        isActive: true,
-        pages: { $elemMatch: { pageRef } }
-      }
+      name: siteName,
+      isActive: true,
+      pages: { $elemMatch: { pageRef } }
     },
-    { $project: { page: { $arrayElemAt: ["$pages", 0] } } }
-  ])
-    .then((resultPages, err) => {
-      resultPages.length
-        ? res.json(resultPages[0].page)
-        : res.status(400).send("Page not found");
+    "pages"
+  )
+    .then((result, err) => {
+      const resultPages = result.pages;
+
+      if (resultPages.length) {
+        const updatedPage = resultPages.find(
+          (page: ISitePage) => page.pageRef === pageRef
+        );
+        res.json(updatedPage);
+      } else {
+        res.status(400).send("Page not found");
+      }
     })
     .catch(err => res.status(400).send("Error finding page"));
 });
