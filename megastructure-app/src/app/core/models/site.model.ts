@@ -15,7 +15,8 @@ export enum SiteElementTypes {
   section = 'section',
   div = 'div',
   image = 'image',
-  text = 'text'
+  text = 'text',
+  link = 'link'
 }
 
 export interface SitePage {

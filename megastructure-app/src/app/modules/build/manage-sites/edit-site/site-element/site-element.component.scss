@@ -9,3 +9,8 @@
 .elem-container {
   display: contents;
 }
+
+a:not([href]):not([tabindex]) {
+  color: #007bff;
+  text-decoration: underline;
+}

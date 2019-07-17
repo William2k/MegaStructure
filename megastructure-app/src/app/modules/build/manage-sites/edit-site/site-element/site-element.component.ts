@@ -23,6 +23,7 @@ import { EditSiteService } from '../edit-site.service';
 })
 export class SiteElementComponent implements OnInit, OnDestroy {
   typeEnums = SiteElementTypes;
+  attributes = {};
 
   private unsubscribe$ = new Subject<void>();
   @ViewChild('containerElem') elem: ElementRef;
@@ -45,6 +46,7 @@ export class SiteElementComponent implements OnInit, OnDestroy {
 
     this.siteElement.styles = this.siteElement.styles || style;
 
+
     this.editSiteService.elemChangeDetection$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((el: number) => {
@@ -62,11 +64,19 @@ export class SiteElementComponent implements OnInit, OnDestroy {
       });
 
     setTimeout(() => this.setAttributes(), 0);
+
+    this.setAttributesObject();
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  setAttributesObject(): void {
+    for (const attr of this.siteElement.attributes) {
+      this.attributes[attr.name] = attr.value;
+    }
   }
 
   setAttributes(): void {

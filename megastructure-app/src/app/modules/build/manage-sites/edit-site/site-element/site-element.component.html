@@ -1,7 +1,13 @@
-<div class="elem-block" *ngIf="siteElement.isActive" [ngSwitch]="siteElement.type">
+<div
+  class="elem-block"
+  *ngIf="siteElement.isActive"
+  [ngSwitch]="siteElement.type"
+>
   <section class="elem-container" (click)="elemClick($event)">
     <main
-      [class]="'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)"
+      [class]="
+        'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)
+      "
       *ngSwitchCase="typeEnums.main"
       #containerElem
     >
@@ -12,7 +18,9 @@
     </main>
 
     <section
-      [class]="'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)"
+      [class]="
+        'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)
+      "
       *ngSwitchCase="typeEnums.section"
       #containerElem
     >
@@ -23,7 +31,9 @@
     </section>
 
     <div
-      [class]="'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)"
+      [class]="
+        'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)
+      "
       *ngSwitchDefault
       #containerElem
     >
@@ -34,17 +44,32 @@
     </div>
 
     <textarea
-      [class]="'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)"
+      [class]="
+        'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)
+      "
       *ngSwitchCase="typeEnums.text"
       [(ngModel)]="siteElement.textContent"
       #containerElem
     ></textarea>
 
     <img
-      [class]="'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)"
+      [class]="
+        'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)
+      "
       *ngSwitchCase="typeEnums.image"
       [src]="siteElement.attributes['src']"
       #containerElem
     />
+
+    <a
+      [class]="
+        'elem ' + (siteElement.changes.amount | jssStyle: siteElement.styles)
+      "
+      *ngSwitchCase="typeEnums.link"
+
+      #containerElem
+    >
+      {{ siteElement.textContent }}
+    </a>
   </section>
 </div>

@@ -36,7 +36,9 @@
     [class]="'elem ' + (element.styles | jssStyleStatic)"
     *ngSwitchCase="typeEnums.text"
     #containerElem
-  >{{element.textContent}}</p>
+  >
+    {{ element.textContent }}
+  </p>
 
   <img
     [class]="'elem ' + (element.styles | jssStyleStatic)"
@@ -44,4 +46,13 @@
     [src]="element.attributes['src']"
     #containerElem
   />
+
+  <a
+    [class]="'elem ' + (element.styles | jssStyleStatic)"
+    *ngSwitchCase="typeEnums.link"
+    [routerLink]="['../', attributes['link']]"
+    #containerElem
+  >
+    {{ element.textContent }}
+  </a>
 </ng-container>

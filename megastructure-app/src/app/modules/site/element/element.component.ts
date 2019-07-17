@@ -20,6 +20,7 @@ import { SiteElement, SiteElementTypes } from 'src/app/core/models/site.model';
 })
 export class ElementComponent implements OnInit, OnDestroy {
   typeEnums = SiteElementTypes;
+  attributes = {};
 
   private unsubscribe$ = new Subject<void>();
   @ViewChild('containerElem') elem: ElementRef;
@@ -29,11 +30,21 @@ export class ElementComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     setTimeout(() => this.setAttributes(), 0);
+
+    if (this.element && this.attributes) {
+      this.setAttributesObject();
+    }
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  setAttributesObject(): void {
+    for (const attr of this.element.attributes) {
+      this.attributes[attr.name] = attr.value;
+    }
   }
 
   setAttributes(): void {
