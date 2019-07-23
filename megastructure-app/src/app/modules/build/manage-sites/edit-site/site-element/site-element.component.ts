@@ -7,7 +7,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   OnDestroy,
-  Renderer2
+  Renderer2,
+  AfterViewInit
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -21,7 +22,7 @@ import { EditSiteService } from '../edit-site.service';
   templateUrl: './site-element.component.html',
   styleUrls: ['./site-element.component.scss']
 })
-export class SiteElementComponent implements OnInit, OnDestroy {
+export class SiteElementComponent implements OnInit, AfterViewInit, OnDestroy {
   typeEnums = SiteElementTypes;
   attributes = {};
 
@@ -51,7 +52,7 @@ export class SiteElementComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((el: number) => {
         if (el === this.siteElement.elementRef) {
-          this.cdRef.detectChanges();
+          this.cdRef.markForCheck();
         }
       });
 
@@ -63,9 +64,11 @@ export class SiteElementComponent implements OnInit, OnDestroy {
         }
       });
 
-    setTimeout(() => this.setAttributes(), 0);
-
     this.setAttributesObject();
+  }
+
+  ngAfterViewInit(): void {
+    this.setAttributes();
   }
 
   ngOnDestroy(): void {

@@ -6,7 +6,8 @@ import {
   ViewChild,
   ChangeDetectionStrategy,
   OnDestroy,
-  Renderer2
+  Renderer2,
+  AfterViewInit
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -18,7 +19,7 @@ import { SiteElement, SiteElementTypes } from 'src/app/core/models/site.model';
   templateUrl: './element.component.html',
   styleUrls: ['./element.component.scss']
 })
-export class ElementComponent implements OnInit, OnDestroy {
+export class ElementComponent implements OnInit, AfterViewInit, OnDestroy {
   typeEnums = SiteElementTypes;
   attributes = {};
 
@@ -29,11 +30,13 @@ export class ElementComponent implements OnInit, OnDestroy {
   constructor(private renderer: Renderer2) {}
 
   ngOnInit(): void {
-    setTimeout(() => this.setAttributes(), 0);
-
     if (this.element && this.attributes) {
       this.setAttributesObject();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.setAttributes();
   }
 
   ngOnDestroy(): void {
