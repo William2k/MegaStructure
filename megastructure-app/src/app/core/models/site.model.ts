@@ -6,6 +6,7 @@ export interface Site {
   managers: string[];
   lastModified: { date: Date; user: string };
   pages: SitePage[];
+  APIs: API[];
   isActive: boolean;
   delete: boolean;
 }
@@ -25,6 +26,7 @@ export interface SitePage {
   link: string;
   content: SiteElement;
   parentRef: number;
+  APIs: API[];
   isActive: boolean;
   delete: boolean;
 }
@@ -50,6 +52,12 @@ export interface ElementAttribute {
 export interface CssStyle {
   name: string;
   value: string;
+}
+
+export interface API {
+  name: string;
+  url: string;
+  data: {};
 }
 
 export interface SitePageTree {

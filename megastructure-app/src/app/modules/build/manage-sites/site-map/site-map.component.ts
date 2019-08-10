@@ -80,6 +80,7 @@ export class SiteMapComponent implements OnInit, OnDestroy {
         isActive: true,
         changes: { amount: 0 }
       },
+      APIs: [],
       title: 'page'
     } as SitePage;
 

@@ -10,7 +10,7 @@ import {
   GetLiveSiteRequestAction,
   GetLivePageRequestAction
 } from 'src/app/store/site-store/actions';
-import { SitePage, Site } from 'src/app/core/models/site.model';
+import { SitePage, Site, API } from 'src/app/core/models/site.model';
 import { getSiteState } from 'src/app/store/site-store/selectors';
 
 @Component({
@@ -22,6 +22,7 @@ export class SiteComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   private previousTitle: string;
   currentPage: SitePage;
+  APIs: API[];
 
   constructor(
     private store$: Store<RootStoreState.State>,
@@ -88,6 +89,26 @@ export class SiteComponent implements OnInit, OnDestroy {
           pageRef: currentPage.pageRef
         })
       );
+    }
+
+    this.fetchApis(currentSite);
+  }
+
+  fetchApis(site: Site) {
+    if (!site.APIs || this.APIs) {
+      return;
+    }
+
+    this.APIs = site.APIs;
+
+    if (this.currentPage.APIs) {
+      this.APIs.concat(this.currentPage.APIs);
+    }
+
+    for (const api of this.APIs) {
+      fetch(api.url)
+        .then(response => response.json())
+        .then(data => (api.data = data));
     }
   }
 }

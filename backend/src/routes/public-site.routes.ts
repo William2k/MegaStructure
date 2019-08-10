@@ -17,6 +17,7 @@ routes.route("/live/:sitename").get((req, res) => {
         managers: "$managers",
         lastModified: "$lastModified",
         type: "$type",
+        APIs: "$APIs",
         pages: {
           $filter: {
             input: "$pages",

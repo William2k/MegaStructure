@@ -9,7 +9,7 @@ export const pagesArrayToTree = (pages: SitePage[]): SitePageTree => {
 
   const tree = { page: basePage, subPages: [] } as SitePageTree;
 
-  const allPages = [tree] as SitePageTree[];
+  const allPages = [tree];
 
   for (const page of pages) {
     let pageTree = allPages.find(p => p.page.pageRef === page.parentRef);
@@ -17,7 +17,7 @@ export const pagesArrayToTree = (pages: SitePage[]): SitePageTree => {
     if (!pageTree) { // This if allows creating the parent from the child page, generally should not be necessary.
       const parentPage = pages.find(
         p => p.pageRef === page.parentRef
-      ) as SitePage;
+      );
 
       if (!parentPage) {
         continue;

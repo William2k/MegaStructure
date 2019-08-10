@@ -39,7 +39,8 @@ export class EditSiteService {
           changes: { amount: 0 },
           isActive: true
         },
-        isActive: true
+        isActive: true,
+        APIs: [],
       }
     ]
   } as Site;

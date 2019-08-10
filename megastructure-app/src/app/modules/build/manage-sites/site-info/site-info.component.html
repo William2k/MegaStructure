@@ -77,6 +77,59 @@
         </li>
       </ul>
     </fieldset>
+
+    <fieldset>
+      <label>Site APIs: </label>
+
+      <ul class="list-unstyled">
+        <li
+          formArrayName="APIs"
+          *ngFor="
+            let api of siteForm.get('APIs')['controls'];
+            let i = index
+          "
+        >
+          <ng-template
+            [ngIf]="i !== siteForm.get('APIs')['controls'].length - 1"
+            [ngIfElse]="addAPIInput"
+          >
+            <div *ngIf="api.controls.name.value">
+              {{ api.controls.name.value + '(' + api.controls.url.value + ')' }}
+              <fa
+                class="close-icon"
+                name="close"
+                (click)="removeAPI(i)"
+                *ngIf="api.controls.name.value"
+              ></fa>
+            </div>
+          </ng-template>
+
+          <ng-template #addAPIInput>
+            <div [formGroupName]="i">
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="API Name"
+                  formControlName="name"
+                />
+              </mat-form-field>
+
+              <mat-form-field>
+                <input
+                  matInput
+                  placeholder="API Url"
+                  formControlName="url"
+                />
+              </mat-form-field>
+              <button mat-flat-button type="button" (click)="addAPI()">
+                <fa name="plus"></fa>
+              </button>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+    </fieldset>
+
     <div *ngIf="siteForm.errors">
       <span *ngFor="let error of siteForm.errors">{{ error }}</span>
     </div>

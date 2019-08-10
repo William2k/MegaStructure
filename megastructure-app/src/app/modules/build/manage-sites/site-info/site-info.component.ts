@@ -5,7 +5,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 
-import { Site } from 'src/app/core/models/site.model';
+import { Site, API } from 'src/app/core/models/site.model';
 import { User } from 'src/app/core/models/user.model';
 import { RootStoreState } from 'src/app/store';
 import { SaveSiteRequestAction } from 'src/app/store/site-store/actions';
@@ -31,6 +31,7 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       name: ['', [Validators.required]],
       type: ['', [Validators.required]],
       isActive: [false, [Validators.required]],
+      APIs: fb.array([this.createAPI()]),
       managers: fb.array([this.createManager()])
     });
 
@@ -46,12 +47,19 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
       this.siteForm.controls.isActive.setValue(this.site.isActive);
 
       const managerControls = this.siteForm.get('managers') as FormArray;
+      const apiControls = this.siteForm.get('APIs') as FormArray;
 
       for (const name of this.site.managers) {
         managerControls.push(this.createManager(name));
       }
 
+      for (const api of this.site.APIs) {
+        apiControls.push(this.createAPI(api.name, api.url));
+      }
+
       managerControls.push(this.createManager());
+
+      apiControls.push(this.createAPI());
     }
   }
 
@@ -60,10 +68,30 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  createAPI(name: string = '', url: string = ''): FormGroup {
+    return this.fb.group({ name, url } as API);
+  }
+
   createManager(username: string = ''): FormGroup {
     return this.fb.group({
       username: [username]
     });
+  }
+
+  addAPI(): void {
+    const api = this.siteForm.get('APIs') as FormArray;
+
+    if (api.controls.some(m => m.pristine)) {
+      return;
+    }
+
+    api.push(this.createAPI());
+  }
+
+  removeAPI(index: number): void {
+    const api = this.siteForm.get('APIs') as FormArray;
+
+    api.removeAt(index);
   }
 
   addManager(): void {
@@ -85,9 +113,10 @@ export class SiteInfoComponent implements OnInit, OnDestroy {
   save(): void {
     const form = {
       ...this.siteForm.value,
-      managers: (this.siteForm.value.managers as User[])
-        .map(m => m.username)
-        .filter(Boolean)
+      managers: (this.siteForm.value.managers as User[]).filter(
+        m => m.username
+      ),
+      APIs: (this.siteForm.value.APIs as API[]).filter(m => m.name)
     } as Site;
 
     this.store$.dispatch(new SaveSiteRequestAction({ site: form }));

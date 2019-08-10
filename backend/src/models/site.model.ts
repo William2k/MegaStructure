@@ -20,6 +20,7 @@ const SitePage = new Schema({
   link: String,
   parentRef: Number,
   content: SiteElement,
+  APIs: [{ name: String, url: String }],
   isActive: Boolean
 });
 
@@ -30,6 +31,7 @@ const Site = new Schema({
   managers: [String],
   lastModified: { date: Date, user: String },
   pages: [SitePage],
+  APIs: [{ name: String, url: String }],
   isActive: Boolean
 });
 
