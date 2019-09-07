@@ -6,14 +6,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   { path: 'not-found', component: NotFoundComponent },
-  {
-    path: ':sitename',
-    redirectTo: ':sitename/'
-  },
-  {
-    path: ':sitename/:page',
-    component: SiteComponent
-  }
+  { path: '**', component: SiteComponent,  pathMatch: 'full' }
 ];
 
 @NgModule({

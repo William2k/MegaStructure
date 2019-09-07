@@ -35,11 +35,15 @@ export class SiteComponent implements OnInit, OnDestroy {
     let sitename: string;
     let pageLink: string;
 
-    this.route.params
+    this.route.url
       .pipe(
-        switchMap(params => {
-          sitename = params.sitename || '';
-          pageLink = params.page || '';
+        switchMap(segments => {
+          sitename = segments[0].path || '';
+
+          const lastPath = segments[segments.length - 1].path || '';
+
+          pageLink =
+            lastPath.toLowerCase() !== sitename.toLowerCase() ? lastPath : '';
 
           this.store$.dispatch(new GetLiveSiteRequestAction({ sitename }));
 
@@ -77,6 +81,10 @@ export class SiteComponent implements OnInit, OnDestroy {
     );
 
     this.currentPage = currentPage;
+
+    if (!this.currentPage) {
+      this.router.navigate(['site', 'not-found']);
+    }
 
     this.previousTitle = this.titleService.getTitle();
 
