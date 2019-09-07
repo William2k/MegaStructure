@@ -62,7 +62,7 @@ export class EditSiteService {
 
   constructor(private store$: Store<RootStoreState.State>) {}
 
-  initialise(sitename: string, link: string = '', sites: Site[]): boolean {
+  initialise(sitename: string, pageLink: string = '', sites: Site[]): boolean {
     this.resetSite();
 
     const siteFound = sites.find(
@@ -76,10 +76,10 @@ export class EditSiteService {
     this.site = { ...this.site, ...siteFound };
 
     const pageFound = this.site.pages.find(
-      page => page.link.toLowerCase() === link.toLowerCase()
+      page => page.link.toLowerCase() === pageLink.toLowerCase()
     );
 
-    if (!pageFound && link) {
+    if (!pageFound && pageLink) {
       return false;
     }
 
@@ -94,7 +94,7 @@ export class EditSiteService {
       return true;
     }
 
-    if (!link && !pageFound) {
+    if (!pageLink && !pageFound) {
       this.site.pages.push(this.currentPage);
     } else {
       this.currentPage = { ...this.currentPage, ...pageFound };

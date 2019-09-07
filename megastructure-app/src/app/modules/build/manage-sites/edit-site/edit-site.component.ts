@@ -32,23 +32,27 @@ export class EditSiteComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    let link: string;
+    let pageLink: string;
     let sitename: string;
 
     this.currentPage$ = this.editSiteService.currentPage$;
 
-    this.route.params
+    this.route.url
       .pipe(
-        switchMap(param => {
-          link = param.page;
-          sitename = param.sitename;
+        switchMap(segments => {
+          sitename = segments[0].path || '';
+
+          const lastPath = segments[segments.length - 1].path || '';
+
+          pageLink =
+            lastPath.toLowerCase() !== sitename.toLowerCase() ? lastPath : '';
 
           return this.store$.select(getUserSites);
         })
       )
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(sites => {
-        const valid = this.editSiteService.initialise(sitename, link, sites);
+        const valid = this.editSiteService.initialise(sitename, pageLink, sites);
         if (!valid) {
           this.router.navigate(['build', 'manage-sites']);
         }
