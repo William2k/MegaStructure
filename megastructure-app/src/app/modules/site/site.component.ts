@@ -103,11 +103,7 @@ export class SiteComponent implements OnInit, OnDestroy {
   }
 
   fetchApis(site: Site) {
-    if (!site.APIs || this.APIs) {
-      return;
-    }
-
-    this.APIs = site.APIs;
+    this.APIs = site.APIs || [];
 
     if (this.currentPage.APIs) {
       this.APIs.concat(this.currentPage.APIs);
