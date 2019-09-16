@@ -1,8 +1,8 @@
 .elem-block {
   display: contents;
 
-  .elem {
-    border: 1px solid;
+  .elem:hover {
+    border: 1.5px solid;
   }
 }
 
